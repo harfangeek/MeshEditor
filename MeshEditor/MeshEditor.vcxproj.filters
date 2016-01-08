@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{0c0cf818-c865-459c-ba71-0721dcc9055e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Core">
+      <UniqueIdentifier>{7a494f4b-c1c9-46bd-a014-642168056bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Model">
+      <UniqueIdentifier>{b76a5f2f-3455-447d-b7ba-59a317049081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Core\Shaders">
+      <UniqueIdentifier>{4a25bb4b-e031-460d-91ce-39938c5fb67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Operators">
+      <UniqueIdentifier>{9a587af3-7fd2-46bd-8df4-0a0311a07224}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\MeshRenderer.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\ShaderLoader.cpp">
+      <Filter>Src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Mesh.cpp">
+      <Filter>Src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Operators\MeshGenerator.cpp">
+      <Filter>Src\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Operators\MeshLoader.cpp">
+      <Filter>Src\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Face.cpp">
+      <Filter>Src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\HalfEdge.cpp">
+      <Filter>Src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Vertex.cpp">
+      <Filter>Src\Model</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Core\MeshRenderer.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\ShaderLoader.h">
+      <Filter>Src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Mesh.h">
+      <Filter>Src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Operators\MeshGenerator.h">
+      <Filter>Src\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Operators\MeshLoader.h">
+      <Filter>Src\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Face.h">
+      <Filter>Src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\HalfEdge.h">
+      <Filter>Src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Vertex.h">
+      <Filter>Src\Model</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Core\Shaders\fragmentShader.glsl">
+      <Filter>Src\Core\Shaders</Filter>
+    </None>
+    <None Include="src\Core\Shaders\vertexShader.glsl">
+      <Filter>Src\Core\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
