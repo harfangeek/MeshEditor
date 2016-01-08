@@ -1,13 +1,20 @@
 #pragma once
 
+#include "HalfEdge.h"
+#include "Dependencies\glm\glm.hpp"
+
 namespace Model
 {
 	class Face
 	{
 		public:
+			HalfEdge* adjacentHalfEdge;
+			glm::vec3 normal;
 
+			Face();
+			~Face();
 
-		private:
-
+			void ComputeNormal();
+			int countHalfEdges();
 	};
 }
