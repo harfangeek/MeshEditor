@@ -4,7 +4,12 @@
 #include "Dependencies\freeglut\freeglut.h"
 #include "Dependencies\glm\glm.hpp"
 
+#include "Model\Mesh.h"
+#include "Operators\ObjReader.h"
+#include "Operators\MeshGenerator.h"
 #include "Core\ShaderLoader.h"
+
+#include <vector>
 
 void renderScene();
 void init();
@@ -14,7 +19,7 @@ GLuint program;
 int main(int argc, char** argv)
 {
 	// Freeglut init
-	glutInit(&argc, argv);
+	/*glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(500, 500);
 	glutInitWindowSize(800, 600);
@@ -35,7 +40,13 @@ int main(int argc, char** argv)
 
 	glutDisplayFunc(renderScene);
 	glutMainLoop();
-	glDeleteProgram(program);
+	glDeleteProgram(program);*/
+
+	std::vector<glm::vec3> vertices;
+	std::vector<std::vector<unsigned int>> faces;
+	Operators::ObjReader::Read("cube.obj", vertices, faces);
+	Model::Mesh mesh;
+	Operators::MeshGenerator::Generate(mesh, vertices, faces);
 
 	return 0;
 }

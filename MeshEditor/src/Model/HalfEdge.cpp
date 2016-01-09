@@ -1,6 +1,6 @@
-#include "HalfEdge.h"
-#include "Vertex.h"
-#include "Face.h"
+#include "Model\HalfEdge.h"
+#include "Model\Vertex.h"
+#include "Model\Face.h"
 
 using namespace Model;
 using namespace glm;

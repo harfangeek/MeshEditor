@@ -1,6 +1,6 @@
-#include "Vertex.h"
-#include "HalfEdge.h"
-#include "Face.h"
+#include "Model\Vertex.h"
+#include "Model\HalfEdge.h"
+#include "Model\Face.h"
 #include <vector>
 
 using namespace Model;

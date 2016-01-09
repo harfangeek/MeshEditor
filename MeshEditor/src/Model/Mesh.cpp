@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "Model\Mesh.h"
 #include <sstream>
 
 using namespace Model;
