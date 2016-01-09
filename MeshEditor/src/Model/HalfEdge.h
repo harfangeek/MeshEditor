@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Vertex.h"
-#include "Face.h""
 #include "Dependencies/glm/glm.hpp"
 
 namespace Model
 {
+	class Vertex;
+	class Face;
+
 	class HalfEdge
 	{
 		public:
@@ -17,6 +18,7 @@ namespace Model
 
 			HalfEdge();
 			~HalfEdge();
-			double GetLength();
+
+			double GetLength(); // Get edge length
 	};
 }

@@ -1,9 +1,13 @@
 #pragma once
 
+#include <vector>
 #include "Dependencies\glm\glm.hpp"
 
 namespace Model
 {
+	class HalfEdge;
+	class Face;
+
 	class Vertex
 	{
 		public:
@@ -14,6 +18,8 @@ namespace Model
 			Vertex();
 			~Vertex();
 
-			void ComputeNormal();
+			void ListFaces(std::vector<Face*> &faces); // List faces around the vertex
+			int CountFaces(); // Return the number of faces around the vertex
+			void ComputeNormal(); // Compute the normal of the vertex (update normal member)
 	};
 }

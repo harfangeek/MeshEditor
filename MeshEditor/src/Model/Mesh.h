@@ -16,5 +16,8 @@ namespace Model
 
 			Mesh();
 			~Mesh();
+
+			bool Check(std::vector<std::string>& errors); // Check if the mesh contains errors (e.g. non closed face)
+			void computeNormals(); // Compute faces and vertices normals
 	};
 }
