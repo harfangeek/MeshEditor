@@ -25,6 +25,7 @@ Step 3. Mesh edition :
 Step 4. Fun stuff :
   - Create 3D primitives (cube, pyramid, ...)
   - Implement some mesh algorithms:
-    - Smooth mesh
-    - Mesh improvement : Catmull clarck
+    - Inflate mesh
+    - Smoothen mesh
+    - Mesh improvement (Catmull Clarck)
     - Mesh simplification
