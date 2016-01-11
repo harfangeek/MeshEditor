@@ -5,10 +5,10 @@ Step 1. Mesh loading :
   - Implement Mesh data model (half-edge structure)
   - Load Obj file
   - Display the model
-  - Manipulation (rotate around)
+  - Manipulation (rotate/translate)
 
 Step 2. Visualisation :
-  - Draw mMesh
+  - Draw mesh
   - Draw wireframe
   - Draw verices
   - Draw normals
