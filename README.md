@@ -8,6 +8,7 @@ Step 1 :
   - Manipulation (rotate around)
 
 Step 2 :
+  - Mesh triangulation
   - Selection of a vertex/edge/face
   - Translation/rotation of the selected vertex/edge/face
   - Add edge (cut a face into two faces)
