@@ -15,7 +15,8 @@ Step 2 :
   - Extrusion of a face
 
 Step 3 :
+  - Create 3D primitives (cube, pyramid, ...)
   - Implement some mesh algorithms:
-    . Smooth mesh
-    . Mesh improvement : Catmull clarck
-    . Mesh simplification
+    - Smooth mesh
+    - Mesh improvement : Catmull clarck
+    - Mesh simplification
