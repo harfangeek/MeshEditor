@@ -2,10 +2,10 @@
 A simple mesh editor. Import an .obj model or create one from scratch.
 
 Step 1. Mesh loading :
-  - Implement Mesh data model (half-edge structure)
-  - Load Obj file
-  - Display the model
-  - Manipulation (rotate/translate)
+  - [x]Implement Mesh data model (half-edge structure)
+  - [ ]Load Obj file
+  - [ ]Display the model
+  - [ ]Manipulation (rotate/translate)
 
 Step 2. Visualisation :
   - Draw mesh
