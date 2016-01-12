@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 
 	std::vector<glm::vec3> vertices;
 	std::vector<std::vector<unsigned int>> faces;
-	Operators::ObjReader::Read("apple.obj", vertices, faces);
+	Operators::ObjReader::Read("Models\\cube.obj", vertices, faces);
 	Model::Mesh mesh;
 	Operators::MeshConverter::ArrayToHalfEdgeStructure(mesh, vertices, faces);
 
@@ -53,6 +53,9 @@ int main(int argc, char** argv)
 	for (unsigned int i = 0; i < errors.size(); i++)
 		std::cout << errors[i].c_str() << std::endl;
 
+	std::vector<GLfloat> verticesArray;
+	std::vector<GLuint> facesArray;
+	Operators::MeshConverter::HalfEdgeStructureToArray(mesh, verticesArray, facesArray);
 
 	return 0;
 }
@@ -60,7 +63,7 @@ int main(int argc, char** argv)
 void init()
 {
 	glEnable(GL_DEPTH_TEST);
-	ShaderLoader shaderLoader;
+	Core::ShaderLoader shaderLoader;
 	program = shaderLoader.CreateProgram("src\\Core\\Shaders\\vertexShader.glsl", "src\\Core\\Shaders\\fragmentShader.glsl");
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

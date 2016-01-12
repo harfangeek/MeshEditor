@@ -14,6 +14,7 @@ namespace Model
 			glm::vec3 position;
 			glm::vec3 normal;
 			HalfEdge* originOf;
+			unsigned int index;
 
 			Vertex();
 			Vertex(glm::vec3 pos);
