@@ -19,7 +19,7 @@ Step 3. Mesh edition :
   - [ ] Selection of a vertex/edge/face
   - [ ] Translation/rotation of the selected vertex/edge/face
   - [ ] Add edge (cut a face into two faces)
-  - [ ] [ ] Remove edge
+  - [ ] Remove edge
   - [ ] Extrusion of a face
 
 Step 4. Fun stuff :
