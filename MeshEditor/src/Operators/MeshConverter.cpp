@@ -1,4 +1,4 @@
-#include "Operators\MeshGenerator.h"
+#include "Operators\MeshConverter.h"
 #include "Model\Vertex.h"
 #include "Model\HalfEdge.h"
 #include "Model\Face.h"
@@ -7,7 +7,7 @@
 using namespace Operators;
 using namespace Model;
 
-void MeshGenerator::Generate(Model::Mesh &mesh, std::vector<glm::vec3> &vertices, std::vector<std::vector<unsigned int>> &faces)
+void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, std::vector<glm::vec3> &vertices, std::vector<std::vector<unsigned int>> &faces)
 {
 	std::map<std::pair<unsigned int, unsigned int>, HalfEdge*> hmap; // Store if we already created the edge between two vertices
 	mesh.Clean();

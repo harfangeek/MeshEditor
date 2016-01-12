@@ -34,9 +34,6 @@
     <ClCompile Include="src\Model\Mesh.cpp">
       <Filter>Src\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\Operators\MeshGenerator.cpp">
-      <Filter>Src\Operators</Filter>
-    </ClCompile>
     <ClCompile Include="src\Model\Face.cpp">
       <Filter>Src\Model</Filter>
     </ClCompile>
@@ -47,6 +44,9 @@
       <Filter>Src\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\Operators\ObjReader.cpp">
+      <Filter>Src\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Operators\MeshConverter.cpp">
       <Filter>Src\Operators</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,9 +60,6 @@
     <ClInclude Include="src\Model\Mesh.h">
       <Filter>Src\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\Operators\MeshGenerator.h">
-      <Filter>Src\Operators</Filter>
-    </ClInclude>
     <ClInclude Include="src\Model\Face.h">
       <Filter>Src\Model</Filter>
     </ClInclude>
@@ -73,6 +70,9 @@
       <Filter>Src\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\Operators\ObjReader.h">
+      <Filter>Src\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Operators\MeshConverter.h">
       <Filter>Src\Operators</Filter>
     </ClInclude>
   </ItemGroup>

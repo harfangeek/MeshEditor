@@ -6,7 +6,7 @@
 
 #include "Model\Mesh.h"
 #include "Operators\ObjReader.h"
-#include "Operators\MeshGenerator.h"
+#include "Operators\MeshConverter.h"
 #include "Core\ShaderLoader.h"
 
 #include <vector>
@@ -44,9 +44,9 @@ int main(int argc, char** argv)
 
 	std::vector<glm::vec3> vertices;
 	std::vector<std::vector<unsigned int>> faces;
-	Operators::ObjReader::Read("Models\buddha.obj", vertices, faces);
+	Operators::ObjReader::Read("apple.obj", vertices, faces);
 	Model::Mesh mesh;
-	Operators::MeshGenerator::Generate(mesh, vertices, faces);
+	Operators::MeshConverter::ArrayToHalfEdgeStructure(mesh, vertices, faces);
 
 	std::vector<std::string> errors;
 	mesh.Check(errors);
