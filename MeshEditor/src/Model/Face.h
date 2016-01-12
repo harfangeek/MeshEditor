@@ -13,7 +13,6 @@ namespace Model
 		public:
 			HalfEdge* adjacentHalfEdge;
 			glm::vec3 normal;
-			Vertex* vert;
 
 			Face();
 			~Face();

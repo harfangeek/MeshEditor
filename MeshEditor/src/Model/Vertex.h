@@ -16,6 +16,7 @@ namespace Model
 			HalfEdge* originOf;
 
 			Vertex();
+			Vertex(glm::vec3 pos);
 			~Vertex();
 
 			void ListFaces(std::vector<Face*> &faces); // List faces around the vertex

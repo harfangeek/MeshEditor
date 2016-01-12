@@ -11,6 +11,11 @@ Vertex::Vertex()
 	originOf = NULL;
 }
 
+Vertex::Vertex(glm::vec3 pos) : position(pos)
+{
+	Vertex();
+}
+
 Vertex::~Vertex()
 {
 }

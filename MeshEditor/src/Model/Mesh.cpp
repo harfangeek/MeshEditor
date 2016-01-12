@@ -10,23 +10,31 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+	Clean();
+}
+
+void Mesh::Clean()
+{
 	for (unsigned int i = 0; i < halfEdges.size(); i++)
 	{
 		if (halfEdges[i] != NULL)
 			delete halfEdges[i];
 	}
+	halfEdges.clear();
 
 	for (unsigned int i = 0; i < vertices.size(); i++)
 	{
 		if (vertices[i] != NULL)
 			delete vertices[i];
 	}
+	vertices.clear();
 
 	for (unsigned int i = 0; i < faces.size(); i++)
 	{
 		if (faces[i] != NULL)
 			delete faces[i];
 	}
+	faces.clear();
 }
 
 bool Mesh::Check(std::vector<std::string>& errors)
@@ -35,7 +43,6 @@ bool Mesh::Check(std::vector<std::string>& errors)
 	
 	// HalfEdges:
 	// - source != NULL;
-	// - source == source->originOf
 	// - next != NULL;
 	// - next->prev = halfEdge
 	// - prev != NULL;
@@ -51,21 +58,19 @@ bool Mesh::Check(std::vector<std::string>& errors)
 		halfEdge = halfEdges[i];
 		if (halfEdge->source == NULL)
 			errors.push_back(std::string("halfEdges[" + sst.str() + "] : halfEdge->source == NULL"));
-		else if (halfEdge->source->originOf != halfEdge)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->source->originOf != halfEdge");
-		else if (halfEdge->next == NULL)
+		if (halfEdge->next == NULL)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->next == NULL");
 		else if (halfEdge->next->prev != halfEdge)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->next->prev != halfEdge");
-		else if (halfEdge->prev == NULL)
+		if (halfEdge->prev == NULL)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->prev == NULL");
 		else if (halfEdge->prev->next != halfEdge)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->prev->next != halfEdge");
-		else if (halfEdge->twin == NULL)
+		if (halfEdge->twin == NULL)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->twin == NULL");
 		else if (halfEdge->twin->twin != halfEdge)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->twin->twin != halfEdge");
-		else if (halfEdge->adjacentFace == NULL)
+		if (halfEdge->adjacentFace == NULL)
 			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->adjacentFace == NULL");
 	}
 
@@ -81,7 +86,7 @@ bool Mesh::Check(std::vector<std::string>& errors)
 		vertex = vertices[i];
 		if (vertex->originOf == NULL)
 			errors.push_back("vertices[" + sst.str() + "] : originOf == NULL");
-		else if (vertex->originOf->source == vertex)
+		else if (vertex->originOf->source != vertex)
 			errors.push_back("vertices[" + sst.str() + "] : vertex != vertex->orginOf->source");
 		else
 		{
@@ -134,7 +139,7 @@ bool Mesh::Check(std::vector<std::string>& errors)
 	return errors.size() == 0;
 }
 
-void Mesh::computeNormals()
+void Mesh::ComputeNormals()
 {
 	for (unsigned int i = 0; i < faces.size(); i++)
 		faces[i]->ComputeNormal();

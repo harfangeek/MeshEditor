@@ -44,9 +44,15 @@ int main(int argc, char** argv)
 
 	std::vector<glm::vec3> vertices;
 	std::vector<std::vector<unsigned int>> faces;
-	Operators::ObjReader::Read("cube.obj", vertices, faces);
+	Operators::ObjReader::Read("Models\buddha.obj", vertices, faces);
 	Model::Mesh mesh;
 	Operators::MeshGenerator::Generate(mesh, vertices, faces);
+
+	std::vector<std::string> errors;
+	mesh.Check(errors);
+	for (unsigned int i = 0; i < errors.size(); i++)
+		std::cout << errors[i].c_str() << std::endl;
+
 
 	return 0;
 }
