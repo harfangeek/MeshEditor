@@ -102,12 +102,15 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 		curr->next = lastEdge;
 		mesh.vertices[lastIndex]->originOf = lastEdge;
 	}
+
+	mesh.ComputeNormals();
 }
 
-void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> &vertices, vector<GLuint> &faces)
+void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> &vertices, vector<GLuint> &faces, std::vector<GLfloat> &normals)
 {
 	vertices.clear();
 	faces.clear();
+	normals.clear();
 
 	// Add vertices
 	int i = 0;
@@ -130,5 +133,8 @@ void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> 
 		{
 			faces.push_back((*vertexIt)->index);
 		}
+		normals.push_back((*faceIt)->normal.x);
+		normals.push_back((*faceIt)->normal.y);
+		normals.push_back((*faceIt)->normal.z);
 	}
 }
