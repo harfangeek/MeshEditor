@@ -123,8 +123,6 @@ void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> 
 	}
 
 	// Add faces
-	HalfEdge* begin;
-	HalfEdge* curr;
 	vector<Vertex*> faceVertices;
 	for (vector<Face*>::iterator faceIt = mesh.faces.begin(); faceIt != mesh.faces.end(); faceIt++)
 	{

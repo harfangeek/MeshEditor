@@ -5,7 +5,7 @@ layout(location = 1) in vec3 normal_modelspace;
 
 uniform mat4 myprojection_matrix; //c'est juste la projection ex perspective cavalière
 uniform mat4 myview_matrix; // matrice de transformation de la position selon la caméra (ex si la camera doit tourner, myview_matric contient cette rotation) 
-uniform mat3 mynormal_matrix; //normal_matrix
+//uniform mat3 mynormal_matrix; //normal_matrix
 
 out vec3 normal;
 out vec4 position;

@@ -4,6 +4,7 @@
 #include "Dependencies\freeglut\freeglut.h"
 #include "Dependencies\glm\glm.hpp"
 #include "Dependencies\glm\gtc\matrix_transform.hpp"
+#include "Dependencies\glm\gtx\rotate_vector.hpp"
 
 #include "Model\Mesh.h"
 #include "Operators\ObjReader.h"
@@ -20,9 +21,65 @@ GLuint program;
 Model::Mesh* mesh;
 Core::MeshRenderer meshRenderer;
 
+glm::vec3 camera_eye(0, 0, 2);
+glm::vec3 camera_up(0, 1, 0);
+glm::vec3 camera_forward(0, 0, -1);
+
 GLuint projection_matrix_loc;
 GLuint view_matrix_loc;
 GLuint normal_matrix_loc;
+
+int mouseX;
+int mouseY;
+float rotationX = 0.0;
+float rotationZ = 0.0;
+
+int Glut_w = 600, Glut_h = 600;
+
+void mouseClick(int button, int state, int x, int y)
+{
+	mouseX = x;
+	mouseY = y;
+}
+
+void mouseMotion(int x, int y)
+{
+	float dx = (float)(x - mouseX);
+	float dy = (float)(y - mouseY);
+
+	rotationZ += dx / (float)Glut_w;
+	rotationX += dy * (float)Glut_h;
+	std::cout << rotationZ << std::endl;
+
+	float theta = (fabs(rotationZ) + fabs(rotationX));
+
+	glm::vec3 camera_right = glm::cross(camera_forward, camera_up);
+	 
+	glm::vec3 direction = -camera_right * rotationZ/* + -camera_up * rotationX*/;
+
+	glm::vec3 rotation_axis = glm::cross(direction, camera_forward);
+	rotation_axis = glm::normalize(rotation_axis);
+
+	camera_up = glm::rotate(camera_up, theta, rotation_axis);
+	camera_eye = glm::rotate(camera_eye, theta, rotation_axis);
+	camera_forward = glm::rotate(camera_forward, theta, rotation_axis);
+
+	camera_up = glm::normalize(camera_up);
+	camera_eye = glm::normalize(camera_eye);
+	camera_forward = glm::normalize(camera_forward);
+
+
+	/*camera_eye = glm::rotate(camera_eye, rotationZ, glm::vec3(0.0f, 1.0f, 0.0f));
+	camera_forward = glm::rotate(camera_forward, rotationZ, camera_up);
+
+	camera_eye = glm::rotate(camera_eye, rotationX, glm::vec3(1.0f, 0.0f, 0.0f));
+	camera_forward = glm::rotate(camera_forward, rotationX, camera_right);
+
+	camera_eye = glm::normalize(camera_eye);
+	camera_forward = glm::normalize(camera_forward);*/
+
+	glutPostRedisplay();
+}
 
 int main(int argc, char** argv)
 {
@@ -46,39 +103,14 @@ int main(int argc, char** argv)
 
 	init();	
 
+	glutMouseFunc(mouseClick);
+	glutMotionFunc(mouseMotion);
 	glutDisplayFunc(renderScene);
 	glutMainLoop();
-	glDeleteProgram(program);	
+	glDeleteProgram(program);
 
 	return 0;
 }
-
-/*void init()
-{
-	std::vector<glm::vec3> vertices;
-	std::vector<std::vector<unsigned int>> faces;
-	Operators::ObjReader::Read("Models\\cube.obj", vertices, faces);
-	Operators::MeshConverter::ArrayToHalfEdgeStructure(mesh, vertices, faces);
-	meshRenderer.SetMesh(&mesh);
-
-	glEnable(GL_DEPTH_TEST);
-	Core::ShaderLoader shaderLoader;
-	program = shaderLoader.CreateProgram("src\\Core\\Shaders\\vertexShader.glsl", "src\\Core\\Shaders\\fragmentShader.glsl");
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-}*/
-
-/*void renderScene()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-
-	glUseProgram(program);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
-	//meshRenderer.Display();
-
-	glutSwapBuffers();
-}*/
 
 void init()
 {
@@ -102,41 +134,29 @@ void init()
 	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	//glBindFragDataLocation(program, 0, "color_out");
-
 	projection_matrix_loc = glGetUniformLocation(program, "myprojection_matrix");
 	view_matrix_loc = glGetUniformLocation(program, "myview_matrix");
-	normal_matrix_loc = glGetUniformLocation(program, "mynormal_matrix");
+	//normal_matrix_loc = glGetUniformLocation(program, "mynormal_matrix");
 }
 
 void renderScene()
-{
-	int Glut_w = 600, Glut_h = 600;
+{	
 	float fovy = 90;
 	float zNear = 0.2f;
-	float zFar = 6000;
-
-	glm::vec3 camera_eye(0, 0, 2);
-	glm::vec3 camera_up(0, 1, 0);
-	glm::vec3 camera_forward(0, 0, -1);
+	float zFar = 5000;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glViewport(0, 0, Glut_w, Glut_h);
 
-	glm::mat4 projection_matrix =
-		glm::perspective(fovy, Glut_w / (float)Glut_h, zNear, zFar);
+	glm::mat4 projection_matrix =	glm::perspective(fovy, (float)Glut_w / (float)Glut_h, zNear, zFar);
 	glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection_matrix[0][0]);
 
-	glm::mat4 view_matrix =
-		glm::lookAt(camera_eye,
-		camera_eye + camera_forward,
-		camera_up);
-
+	glm::mat4 view_matrix = glm::lookAt(camera_eye, camera_eye + camera_forward, camera_up);
 	glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
 
-	glm::mat3 normal_matrix = glm::transpose(glm::inverse(glm::mat3(view_matrix)));
-	glUniformMatrix3fv(normal_matrix_loc, 1, GL_FALSE, &normal_matrix[0][0]);
+	//glm::mat3 normal_matrix = glm::transpose(glm::inverse(glm::mat3(view_matrix)));
+	//glUniformMatrix3fv(normal_matrix_loc, 1, GL_FALSE, &normal_matrix[0][0]);
 
 	meshRenderer.Display();
 

@@ -5,15 +5,15 @@ Step 1. Mesh loading :
   - [x] Implement Mesh data model (half-edge structure)
   - [x] Load Obj file
   - [X] Display the model
-  - [ ] Manipulation (rotate/translate)
+  - [ ] Manipulation (rotate/translate/scale)
   - [ ] Lights
 
 Step 2. Visualisation :
   - [ ] Draw mesh
   - [ ] Draw wireframe
-  - [ ] Draw verices
+  - [ ] Draw vertices
   - [ ] Draw normals
-  - [ ]  silouhette
+  - [ ] Draw silouhette
 
 Step 3. Mesh edition :
   - [ ] Mesh triangulation
@@ -26,7 +26,7 @@ Step 3. Mesh edition :
 Step 4. Fun stuff :
   - [ ] Create 3D primitives (cube, pyramid, ...)
   - [ ] Implement some mesh algorithms:
-    - [ ] Inflate mesh
-    - [ ] Smoothen mesh
-    - [ ] Mesh improvement (Catmull Clarck)
-    - [ ] Mesh simplification
+  - [ ] Inflate mesh
+  - [ ] Smoothen mesh
+  - [ ] Mesh improvement (Catmull Clarck)
+  - [ ] Mesh simplification
