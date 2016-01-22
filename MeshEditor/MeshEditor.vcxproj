@@ -32,8 +32,8 @@
     <ClInclude Include="src\Operators\ObjReader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Core\Shaders\fragmentShader.glsl" />
-    <None Include="src\Core\Shaders\vertexShader.glsl" />
+    <None Include="Shaders\fragmentShader.glsl" />
+    <None Include="Shaders\vertexShader.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1194D84-9BEF-4D50-AE46-A3090D8183C5}</ProjectGuid>

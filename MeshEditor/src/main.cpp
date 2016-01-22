@@ -46,38 +46,23 @@ void mouseMotion(int x, int y)
 {
 	float dx = (float)(x - mouseX);
 	float dy = (float)(y - mouseY);
+	mouseX = x;
+	mouseY = y;
+	float vx = dx / (float)Glut_w;
+	float vy = dy / (float)Glut_h;
+	float theta = 4.0f * (fabs(vx) + fabs(vy));
 
-	rotationZ += dx / (float)Glut_w;
-	rotationX += dy * (float)Glut_h;
-	std::cout << rotationZ << std::endl;
+	glm::vec3 camera_right = glm::cross(camera_up, -camera_forward);
+	glm::vec3 rotationAxis = vx * -camera_up + vy * -camera_right;
 
-	float theta = (fabs(rotationZ) + fabs(rotationX));
-
-	glm::vec3 camera_right = glm::cross(camera_forward, camera_up);
-	 
-	glm::vec3 direction = -camera_right * rotationZ/* + -camera_up * rotationX*/;
-
-	glm::vec3 rotation_axis = glm::cross(direction, camera_forward);
-	rotation_axis = glm::normalize(rotation_axis);
-
-	camera_up = glm::rotate(camera_up, theta, rotation_axis);
-	camera_eye = glm::rotate(camera_eye, theta, rotation_axis);
-	camera_forward = glm::rotate(camera_forward, theta, rotation_axis);
+	camera_forward = glm::rotate(camera_forward, theta, rotationAxis);
+	camera_up = glm::rotate(camera_up, theta, rotationAxis);
+	camera_eye = glm::rotate(camera_eye, theta, rotationAxis);
 
 	camera_up = glm::normalize(camera_up);
 	camera_eye = glm::normalize(camera_eye);
 	camera_forward = glm::normalize(camera_forward);
-
-
-	/*camera_eye = glm::rotate(camera_eye, rotationZ, glm::vec3(0.0f, 1.0f, 0.0f));
-	camera_forward = glm::rotate(camera_forward, rotationZ, camera_up);
-
-	camera_eye = glm::rotate(camera_eye, rotationX, glm::vec3(1.0f, 0.0f, 0.0f));
-	camera_forward = glm::rotate(camera_forward, rotationX, camera_right);
-
-	camera_eye = glm::normalize(camera_eye);
-	camera_forward = glm::normalize(camera_forward);*/
-
+	
 	glutPostRedisplay();
 }
 
@@ -129,7 +114,7 @@ void init()
 
 	glEnable(GL_DEPTH_TEST);
 	Core::ShaderLoader shaderLoader;
-	program = shaderLoader.CreateProgram("src\\Core\\Shaders\\vertexShader.glsl", "src\\Core\\Shaders\\fragmentShader.glsl");
+	program = shaderLoader.CreateProgram("Shaders\\vertexShader.glsl", "Shaders\\fragmentShader.glsl");
 	glUseProgram(program);
 	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

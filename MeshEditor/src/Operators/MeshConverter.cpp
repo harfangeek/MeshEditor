@@ -103,6 +103,7 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 		mesh.vertices[lastIndex]->originOf = lastEdge;
 	}
 
+	mesh.Normalize();
 	mesh.ComputeNormals();
 }
 

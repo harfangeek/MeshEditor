@@ -14,11 +14,11 @@
     <Filter Include="Src\Model">
       <UniqueIdentifier>{b76a5f2f-3455-447d-b7ba-59a317049081}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Core\Shaders">
-      <UniqueIdentifier>{4a25bb4b-e031-460d-91ce-39938c5fb67a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Operators">
       <UniqueIdentifier>{9a587af3-7fd2-46bd-8df4-0a0311a07224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{7851f185-3f44-4f4a-ab8e-9c253acc6abe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,11 +77,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Core\Shaders\fragmentShader.glsl">
-      <Filter>Src\Core\Shaders</Filter>
+    <None Include="Shaders\fragmentShader.glsl">
+      <Filter>Shaders</Filter>
     </None>
-    <None Include="src\Core\Shaders\vertexShader.glsl">
-      <Filter>Src\Core\Shaders</Filter>
+    <None Include="Shaders\vertexShader.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

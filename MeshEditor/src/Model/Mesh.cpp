@@ -139,6 +139,10 @@ bool Mesh::Check(std::vector<std::string>& errors)
 	return errors.size() == 0;
 }
 
+void Mesh::Normalize()
+{
+}
+
 void Mesh::ComputeNormals()
 {
 	for (unsigned int i = 0; i < faces.size(); i++)
@@ -147,3 +151,6 @@ void Mesh::ComputeNormals()
 	for (unsigned int i = 0; i < vertices.size(); i++)
 		vertices[i]->ComputeNormal();
 }
+
+
+
