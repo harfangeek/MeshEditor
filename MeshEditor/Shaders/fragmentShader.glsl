@@ -2,7 +2,7 @@
 
 vec4 light_position = vec4(0,0,4,1);
 vec4 light_color = vec4(1,1,1,0);
-vec4 frag_color = vec4(0.4, 1.8, 0.4, 0);
+vec4 frag_color = vec4(0.4, 1.0, 0.4, 0);
 
 in vec3 normal;
 in vec4 position;

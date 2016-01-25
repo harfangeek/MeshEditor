@@ -8,5 +8,6 @@ namespace Operators
 	{
 		public:
 			static bool Read(std::string fileName, std::vector<glm::vec3> &vertices, std::vector<std::vector<unsigned int>> &faces);
+			static void LoadMesh(Model::Mesh* &mesh, bool check = false);
 	};
 }

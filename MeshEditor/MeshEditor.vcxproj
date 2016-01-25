@@ -11,22 +11,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\FreeglutWrapper.cpp" />
     <ClCompile Include="src\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Core\ShaderLoader.cpp" />
+    <ClCompile Include="src\Core\WindowManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model\Face.cpp" />
     <ClCompile Include="src\Model\HalfEdge.cpp" />
     <ClCompile Include="src\Model\Mesh.cpp" />
+    <ClCompile Include="src\Model\StaticData.cpp" />
     <ClCompile Include="src\Model\Vertex.cpp" />
     <ClCompile Include="src\Operators\MeshConverter.cpp" />
     <ClCompile Include="src\Operators\ObjReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\FreeglutWrapper.h" />
     <ClInclude Include="src\Core\MeshRenderer.h" />
     <ClInclude Include="src\Core\ShaderLoader.h" />
+    <ClInclude Include="src\Core\WindowManager.h" />
     <ClInclude Include="src\Model\Face.h" />
     <ClInclude Include="src\Model\HalfEdge.h" />
     <ClInclude Include="src\Model\Mesh.h" />
+    <ClInclude Include="src\Model\StaticData.h" />
     <ClInclude Include="src\Model\Vertex.h" />
     <ClInclude Include="src\Operators\MeshConverter.h" />
     <ClInclude Include="src\Operators\ObjReader.h" />

@@ -8,15 +8,15 @@ using namespace Operators;
 using namespace Model;
 using namespace std;
 
-void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3> &vertices, vector<vector<unsigned int>> &faces)
+void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh *mesh, vector<glm::vec3> &vertices, vector<vector<unsigned int>> &faces)
 {
 	map<pair<unsigned int, unsigned int>, HalfEdge*> hmap; // Store if we already created the edge between two vertices
-	mesh.Clean();
+	mesh->Clean();
 	
 	// Create the vertices, set the position
 	for (unsigned int i = 0; i < vertices.size(); i++)
 	{
-		mesh.vertices.push_back(new Vertex(vertices[i]));
+		mesh->vertices.push_back(new Vertex(vertices[i]));
 	}
 
 	// Create faces
@@ -25,17 +25,17 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 	{
 		// New face
 		face = new Face();
-		mesh.faces.push_back(face);
+		mesh->faces.push_back(face);
 
 		vector<unsigned int> vertexIndices = faces[i]; // Get de vertex indices for the new face
 
 		// Create the first half edge
 		HalfEdge* firstEdge = new HalfEdge();
 		firstEdge->adjacentFace = face;
-		firstEdge->source = mesh.vertices[vertexIndices[0]];		
+		firstEdge->source = mesh->vertices[vertexIndices[0]];		
 
 		face->adjacentHalfEdge = firstEdge; // Link the face to the first half edge
-		mesh.vertices[vertexIndices[0]]->originOf = firstEdge; // Link the first vertex to the first half edge
+		mesh->vertices[vertexIndices[0]]->originOf = firstEdge; // Link the first vertex to the first half edge
 
 		// Consolidate faces. Check whether the half edge's twin has already been created, e.g. If there is an edge beetween the vertices 3 and 5, 
 		// and two faces sharing this edge, we will try to create first the half edge 3 to 5, and later the half edge 5 to 3 (or vice versa)
@@ -46,7 +46,7 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 			hmap[make_pair(vertexIndices[1], vertexIndices[0])]->twin = firstEdge;
 		}
 
-		mesh.halfEdges.push_back(firstEdge);
+		mesh->halfEdges.push_back(firstEdge);
 		hmap[make_pair(vertexIndices[0], vertexIndices[1])] = firstEdge;
 
 		// Create intermediare edges
@@ -64,10 +64,10 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 			curr = new HalfEdge();
 			curr->prev = prev;
 			curr->adjacentFace = face;
-			curr->source = mesh.vertices[currIndex];
+			curr->source = mesh->vertices[currIndex];
 
 			prev->next = curr; // Set the next of previous half edge
-			mesh.vertices[currIndex]->originOf = curr; // Set current vertex has origin of the new half edge
+			mesh->vertices[currIndex]->originOf = curr; // Set current vertex has origin of the new half edge
 
 			// Consolidate faces
 			if (hmap.count(make_pair(nextIndex, currIndex)) != 0)
@@ -76,7 +76,7 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 				hmap[make_pair(nextIndex, currIndex)]->twin = curr;
 			}
 
-			mesh.halfEdges.push_back(curr);
+			mesh->halfEdges.push_back(curr);
 			hmap[make_pair(currIndex, nextIndex)] = curr;
 			prev = curr;
 		}
@@ -86,7 +86,7 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 		lastEdge->prev = curr;
 		lastEdge->next = firstEdge;
 		lastEdge->adjacentFace = face;
-		lastEdge->source = mesh.vertices[lastIndex];
+		lastEdge->source = mesh->vertices[lastIndex];
 
 		// Consolidate faces
 		if (hmap.count(make_pair(vertexIndices[0], lastIndex)) != 0)
@@ -95,19 +95,19 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh &mesh, vector<glm::vec3
 			hmap[make_pair(vertexIndices[0], lastIndex)]->twin = lastEdge;
 		}
 
-		mesh.halfEdges.push_back(lastEdge);
+		mesh->halfEdges.push_back(lastEdge);
 		hmap[make_pair(lastIndex, vertexIndices[0])] = lastEdge;
 
 		firstEdge->prev = lastEdge;
 		curr->next = lastEdge;
-		mesh.vertices[lastIndex]->originOf = lastEdge;
+		mesh->vertices[lastIndex]->originOf = lastEdge;
 	}
 
-	mesh.Normalize();
-	mesh.ComputeNormals();
+	mesh->Normalize();
+	mesh->ComputeNormals();
 }
 
-void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> &vertices, vector<GLuint> &faces, std::vector<GLfloat> &normals)
+void MeshConverter::HalfEdgeStructureToArray(Model::Mesh *mesh, vector<GLfloat> &vertices, vector<GLuint> &faces, std::vector<GLfloat> &normals)
 {
 	vertices.clear();
 	faces.clear();
@@ -115,7 +115,7 @@ void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> 
 
 	// Add vertices
 	int i = 0;
-	for (vector<Vertex*>::iterator vertexIt = mesh.vertices.begin(); vertexIt != mesh.vertices.end(); vertexIt++)
+	for (vector<Vertex*>::iterator vertexIt = mesh->vertices.begin(); vertexIt != mesh->vertices.end(); vertexIt++)
 	{
 		vertices.push_back((*vertexIt)->position.x);
 		vertices.push_back((*vertexIt)->position.y);
@@ -125,7 +125,7 @@ void MeshConverter::HalfEdgeStructureToArray(Model::Mesh &mesh, vector<GLfloat> 
 
 	// Add faces
 	vector<Vertex*> faceVertices;
-	for (vector<Face*>::iterator faceIt = mesh.faces.begin(); faceIt != mesh.faces.end(); faceIt++)
+	for (vector<Face*>::iterator faceIt = mesh->faces.begin(); faceIt != mesh->faces.end(); faceIt++)
 	{
 		(*faceIt)->ListVertices(faceVertices);
 		for (vector<Vertex*>::iterator vertexIt = faceVertices.begin(); vertexIt != faceVertices.end(); vertexIt++)
