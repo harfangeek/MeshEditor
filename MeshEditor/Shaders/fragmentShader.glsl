@@ -26,11 +26,11 @@ void main (void)
 
 	//if (dot(normal, eyedir) < -0.1) normal = -normal;
 
-	vec3 reflectdir = normalize( reflect(-lightdir, normal) );*/
+	vec3 reflectdir = normalize( reflect(-lightdir, normal) );
 
-    //gl_FragColor =  vec4(0.1,0.1,0.1,0) + 
-	//				frag_color * light_color * max( dot(lightdir, normal), 0.0) +
-	//				frag_color * light_color * pow( max( dot(reflectdir, eyedir), 0.0 ), 60 );
-    //gl_FragColor = frag_color;
+    out_color =  vec4(0.1,0.1,0.1,0) + 
+					frag_color * light_color * max( dot(lightdir, normal), 0.0) +
+					frag_color * light_color * pow( max( dot(reflectdir, eyedir), 0.0 ), 60 );*/
+    //out_color = frag_color;
 	out_color = frag_color;
 }

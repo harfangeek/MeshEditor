@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Model\Mesh.h"
 #include <vector>
 #include "Dependencies\glm\glm.hpp"

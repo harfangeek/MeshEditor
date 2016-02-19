@@ -43,11 +43,11 @@ bool ObjReader::Read(std::string fileName, std::vector<glm::vec3> &vertices, std
 	return true;
 }
 
-void ObjReader::LoadMesh(Model::Mesh* &mesh, bool check)
+void ObjReader::LoadMesh(std::string fileName, Model::Mesh* &mesh, bool check)
 {
 	vector<glm::vec3> vertices;
 	vector<vector<unsigned int>> faces;
-	Operators::ObjReader::Read("Models\\apple.obj", vertices, faces);
+	Operators::ObjReader::Read(fileName, vertices, faces);
 	Model::Mesh* newMesh = new Model::Mesh();
 	Operators::MeshConverter::ArrayToHalfEdgeStructure(newMesh, vertices, faces);
 

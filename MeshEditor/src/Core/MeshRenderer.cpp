@@ -104,7 +104,7 @@ void MeshRenderer::Display()
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-		glDrawElements(GL_TRIANGLE_FAN, faces.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
 	}
 }
 

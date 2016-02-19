@@ -58,6 +58,9 @@
     <ClCompile Include="src\Model\StaticData.cpp">
       <Filter>Src\Model</Filter>
     </ClCompile>
+    <ClCompile Include="src\Operators\MeshTransformation.cpp">
+      <Filter>Src\Operators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\MeshRenderer.h">
@@ -92,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="src\Model\StaticData.h">
       <Filter>Src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Operators\MeshTransformation.h">
+      <Filter>Src\Operators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

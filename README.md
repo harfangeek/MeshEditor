@@ -16,7 +16,7 @@ Step 2. Visualisation :
   - [ ] Draw silouhette
 
 Step 3. Mesh edition :
-  - [ ] Mesh triangulation
+  - [x] Mesh triangulation
   - [ ] Selection of a vertex/edge/face
   - [ ] Translation/rotation of the selected vertex/edge/face
   - [ ] Add edge (cut a face into two faces)

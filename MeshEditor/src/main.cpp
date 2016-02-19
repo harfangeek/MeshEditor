@@ -5,6 +5,7 @@
 #include "Model\StaticData.h"
 #include "Operators\ObjReader.h"
 #include "Operators\MeshConverter.h"
+#include "Operators\MeshTransformation.h"
 #include "Core\ShaderLoader.h"
 #include "Core\MeshRenderer.h"
 #include "Core\WindowManager.h"
@@ -28,7 +29,10 @@ int main(int argc, char** argv)
 
 	// Load mesh
 	Model::Mesh* mesh = NULL;
-	Operators::ObjReader::LoadMesh(mesh, true);		
+	Operators::ObjReader::LoadMesh("Models\\dolphin.obj", mesh, true);
+	
+	Operators::MeshTransformation::Triangulate(mesh);
+	mesh->ComputeNormals();
 	meshRenderer->SetMesh(mesh);
 
 	// Start main loop

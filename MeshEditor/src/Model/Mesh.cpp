@@ -141,6 +141,36 @@ bool Mesh::Check(std::vector<std::string>& errors)
 
 void Mesh::Normalize()
 {
+	int i;
+	int tmpxmin = 0, tmpymin = 0, tmpzmin = 0, tmpxmax = 0, tmpymax = 0, tmpzmax = 0;
+
+	for (i = 0; i < vertices.size(); i++) {
+		if (vertices[i]->position.x < vertices[tmpxmin]->position.x) tmpxmin = i;
+		if (vertices[i]->position.x > vertices[tmpxmax]->position.x) tmpxmax = i;
+
+		if (vertices[i]->position.y < vertices[tmpymin]->position.y) tmpymin = i;
+		if (vertices[i]->position.y > vertices[tmpymax]->position.y) tmpymax = i;
+
+		if (vertices[i]->position.z < vertices[tmpzmin]->position.z) tmpzmin = i;
+		if (vertices[i]->position.z > vertices[tmpzmax]->position.z) tmpzmax = i;
+	}
+
+	double xmin = vertices[tmpxmin]->position.x, xmax = vertices[tmpxmax]->position.x,
+		ymin = vertices[tmpymin]->position.y, ymax = vertices[tmpymax]->position.y,
+		zmin = vertices[tmpzmin]->position.z, zmax = vertices[tmpzmax]->position.z;
+
+	double scale = (xmax - xmin) > (ymax - ymin) ? (xmax - xmin) : (ymax - ymin);
+	scale = scale > (zmax - zmin) ? scale : (zmax - zmin);
+
+	for (i = 0; i < vertices.size(); i++) {
+		vertices[i]->position.x -= (xmax + xmin) / 2;
+		vertices[i]->position.y -= (ymax + ymin) / 2;
+		vertices[i]->position.z -= (zmax + zmin) / 2;
+
+		vertices[i]->position.x /= scale;
+		vertices[i]->position.y /= scale;
+		vertices[i]->position.z /= scale;
+	}
 }
 
 void Mesh::ComputeNormals()

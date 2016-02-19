@@ -22,6 +22,7 @@
     <ClCompile Include="src\Model\StaticData.cpp" />
     <ClCompile Include="src\Model\Vertex.cpp" />
     <ClCompile Include="src\Operators\MeshConverter.cpp" />
+    <ClCompile Include="src\Operators\MeshTransformation.cpp" />
     <ClCompile Include="src\Operators\ObjReader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +36,7 @@
     <ClInclude Include="src\Model\StaticData.h" />
     <ClInclude Include="src\Model\Vertex.h" />
     <ClInclude Include="src\Operators\MeshConverter.h" />
+    <ClInclude Include="src\Operators\MeshTransformation.h" />
     <ClInclude Include="src\Operators\ObjReader.h" />
   </ItemGroup>
   <ItemGroup>

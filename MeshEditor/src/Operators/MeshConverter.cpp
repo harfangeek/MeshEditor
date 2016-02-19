@@ -15,7 +15,7 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh *mesh, vector<glm::vec3
 	
 	// Create the vertices, set the position
 	for (unsigned int i = 0; i < vertices.size(); i++)
-	{
+	{ 
 		mesh->vertices.push_back(new Vertex(vertices[i]));
 	}
 
@@ -104,7 +104,6 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh *mesh, vector<glm::vec3
 	}
 
 	mesh->Normalize();
-	mesh->ComputeNormals();
 }
 
 void MeshConverter::HalfEdgeStructureToArray(Model::Mesh *mesh, vector<GLfloat> &vertices, vector<GLuint> &faces, std::vector<GLfloat> &normals)
