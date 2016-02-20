@@ -6,12 +6,12 @@ Step 1. Mesh loading :
   - [x] Load Obj file
   - [x] Display the model
   - [x] Rotate the model with the mouse
+  - [ ] Zoom
   - [ ] Lights
 
 Step 2. Visualisation :
-  - [ ] Draw mesh
-  - [ ] Draw wireframe
-  - [ ] Draw vertices
+  - [x] Draw wireframe
+  - [x] Draw vertices
   - [ ] Draw normals
   - [ ] Draw silouhette
 
@@ -25,8 +25,8 @@ Step 3. Mesh edition :
 
 Step 4. Fun stuff :
   - [ ] Create 3D primitives (cube, pyramid, ...)
-  - [ ] Implement some mesh algorithms:
-  - [ ] Inflate mesh
-  - [ ] Smoothen mesh
-  - [ ] Mesh improvement (Catmull Clarck)
-  - [ ] Mesh simplification
+  - Implement some mesh algorithms:
+    - [ ] Inflate mesh
+    - [ ] Smoothen mesh
+    - [ ] Mesh improvement (Catmull Clarck)
+    - [ ] Mesh simplification

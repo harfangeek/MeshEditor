@@ -6,6 +6,7 @@ vec4 frag_color = vec4(0.4, 1.0, 0.4, 0);
 
 in vec3 normal;
 in vec4 position;
+in vec4 color;
 
 out vec4 out_color;
 
@@ -32,5 +33,5 @@ void main (void)
 					frag_color * light_color * max( dot(lightdir, normal), 0.0) +
 					frag_color * light_color * pow( max( dot(reflectdir, eyedir), 0.0 ), 60 );*/
     //out_color = frag_color;
-	out_color = frag_color;
+	out_color = color;
 }

@@ -11,7 +11,8 @@ MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* m
 																						cameraForward(0, 0, -1),
 																						fovy(90.0f),
 																						zNear(0.2f),
-																						zFar(5000.0f)
+																						zFar(5000.0f),
+																						renderMode(RenderMode::MESH)
 {
 	this->viewportWidth = viewportWidth;
 	this->viewportHeight = viewportHeight;
@@ -45,20 +46,16 @@ void MeshRenderer::Init()
 		std::cout << "GLEW version is 3.3" << std::endl;
 	else
 		std::cout << "Glew 3.3 not supported" << std::endl;
-
-	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
+	
 	// Create shaders
 	Core::ShaderLoader shaderLoader;
 	program = shaderLoader.CreateProgram("Shaders\\vertexShader.glsl", "Shaders\\fragmentShader.glsl");	
-
-	// Set shaders and create shaders variables
-	glUseProgram(program);
+		
+	// Create shader buffers and variables
+	glGenBuffers(3, buffers);
 	projection_matrix_loc = glGetUniformLocation(program, "myprojection_matrix");
 	view_matrix_loc = glGetUniformLocation(program, "myview_matrix");
-
-	glGenBuffers(3, buffers);
+	color_loc = glGetUniformLocation(program, "vertex_color");
 }
 
 // Must be called whenever the mesh structure has changed.
@@ -81,19 +78,44 @@ void MeshRenderer::Update()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, normals.size() * sizeof(float), &normals.front(), GL_STATIC_DRAW);
 }
 
+void MeshRenderer::SetRenderMode(RenderMode renderMode)
+{
+	this->renderMode = renderMode;
+}
+
 // Display the model by sending the vertices, faces and normals arrays to the graphic card
 void MeshRenderer::Display()
-{	
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, viewportWidth, viewportHeight);	
+	glEnable(GL_DEPTH_TEST);
+	glViewport(0, 0, viewportWidth, viewportHeight);
 
+	if (renderMode & RenderMode::MESH)
+		DisplayMesh();
+	if (renderMode & RenderMode::WIREFRAME)
+		DisplayWireframe();
+	if (renderMode & RenderMode::VERTICES)
+		DisplayVertices();
+	if (renderMode & RenderMode::NORMALS)
+		DisplayNormals();
+	if (renderMode & RenderMode::SILOUHETTE)
+		DisplaySilouhette();
+}
+
+void MeshRenderer::Draw(unsigned int drawMode, GLuint program, glm::vec4 color)
+{
 	if (mesh)
 	{
+		glPolygonMode(GL_FRONT_AND_BACK, drawMode);
+		glUseProgram(program);
+
 		glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
 		glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection_matrix[0][0]);
 
 		glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
 		glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
+
+		glUniform4f(color_loc, color.r, color.g, color.b, color.a);
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
@@ -106,6 +128,31 @@ void MeshRenderer::Display()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
 		glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
 	}
+}
+
+void MeshRenderer::DisplayMesh()
+{			
+	Draw(GL_FILL, program, glm::vec4(1.0, 0.0, 0.0, 0.0));
+}
+
+void MeshRenderer::DisplayWireframe()
+{
+	Draw(GL_LINE, program, glm::vec4(0.0, 1.0, 0.0, 0.0));
+}
+
+void MeshRenderer::DisplayVertices()
+{
+	Draw(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0));
+}
+
+void MeshRenderer::DisplayNormals()
+{
+
+}
+
+void MeshRenderer::DisplaySilouhette()
+{
+
 }
 
 void MeshRenderer::Rotate(float x, float y)
