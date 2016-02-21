@@ -19,8 +19,7 @@ MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* m
 																						facesNormalsUpdated(false),
 																						verticesNormalsUpdated(false)
 {
-	this->viewportWidth = viewportWidth;
-	this->viewportHeight = viewportHeight;
+	SetViewPort(viewportWidth, viewportHeight);
 	SetMesh(mesh);
 }
 
@@ -37,6 +36,12 @@ void MeshRenderer::SetMesh(Model::Mesh* mesh)
 		UpdateMesh();
 	}
 }
+void MeshRenderer::SetViewPort(int viewportWidth, int viewportHeight)
+{
+	this->viewportWidth = viewportWidth;
+	this->viewportHeight = viewportHeight;
+}
+
 
 Model::Mesh* MeshRenderer::GetMesh()
 {
@@ -273,6 +278,11 @@ void MeshRenderer::Rotate(float x, float y)
 	cameraEye = glm::rotate(cameraEye, theta, rotationAxis);
 
 	cameraUp = glm::normalize(cameraUp);
-	cameraEye = glm::normalize(cameraEye);
+	//cameraEye = glm::normalize(cameraEye);
 	cameraForward = glm::normalize(cameraForward);
+}
+
+void MeshRenderer::Zoom(float value)
+{
+	cameraEye += value * cameraForward;
 }

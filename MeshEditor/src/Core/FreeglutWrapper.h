@@ -7,4 +7,6 @@ void StartGlut(); // Set callbacks and start main loop
 // Callbacks below delegate the job to the WindowManager
 void MouseClick(int button, int state, int x, int y);
 void MouseMotion(int x, int y);
+void MouseWheel(int button, int dir, int x, int y);
+void WindowReshape(int width, int height);
 void RenderWindow();

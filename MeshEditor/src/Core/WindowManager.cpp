@@ -62,4 +62,14 @@ void WindowManager::MouseMotion(int x, int y)
 	glutPostRedisplay();
 }
 
+void WindowManager::MouseWheel(int button, int dir, int x, int y)
+{
+	meshRenderer->Zoom(dir > 0 ? 0.1 : -0.1);
+	glutPostRedisplay();
+}
 
+void WindowManager::Reshape(int width, int height)
+{
+	meshRenderer->SetViewPort(width, height);
+	//meshRenderer->Display();
+}

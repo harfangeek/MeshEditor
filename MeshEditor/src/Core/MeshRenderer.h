@@ -96,8 +96,10 @@ namespace Core
 			void Display();
 
 			void SetRenderMode(RenderMode renderMode);
+			void SetViewPort(int viewportWidth, int viewportHeight);
 
 			// Rotate the model around the x axis by x degrees and around the y axis by y degrees
 			void Rotate(float x, float y);
+			void Zoom(float value);
 	};
 }

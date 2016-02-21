@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 	// Create freeglut window
 	Core::WindowManager* windowManager = new Core::WindowManager();
 	Model::StaticData::SetWindowManager(windowManager);
-	windowManager->Init(600, 600, argc, argv);
+	windowManager->Init(WINDOW_WIDTH, WINDOW_HEIGHT, argc, argv);
 
 	// Create mesh renderer (init openGL)
 	Core::MeshRenderer* meshRenderer = new Core::MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 
 	// Load mesh
 	Model::Mesh* mesh = NULL;
-	Operators::ObjReader::LoadMesh("Models\\apple.obj", mesh, true);
+	Operators::ObjReader::LoadMesh("Models\\dolphin.obj", mesh, true);
 	
 	Operators::MeshTransformation::Triangulate(mesh);
 	mesh->ComputeNormals();
