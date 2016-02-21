@@ -14,7 +14,7 @@ void MeshTransformation::Triangulate(Model::Mesh* mesh)
 	Face* newFace = NULL;
 	HalfEdge* edge = NULL;
 	HalfEdge *newEdge1, *newEdge2; // newEdge1 belong to the new face, newEdge2 belong to the remaining face
-	int nbFaces = mesh->faces.size();
+	unsigned int nbFaces = mesh->faces.size();
 	for (unsigned int i = 0; i < nbFaces; i++)
 	{
 		face = mesh->faces[i];

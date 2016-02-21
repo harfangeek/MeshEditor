@@ -1,21 +1,21 @@
 # MeshEditor
 A simple mesh editor. Import an .obj model or create one from scratch.
 
-Step 1. Mesh loading :
+- Mesh loading
   - [x] Implement Mesh data model (half-edge structure)
   - [x] Load Obj file
   - [x] Display the model
   - [x] Rotate the model with the mouse
   - [ ] Zoom
-  - [ ] Lights
 
-Step 2. Visualisation :
+- Visualisation
   - [x] Draw wireframe
   - [x] Draw vertices
-  - [ ] Draw normals
+  - [x] Draw normals (faces and vertices)
   - [ ] Draw silouhette
+  - [ ] Lights
 
-Step 3. Mesh edition :
+- Mesh edition
   - [x] Mesh triangulation
   - [ ] Selection of a vertex/edge/face
   - [ ] Translation/rotation of the selected vertex/edge/face
@@ -23,10 +23,13 @@ Step 3. Mesh edition :
   - [ ] Remove edge
   - [ ] Extrusion of a face
 
-Step 4. Fun stuff :
+- Mesh creation
   - [ ] Create 3D primitives (cube, pyramid, ...)
-  - Implement some mesh algorithms:
-    - [ ] Inflate mesh
-    - [ ] Smoothen mesh
-    - [ ] Mesh improvement (Catmull Clarck)
-    - [ ] Mesh simplification
+
+- Implement some mesh algorithms
+  - [ ] Inflate mesh
+  - [ ] Smoothen mesh
+  - [ ] Mesh improvement (Catmull Clarck)
+  - [ ] Mesh simplification
+
+- GUI : To be defined

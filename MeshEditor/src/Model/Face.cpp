@@ -22,7 +22,7 @@ void Face::ComputeNormal()
 	vec3 p2 = adjacentHalfEdge->source->position;
 	vec3 p3 = adjacentHalfEdge->next->source->position;
 
-	normal = cross(p1 - p2, p3 - p2);
+	normal = cross(p3 - p2, p1 - p2);
 	normal = normalize(normal);
 }
 

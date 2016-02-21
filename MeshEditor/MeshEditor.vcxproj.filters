@@ -107,5 +107,6 @@
     <None Include="Shaders\vertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
