@@ -3,6 +3,8 @@
 #include "Model\StaticData.h"
 #include "Dependencies\freeglut\freeglut.h"
 
+using namespace Core;
+
 void StartGlut()
 {
 	glutMouseFunc(MouseClick);
@@ -15,9 +17,11 @@ void StartGlut()
 
 void MouseClick(int button, int state, int x, int y)
 {
+	MouseButton mouseButton = button == GLUT_LEFT_BUTTON ? MouseButton::LEFT :
+							  (button == GLUT_MIDDLE_BUTTON ? MouseButton::MIDDLE : MouseButton::RIGHT);
 	Core::WindowManager* windowManager = Model::StaticData::GetWindowManager();
 	if (windowManager)
-		windowManager->MouseClick(button, state, x, y);
+		windowManager->MouseClick(mouseButton, state == 0, x, y);
 }
 
 void MouseMotion(int x, int y)

@@ -282,6 +282,13 @@ void MeshRenderer::Rotate(float x, float y)
 	cameraForward = glm::normalize(cameraForward);
 }
 
+void MeshRenderer::Translate(float x, float y)
+{
+	glm::vec3 cameraRight = glm::cross(cameraUp, -cameraForward);
+	cameraEye += x * cameraRight;
+	cameraEye += y * cameraUp;
+}
+
 void MeshRenderer::Zoom(float value)
 {
 	cameraEye += value * cameraForward;

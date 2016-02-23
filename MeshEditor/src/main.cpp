@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	Operators::MeshTransformation::Triangulate(mesh);
 	mesh->ComputeNormals();
 	meshRenderer->SetMesh(mesh);
-	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH | Core::RenderMode::WIREFRAME | Core::RenderMode::VERTICES | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS));
+	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH/* | Core::RenderMode::WIREFRAME | Core::RenderMode::VERTICES | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
 
 	// Start main loop
 	StartGlut();

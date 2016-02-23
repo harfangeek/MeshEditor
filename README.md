@@ -15,7 +15,7 @@ A simple mesh editor. Import an .obj model or create one from scratch.
 
 - Manipulation
   - [x] Rotate the model with the mouse
-  - [ ] Translate the model
+  - [x] Translate the model
   - [x] Zoom
 
 - Mesh edition  
