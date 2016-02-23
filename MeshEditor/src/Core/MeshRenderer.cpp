@@ -34,7 +34,7 @@ void MeshRenderer::SetMesh(Model::Mesh* mesh)
 	if (mesh != NULL)
 	{
 		this->mesh = mesh;
-		UpdateMesh();
+		UpdateMeshConnectivity();
 	}
 }
 
@@ -70,9 +70,9 @@ void MeshRenderer::Init()
 	light_type_loc = glGetUniformLocation(program, "light_type");
 }
 
-// Must be called whenever the mesh structure has changed.
+// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
 // Update vertices, faces and normals arrays
-void MeshRenderer::UpdateMesh()
+void MeshRenderer::UpdateMeshConnectivity()
 {
 	// Update vertices/faces/normals arrays from half-edge structure
 	Operators::MeshConverter::HalfEdgeStructureToArray(mesh, vertices, faces, normals);
@@ -289,6 +289,13 @@ void MeshRenderer::Rotate(float x, float y)
 	cameraUp = glm::normalize(cameraUp);
 	//cameraEye = glm::normalize(cameraEye);
 	cameraForward = glm::normalize(cameraForward);
+}
+
+void MeshRenderer::Translate(float x, float y)
+{
+	glm::vec3 cameraRight = glm::cross(cameraUp, -cameraForward);
+	cameraEye += x * cameraRight;
+	cameraEye += y * cameraUp;
 }
 
 void MeshRenderer::Zoom(float value)

@@ -32,13 +32,17 @@ int main(int argc, char** argv)
 	Operators::ObjReader::LoadMesh("Models\\apple.obj", mesh, true);
 	
 	Operators::MeshTransformation::Triangulate(mesh);
-	mesh->ComputeNormals();
+	mesh->ComputeNormals();	
+
 	meshRenderer->SetMesh(mesh);
 	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH/* | Core::RenderMode::VERTICES | Core::RenderMode::WIREFRAME | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
 	meshRenderer->SetLightType(Core::LightType::AMBIANT);
 
+	Operators::MeshTransformation::Inflate(mesh, 0.1f);
+	meshRenderer->UpdateMeshConnectivity();
+
 	// Start main loop
-	StartGlut();
+	StartGlut();		
 
 	delete windowManager;
 	delete meshRenderer;

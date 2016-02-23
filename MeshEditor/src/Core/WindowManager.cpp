@@ -5,7 +5,8 @@ using namespace Core;
 
 WindowManager::WindowManager()
 {
-
+	for(int i = 0 ; i < NB_MOUSE_BUTTON ; i++)
+		mouseButtons[i] = false;
 }
 
 WindowManager::~WindowManager()
@@ -43,10 +44,11 @@ void WindowManager::Render()
 	}
 }
 
-void WindowManager::MouseClick(int button, int state, int x, int y)
+void WindowManager::MouseClick(MouseButton button, bool state, int x, int y)
 {
 	mouseX = x;
 	mouseY = y;
+	mouseButtons[button] = state;
 }
 
 void WindowManager::MouseMotion(int x, int y)
@@ -58,11 +60,14 @@ void WindowManager::MouseMotion(int x, int y)
 	float vx = dx / (float)width;
 	float vy = dy / (float)height;
 
-	meshRenderer->Rotate(vx, vy);
+	if(mouseButtons[MouseButton::LEFT])
+		meshRenderer->Rotate(vx, vy);
+	else if(mouseButtons[MouseButton::MIDDLE])
+		meshRenderer->Translate(-vx, vy);
 	glutPostRedisplay();
 }
 
-void WindowManager::MouseWheel(int button, int dir, int x, int y)
+void WindowManager::MouseWheel(int wheel, int dir, int x, int y)
 {
 	meshRenderer->Zoom(dir > 0 ? 0.1 : -0.1);
 	glutPostRedisplay();
@@ -71,5 +76,4 @@ void WindowManager::MouseWheel(int button, int dir, int x, int y)
 void WindowManager::Reshape(int width, int height)
 {
 	meshRenderer->SetViewPort(width, height);
-	//meshRenderer->Display();
 }
