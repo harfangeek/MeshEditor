@@ -88,9 +88,17 @@ namespace Core
 			void SetMesh(Model::Mesh* mesh);
 			Model::Mesh* GetMesh();
 			
-			// Must be called whenever the mesh structure has changed.
+			// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
 			// Update vertices, faces and normals arrays
-			void UpdateMesh(); 
+			void UpdateMeshConnectivity();
+
+			// UpdateMeshGeomtry() methods must be called whenever the mesh geometry has changed (i.e. some vertices' positions have changed)
+			// Update all vertices
+			void UpdateMeshGeometry();
+			// Update a subset of all vertices
+			void UpdateMeshGeometry(std::vector<Model::Vertex*> vertices);
+			// Update a single vertex
+			void UpdateMeshGeometry(Model::Vertex* vertex);
 
 			// Display the model by sending the vertices, faces and normals arrays to the graphic card
 			void Display();

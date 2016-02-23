@@ -69,3 +69,11 @@ void MeshTransformation::Triangulate(Model::Mesh* mesh)
 		face->adjacentHalfEdge = edge;
 	}
 }
+
+void MeshTransformation::Inflate(Model::Mesh* mesh, float value)
+{
+	for (vector<Vertex*>::iterator vertexIt = mesh->vertices.begin(); vertexIt != mesh->vertices.end(); vertexIt++)
+	{
+		(*vertexIt)->position += value * (*vertexIt)->normal;		
+	}
+}

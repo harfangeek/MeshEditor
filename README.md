@@ -30,7 +30,7 @@ A simple mesh editor. Import an .obj model or create one from scratch.
 
 - Implement some mesh algorithms
   - [x] Mesh triangulation
-  - [ ] Inflate mesh
+  - [x] Inflate mesh
   - [ ] Smoothen mesh
   - [ ] Mesh improvement (Catmull Clarck)
   - [ ] Mesh simplification

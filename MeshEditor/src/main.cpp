@@ -29,15 +29,19 @@ int main(int argc, char** argv)
 
 	// Load mesh
 	Model::Mesh* mesh = NULL;
-	Operators::ObjReader::LoadMesh("Models\\dolphin.obj", mesh, true);
+	Operators::ObjReader::LoadMesh("Models\\apple.obj", mesh, true);
 	
 	Operators::MeshTransformation::Triangulate(mesh);
-	mesh->ComputeNormals();
+	mesh->ComputeNormals();	
+
 	meshRenderer->SetMesh(mesh);
-	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH/* | Core::RenderMode::WIREFRAME | Core::RenderMode::VERTICES | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
+	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH | Core::RenderMode::WIREFRAME /*| Core::RenderMode::VERTICES | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
+
+	Operators::MeshTransformation::Inflate(mesh, 0.1f);
+	meshRenderer->UpdateMeshConnectivity();
 
 	// Start main loop
-	StartGlut();
+	StartGlut();		
 
 	delete windowManager;
 	delete meshRenderer;

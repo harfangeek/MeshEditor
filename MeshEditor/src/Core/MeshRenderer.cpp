@@ -33,7 +33,7 @@ void MeshRenderer::SetMesh(Model::Mesh* mesh)
 	if (mesh != NULL)
 	{
 		this->mesh = mesh;
-		UpdateMesh();
+		UpdateMeshConnectivity();
 	}
 }
 void MeshRenderer::SetViewPort(int viewportWidth, int viewportHeight)
@@ -68,9 +68,9 @@ void MeshRenderer::Init()
 	color_loc = glGetUniformLocation(program, "vertex_color");
 }
 
-// Must be called whenever the mesh structure has changed.
+// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
 // Update vertices, faces and normals arrays
-void MeshRenderer::UpdateMesh()
+void MeshRenderer::UpdateMeshConnectivity()
 {
 	// Update vertices/faces/normals arrays from half-edge structure
 	Operators::MeshConverter::HalfEdgeStructureToArray(mesh, vertices, faces, normals);
