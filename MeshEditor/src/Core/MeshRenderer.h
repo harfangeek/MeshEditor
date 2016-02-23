@@ -26,6 +26,10 @@ namespace Core
 		BUF_VERTICES_NORMALS = 4
 	};
 
+	enum LightType {
+		UNIFORM = 0,
+		AMBIANT = 1
+	};
 
 	class MeshRenderer
 	{
@@ -55,6 +59,7 @@ namespace Core
 			float zNear;
 			float zFar;
 			RenderMode renderMode;
+			LightType lightType;
 
 			GLuint program; // Shader program
 			
@@ -62,6 +67,7 @@ namespace Core
 			GLuint projection_matrix_loc;
 			GLuint view_matrix_loc;
 			GLuint color_loc;
+			GLuint light_type_loc;
 
 			// Display functions
 			void DisplayMesh();
@@ -71,8 +77,8 @@ namespace Core
 			void DisplayVerticesNormals();
 			void DisplaySilouhette();
 			
-			void DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color);
-			void DrawNormals(BufferId buffer, GLuint program, glm::vec4 color);
+			void DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType);
+			void DrawNormals(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType);
 
 			void UpdateFacesNormals();
 			void UpdateVerticesNormals();
@@ -96,6 +102,7 @@ namespace Core
 			void Display();
 
 			void SetRenderMode(RenderMode renderMode);
+			void SetLightType(LightType lightType);
 			void SetViewPort(int viewportWidth, int viewportHeight);
 
 			// Rotate the model around the x axis by x degrees and around the y axis by y degrees

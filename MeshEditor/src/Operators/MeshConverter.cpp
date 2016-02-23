@@ -119,6 +119,9 @@ void MeshConverter::HalfEdgeStructureToArray(Model::Mesh *mesh, vector<GLfloat> 
 		vertices.push_back((*vertexIt)->position.x);
 		vertices.push_back((*vertexIt)->position.y);
 		vertices.push_back((*vertexIt)->position.z);
+		normals.push_back((*vertexIt)->normal.x);
+		normals.push_back((*vertexIt)->normal.y);
+		normals.push_back((*vertexIt)->normal.z);
 		(*vertexIt)->index = i++;
 	}
 
@@ -131,8 +134,8 @@ void MeshConverter::HalfEdgeStructureToArray(Model::Mesh *mesh, vector<GLfloat> 
 		{
 			faces.push_back((*vertexIt)->index);
 		}
-		normals.push_back((*faceIt)->normal.x);
+		/*normals.push_back((*faceIt)->normal.x);
 		normals.push_back((*faceIt)->normal.y);
-		normals.push_back((*faceIt)->normal.z);
+		normals.push_back((*faceIt)->normal.z);*/
 	}
 }

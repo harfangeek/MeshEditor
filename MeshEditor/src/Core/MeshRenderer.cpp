@@ -16,6 +16,7 @@ MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* m
 																						zNear(0.02f),
 																						zFar(5000.0f),
 																						renderMode(RenderMode::MESH),
+																						lightType(LightType::AMBIANT),
 																						facesNormalsUpdated(false),
 																						verticesNormalsUpdated(false)
 {
@@ -36,12 +37,12 @@ void MeshRenderer::SetMesh(Model::Mesh* mesh)
 		UpdateMesh();
 	}
 }
+
 void MeshRenderer::SetViewPort(int viewportWidth, int viewportHeight)
 {
 	this->viewportWidth = viewportWidth;
 	this->viewportHeight = viewportHeight;
 }
-
 
 Model::Mesh* MeshRenderer::GetMesh()
 {
@@ -66,6 +67,7 @@ void MeshRenderer::Init()
 	projection_matrix_loc = glGetUniformLocation(program, "myprojection_matrix");
 	view_matrix_loc = glGetUniformLocation(program, "myview_matrix");
 	color_loc = glGetUniformLocation(program, "vertex_color");
+	light_type_loc = glGetUniformLocation(program, "light_type");
 }
 
 // Must be called whenever the mesh structure has changed.
@@ -166,6 +168,11 @@ void MeshRenderer::SetRenderMode(RenderMode renderMode)
 		UpdateVerticesNormals();
 }
 
+void MeshRenderer::SetLightType(LightType lightType)
+{
+	this->lightType = lightType;
+}
+
 // Display the model by sending the vertices, faces and normals arrays to the graphic card
 void MeshRenderer::Display()
 {
@@ -187,7 +194,7 @@ void MeshRenderer::Display()
 		DisplaySilouhette();
 }
 
-void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color)
+void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, drawMode);
 	glUseProgram(program);
@@ -199,6 +206,7 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 	glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
 
 	glUniform4f(color_loc, color.r, color.g, color.b, color.a);
+	glUniform1i(light_type_loc, lightType);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES]);
@@ -212,7 +220,7 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 	glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
 }
 
-void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color)
+void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glUseProgram(program);
@@ -224,6 +232,7 @@ void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color)
 	glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
 
 	glUniform4f(color_loc, color.r, color.g, color.b, color.a);
+	glUniform1i(light_type_loc, lightType);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[buffer]);
@@ -234,28 +243,28 @@ void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color)
 
 void MeshRenderer::DisplayMesh()
 {			
-	DrawMesh(GL_FILL, program, glm::vec4(1.0, 0.0, 0.0, 0.0));
+	DrawMesh(GL_FILL, program, glm::vec4(1.0, 0.0, 0.0, 0.0), lightType);
 }
 
 void MeshRenderer::DisplayWireframe()
 {
-	DrawMesh(GL_LINE, program, glm::vec4(0.0, 1.0, 0.0, 0.0));
+	DrawMesh(GL_LINE, program, glm::vec4(0.0, 1.0, 0.0, 0.0), LightType::UNIFORM);
 }
 
 void MeshRenderer::DisplayVertices()
 {
 	glPointSize(5.0f);
-	DrawMesh(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0));
+	DrawMesh(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0), LightType::UNIFORM);
 }
 
 void MeshRenderer::DisplayFacesNormals()
 {
-	DrawNormals(BufferId::BUF_FACES_NORMALS, program, glm::vec4(1.0, 1.0, 0.0, 0.0));
+	DrawNormals(BufferId::BUF_FACES_NORMALS, program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::UNIFORM);
 }
 
 void MeshRenderer::DisplayVerticesNormals()
 {
-	DrawNormals(BufferId::BUF_VERTICES_NORMALS, program, glm::vec4(1.0, 0.0, 1.0, 0.0));
+	DrawNormals(BufferId::BUF_VERTICES_NORMALS, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::UNIFORM);
 }
 
 void MeshRenderer::DisplaySilouhette()
