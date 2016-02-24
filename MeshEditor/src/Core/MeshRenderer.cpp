@@ -206,7 +206,7 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 	glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
 
 	glUniform4f(color_loc, color.r, color.g, color.b, color.a);
-	glUniform1i(light_type_loc, lightType);
+	glUniform1ui(light_type_loc, lightType);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES]);
