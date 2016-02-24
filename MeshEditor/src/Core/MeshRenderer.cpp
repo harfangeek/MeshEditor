@@ -64,10 +64,10 @@ void MeshRenderer::Init()
 		
 	// Create shader buffers and variables
 	glGenBuffers(NB_BUFFER, buffers);
-	projection_matrix_loc = glGetUniformLocation(program, "myprojection_matrix");
-	view_matrix_loc = glGetUniformLocation(program, "myview_matrix");
-	color_loc = glGetUniformLocation(program, "vertex_color");
-	light_type_loc = glGetUniformLocation(program, "light_type");
+	projectionMatrixLoc = glGetUniformLocation(program, "projection_matrix");
+	viewMatrixLoc = glGetUniformLocation(program, "view_matrix");
+	colorLoc = glGetUniformLocation(program, "vertex_color");
+	lightTypeLoc = glGetUniformLocation(program, "light_type");
 }
 
 // Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
@@ -198,13 +198,13 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 	glUseProgram(program);
 
 	glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
-	glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection_matrix[0][0]);
+	glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, &projection_matrix[0][0]);
 
 	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
-	glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
+	glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &view_matrix[0][0]);
 
-	glUniform4f(color_loc, color.r, color.g, color.b, color.a);
-	glUniform1ui(light_type_loc, lightType);
+	glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
+	glUniform1ui(lightTypeLoc, lightType);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES]);
@@ -224,13 +224,13 @@ void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color,
 	glUseProgram(program);
 
 	glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
-	glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection_matrix[0][0]);
+	glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, &projection_matrix[0][0]);
 
 	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
-	glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view_matrix[0][0]);
+	glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &view_matrix[0][0]);
 
-	glUniform4f(color_loc, color.r, color.g, color.b, color.a);
-	glUniform1i(light_type_loc, lightType);
+	glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
+	glUniform1i(lightTypeLoc, lightType);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[buffer]);

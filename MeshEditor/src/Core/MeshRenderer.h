@@ -64,10 +64,10 @@ namespace Core
 			GLuint program; // Shader program
 			
 			// Shaders variables
-			GLuint projection_matrix_loc;
-			GLuint view_matrix_loc;
-			GLuint color_loc;
-			GLuint light_type_loc;
+			GLuint projectionMatrixLoc;
+			GLuint viewMatrixLoc;
+			GLuint colorLoc;
+			GLuint lightTypeLoc;
 
 			// Display functions
 			void DisplayMesh();
