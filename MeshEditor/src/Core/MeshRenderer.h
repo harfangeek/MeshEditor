@@ -14,8 +14,7 @@ namespace Core
 		WIREFRAME = 1 << 2,
 		VERTICES = 1 << 3,
 		FACES_NORMALS = 1 << 4,
-		VERTICES_NORMALS = 1 << 5,
-		SILOUHETTE = 1 << 6
+		VERTICES_NORMALS = 1 << 5
 	};
 
 	enum BufferId {
@@ -28,7 +27,8 @@ namespace Core
 
 	enum LightType {
 		UNIFORM = 0,
-		AMBIANT = 1
+		AMBIANT = 1,
+		SILOUHETTE = 2
 	};
 
 	class MeshRenderer
@@ -75,7 +75,6 @@ namespace Core
 			void DisplayVertices();
 			void DisplayFacesNormals();
 			void DisplayVerticesNormals();
-			void DisplaySilouhette();
 			
 			void DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType);
 			void DrawNormals(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType);

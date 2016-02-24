@@ -25,6 +25,19 @@ void main (void)
 					 color * light_color * max(dot(lightdir, normal3), 0.0) +
 					 color * light_color * pow(max(dot(reflectdir, eyedir), 0.0), 60);
 	}
+	else if(light_type == uint(2))
+	{
+		vec3 eyepos = vec3(0,0,0);
+		vec3 frag_pos = position.xyz;
+		vec3 normal3 = normalize(normal.xyz);
+		vec3 eyedir = normalize(eyepos - frag_pos);
+
+		float dotPrd = dot(normal3, eyedir);
+		if(abs(dotPrd) < 0.2)
+			out_color = color;
+		else
+			out_color = vec4(0.0, 1.0, 0.0, 0.0);
+	}
 	else
 	{
 		out_color = color;	

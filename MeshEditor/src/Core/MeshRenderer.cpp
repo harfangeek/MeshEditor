@@ -190,8 +190,6 @@ void MeshRenderer::Display()
 		DisplayFacesNormals();
 	if (renderMode & RenderMode::VERTICES_NORMALS)
 		DisplayVerticesNormals();
-	if (renderMode & RenderMode::SILOUHETTE)
-		DisplaySilouhette();
 }
 
 void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType)
@@ -265,11 +263,6 @@ void MeshRenderer::DisplayFacesNormals()
 void MeshRenderer::DisplayVerticesNormals()
 {
 	DrawNormals(BufferId::BUF_VERTICES_NORMALS, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::UNIFORM);
-}
-
-void MeshRenderer::DisplaySilouhette()
-{
-
 }
 
 void MeshRenderer::Rotate(float x, float y)
