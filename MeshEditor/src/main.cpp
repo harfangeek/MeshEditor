@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 
 	meshRenderer->SetMesh(mesh);
 	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH/* | Core::RenderMode::VERTICES | Core::RenderMode::WIREFRAME | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
-	meshRenderer->SetLightType(Core::LightType::AMBIANT);
+	meshRenderer->SetLightType(Core::LightType::SILOUHETTE);
 
 	//Operators::MeshTransformation::Inflate(mesh, 0.1f);
 	//meshRenderer->UpdateMeshConnectivity();

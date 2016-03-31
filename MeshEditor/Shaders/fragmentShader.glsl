@@ -36,7 +36,7 @@ void main (void)
 		if(abs(dot_prd) < 0.2)
 			out_color = color;
 		else
-			out_color = vec4(0.0, 1.0, 0.0, 0.0);
+			out_color = vec4(0.0, 0.0, 0.0, 0.0);
 	}
 	else
 	{

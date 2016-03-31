@@ -13,7 +13,7 @@ out vec4 color;
 
 void main() {
     gl_Position = projection_matrix * view_matrix * vertex_modelspace; 
-	position = vertex_modelspace;
+	position = view_matrix * vertex_modelspace;
 	normal = /*projection_matrix * */view_matrix * vec4(normal_modelspace, 0);
 	color = vertex_color;
 }
