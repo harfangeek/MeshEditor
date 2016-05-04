@@ -12,6 +12,8 @@ A simple mesh editor. Import an .obj model or create one from scratch.
   - [x] Draw normals (faces and vertices)
   - [x] Draw silouhette
   - [ ] Lights
+  - [ ] Skybox
+  - [ ] Reflection
 
 - Manipulation
   - [x] Rotate the model with the mouse
