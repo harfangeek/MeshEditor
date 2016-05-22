@@ -36,6 +36,7 @@ int main(int argc, char** argv)
 	mesh->color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	meshRenderer->SetMesh(mesh);
+
 	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH /*| Core::RenderMode::VERTICES | Core::RenderMode::WIREFRAME/* | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
 	meshRenderer->SetLightType(Core::LightType::POINT_LIGHT);
 	meshRenderer->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
