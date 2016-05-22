@@ -26,9 +26,11 @@ namespace Core
 	};
 
 	enum LightType {
-		UNIFORM = 0,
-		AMBIANT = 1,
-		SILOUHETTE = 2
+		AMBIANT = 0,
+		POINT_LIGHT = 1,
+		DIRECTIONNAL = 2,
+		SPOT_LIGHT = 3,
+		SILOUHETTE = 4
 	};
 
 	class MeshRenderer
@@ -59,15 +61,25 @@ namespace Core
 			float zNear;
 			float zFar;
 			RenderMode renderMode;
+
+			// Light parameters
 			LightType lightType;
+			glm::vec4 lightColor;
+			glm::vec3 lightPosition;
+			glm::vec3 lightDirection;
+			float lightAngle;
 
 			GLuint program; // Shader program
 			
 			// Shaders variables
 			GLuint projectionMatrixLoc;
 			GLuint viewMatrixLoc;
-			GLuint colorLoc;
+			GLuint meshColorLoc;
 			GLuint lightTypeLoc;
+			GLuint lightColorLoc;
+			GLuint lightPositionLoc;
+			GLuint lightDirectionLoc;
+			GLuint lightAngleLoc;
 
 			// Display functions
 			void DisplayMesh();
@@ -109,11 +121,15 @@ namespace Core
 			void Display();
 
 			void SetRenderMode(RenderMode renderMode);
+			
 			void SetLightType(LightType lightType);
-			void SetViewPort(int viewportWidth, int viewportHeight);
+			void SetLightColor(glm::vec4 color);
+			void SetLightPosition(glm::vec3 position);
+			void SetLightDirection(glm::vec3 direction);
+			void SetLightAngle(float angle);
 
-			// Rotate the model around the x axis by x degrees and around the y axis by y degrees
-			void Rotate(float x, float y);
+			void SetViewPort(int viewportWidth, int viewportHeight);			
+			void Rotate(float x, float y); // Rotate the model around the x axis by x degrees and around the y axis by y degrees
 			void Translate(float x, float y);
 			void Zoom(float value);
 	};

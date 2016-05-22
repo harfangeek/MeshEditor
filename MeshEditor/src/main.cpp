@@ -33,10 +33,12 @@ int main(int argc, char** argv)
 	
 	Operators::MeshTransformation::Triangulate(mesh);
 	mesh->ComputeNormals();	
+	mesh->color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	meshRenderer->SetMesh(mesh);
-	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH/* | Core::RenderMode::VERTICES | Core::RenderMode::WIREFRAME | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
-	meshRenderer->SetLightType(Core::LightType::AMBIANT);
+	meshRenderer->SetRenderMode((Core::RenderMode)(Core::RenderMode::MESH /*| Core::RenderMode::VERTICES | Core::RenderMode::WIREFRAME/* | Core::RenderMode::FACES_NORMALS | Core::RenderMode::VERTICES_NORMALS*/));
+	meshRenderer->SetLightType(Core::LightType::POINT_LIGHT);
+	meshRenderer->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//Operators::MeshTransformation::Inflate(mesh, 0.1f);
 	//meshRenderer->UpdateMeshConnectivity();

@@ -13,6 +13,7 @@ namespace Model
 			std::vector<Vertex*> vertices;
 			std::vector<HalfEdge*> halfEdges;
 			std::vector<Face*> faces;
+			glm::vec4 color;
 
 			Mesh();
 			~Mesh();

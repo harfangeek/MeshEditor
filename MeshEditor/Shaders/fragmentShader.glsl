@@ -1,31 +1,57 @@
 #version 330 core
 
+uniform vec4 mesh_color;
 uniform uint light_type;
+uniform vec4 light_color;
+uniform vec3 light_position;	// For point/directionnal/spot light
+uniform vec3 light_direction;	// For directionnal/spot light
+uniform uint light_angle;		// For spot light
 
 in vec4 normal;
 in vec4 position;
-in vec4 color;
 
 out vec4 out_color;
 
 void main (void) 
 {    
-	if(light_type == uint(1))
+	if(light_type == uint(1)) // Point light
 	{
 		vec3 eye_pos = vec3(0,0,0);
 		vec3 frag_pos = position.xyz;
-		vec3 light_pos = vec3(0,0,4);
-		vec4 light_color = vec4(1,1,1,0);
 		vec3 normal3 = normalize(normal.xyz);
 		vec3 eye_dir = normalize(eye_pos - frag_pos);
-		vec3 light_dir = normalize (light_pos - frag_pos);
+		vec3 light_dir = normalize (light_position - frag_pos);
+
+		vec3 reflect_dir = normalize(reflect(-light_dir, normal3));
+		out_color =  mesh_color * light_color * max(dot(light_dir, normal3), 0.0) +
+					 mesh_color * light_color * pow(max(dot(reflect_dir, eye_dir), 0.0), 60);
+	}
+	else if(light_type == uint(2)) // Directionnal
+	{
+		vec3 eye_pos = vec3(0,0,0);
+		vec3 frag_pos = position.xyz;
+		vec3 normal3 = normalize(normal.xyz);
+		vec3 eye_dir = normalize(eye_pos - frag_pos);
+		vec3 light_dir = normalize (light_position - frag_pos);
+
+		vec3 reflect_dir = normalize(reflect(-light_dir, normal3));
+		out_color =  mesh_color * light_color * max(dot(light_dir, normal3), 0.0) +
+					 mesh_color * light_color * pow(max(dot(reflect_dir, eye_dir), 0.0), 60);
+	}
+	else if(light_type == uint(3)) // Spot light : à refaire
+	{
+		vec3 eye_pos = vec3(0,0,0);
+		vec3 frag_pos = position.xyz;
+		vec3 normal3 = normalize(normal.xyz);
+		vec3 eye_dir = normalize(eye_pos - frag_pos);
+		vec3 light_dir = normalize (light_position - frag_pos);
 
 		vec3 reflect_dir = normalize(reflect(-light_dir, normal3));
 		out_color =  vec4(0.1,0.1,0.1,0) + 
-					 color * light_color * max(dot(light_dir, normal3), 0.0) +
-					 color * light_color * pow(max(dot(reflect_dir, eye_dir), 0.0), 60);
+					 mesh_color * light_color * pow(max(dot(light_dir, normal3), 0.0), 10) +
+					 mesh_color * light_color * pow(max(dot(reflect_dir, eye_dir), 0.0), 60);
 	}
-	else if(light_type == uint(2))
+	else if(light_type == uint(4)) // Silouhette
 	{
 		vec3 eye_pos = vec3(0,0,0);
 		vec3 frag_pos = position.xyz;
@@ -34,12 +60,12 @@ void main (void)
 
 		float dot_prd = dot(normal3, eye_dir);
 		if(abs(dot_prd) < 0.2)
-			out_color = color;
+			out_color = mesh_color;
 		else
-			out_color = vec4(0.0, 1.0, 0.0, 0.0);
+			out_color = vec4(0.0, 0.0, 0.0, 0.0);
 	}
-	else
+	else // Uniform
 	{
-		out_color = color;	
+		out_color = mesh_color;	
 	}
 }

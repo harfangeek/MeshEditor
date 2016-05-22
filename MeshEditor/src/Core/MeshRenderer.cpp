@@ -16,7 +16,11 @@ MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* m
 																						zNear(0.02f),
 																						zFar(5000.0f),
 																						renderMode(RenderMode::MESH),
-																						lightType(LightType::AMBIANT),
+																						lightType(LightType::AMBIANT),	
+																						lightColor(1.0f, 1.0f, 1.0f, 1.0f),
+																						lightPosition(0.0f, 0.0f, 4.0f),
+																						lightDirection(0.0f, -1.0f, 0.0f),
+																						lightAngle(30.0f),
 																						facesNormalsUpdated(false),
 																						verticesNormalsUpdated(false)
 {
@@ -66,11 +70,15 @@ void MeshRenderer::Init()
 	glGenBuffers(NB_BUFFER, buffers);
 	projectionMatrixLoc = glGetUniformLocation(program, "projection_matrix");
 	viewMatrixLoc = glGetUniformLocation(program, "view_matrix");
-	colorLoc = glGetUniformLocation(program, "vertex_color");
+	meshColorLoc = glGetUniformLocation(program, "mesh_color");
 	lightTypeLoc = glGetUniformLocation(program, "light_type");
+	lightColorLoc = glGetUniformLocation(program, "light_color");
+	lightPositionLoc = glGetUniformLocation(program, "light_position");
+	lightDirectionLoc = glGetUniformLocation(program, "light_direction");
+	lightAngleLoc = glGetUniformLocation(program, "light_angle");
 }
 
-// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
+// Must be called whenever the mesh connectivity has changed (new or removed vertices/edges/faces)
 // Update vertices, faces and normals arrays
 void MeshRenderer::UpdateMeshConnectivity()
 {
@@ -173,6 +181,26 @@ void MeshRenderer::SetLightType(LightType lightType)
 	this->lightType = lightType;
 }
 
+void MeshRenderer::SetLightColor(glm::vec4 color)
+{
+	lightColor = color;
+}
+
+void MeshRenderer::SetLightPosition(glm::vec3 position)
+{
+	lightPosition = position;
+}
+
+void MeshRenderer::SetLightDirection(glm::vec3 direction)
+{
+	lightDirection = direction;
+}
+
+void MeshRenderer::SetLightAngle(float angle)
+{
+	lightAngle = angle;
+}
+
 // Display the model by sending the vertices, faces and normals arrays to the graphic card
 void MeshRenderer::Display()
 {
@@ -203,8 +231,12 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
 	glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &view_matrix[0][0]);
 
-	glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
+	glUniform4f(meshColorLoc, color.r, color.g, color.b, color.a);
 	glUniform1ui(lightTypeLoc, lightType);
+	glUniform4f(lightColorLoc, lightColor.r, lightColor.g, lightColor.b, lightColor.a);
+	glUniform3f(lightPositionLoc, lightPosition.x, lightPosition.y, lightPosition.z);
+	glUniform3f(lightDirectionLoc, lightDirection.x, lightDirection.y, lightDirection.z);
+	glUniform1f(lightAngleLoc, lightAngle);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES]);
@@ -229,7 +261,7 @@ void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color,
 	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
 	glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &view_matrix[0][0]);
 
-	glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
+	glUniform4f(meshColorLoc, color.r, color.g, color.b, color.a);
 	glUniform1i(lightTypeLoc, lightType);
 
 	glEnableVertexAttribArray(0);
@@ -241,28 +273,28 @@ void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color,
 
 void MeshRenderer::DisplayMesh()
 {			
-	DrawMesh(GL_FILL, program, glm::vec4(1.0, 0.0, 0.0, 0.0), lightType);
+	DrawMesh(GL_FILL, program, mesh->color, lightType);
 }
 
 void MeshRenderer::DisplayWireframe()
 {
-	DrawMesh(GL_LINE, program, glm::vec4(0.0, 1.0, 0.0, 0.0), LightType::UNIFORM);
+	DrawMesh(GL_LINE, program, glm::vec4(0.0, 1.0, 0.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::DisplayVertices()
 {
 	glPointSize(5.0f);
-	DrawMesh(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0), LightType::UNIFORM);
+	DrawMesh(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::DisplayFacesNormals()
 {
-	DrawNormals(BufferId::BUF_FACES_NORMALS, program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::UNIFORM);
+	DrawNormals(BufferId::BUF_FACES_NORMALS, program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::DisplayVerticesNormals()
 {
-	DrawNormals(BufferId::BUF_VERTICES_NORMALS, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::UNIFORM);
+	DrawNormals(BufferId::BUF_VERTICES_NORMALS, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::Rotate(float x, float y)
