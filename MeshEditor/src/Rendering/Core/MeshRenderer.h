@@ -1,40 +1,42 @@
 #pragma once
 
-#include "Model\Mesh.h"
+#include "Rendering\Model\Mesh.h"
 #include <vector>
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\glm\glm.hpp"
 
 #define NB_BUFFER 5
 
-namespace Core
+namespace Rendering
 {
-	enum RenderMode {
-		MESH = 1,
-		WIREFRAME = 1 << 2,
-		VERTICES = 1 << 3,
-		FACES_NORMALS = 1 << 4,
-		VERTICES_NORMALS = 1 << 5
-	};
-
-	enum BufferId {
-		BUF_VERTICES = 0,
-		BUF_FACES = 1,
-		BUF_NORMALS = 2,
-		BUF_FACES_NORMALS = 3,
-		BUF_VERTICES_NORMALS = 4
-	};
-
-	enum LightType {
-		AMBIANT = 0,
-		POINT_LIGHT = 1,
-		DIRECTIONNAL = 2,
-		SPOT_LIGHT = 3,
-		SILOUHETTE = 4
-	};
-
-	class MeshRenderer
+	namespace Core
 	{
+		enum RenderMode {
+			MESH = 1,
+			WIREFRAME = 1 << 2,
+			VERTICES = 1 << 3,
+			FACES_NORMALS = 1 << 4,
+			VERTICES_NORMALS = 1 << 5
+		};
+
+		enum BufferId {
+			BUF_VERTICES = 0,
+			BUF_FACES = 1,
+			BUF_NORMALS = 2,
+			BUF_FACES_NORMALS = 3,
+			BUF_VERTICES_NORMALS = 4
+		};
+
+		enum LightType {
+			AMBIANT = 0,
+			POINT_LIGHT = 1,
+			DIRECTIONNAL = 2,
+			SPOT_LIGHT = 3,
+			SILOUHETTE = 4
+		};
+
+		class MeshRenderer
+		{
 		private:
 			Model::Mesh* mesh; // Mesh in half-edge structure
 
@@ -70,7 +72,7 @@ namespace Core
 			float lightAngle;
 
 			GLuint program; // Shader program
-			
+
 			// Shaders variables
 			GLuint projectionMatrixLoc;
 			GLuint viewMatrixLoc;
@@ -87,7 +89,7 @@ namespace Core
 			void DisplayVertices();
 			void DisplayFacesNormals();
 			void DisplayVerticesNormals();
-			
+
 			void DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType);
 			void DrawNormals(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType);
 
@@ -96,7 +98,7 @@ namespace Core
 			void GenerateFacesNormals();
 			void GenerateVerticesNormals();
 
-		public:	
+		public:
 			MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* mesh = NULL);
 			~MeshRenderer();
 
@@ -104,7 +106,7 @@ namespace Core
 
 			void SetMesh(Model::Mesh* mesh);
 			Model::Mesh* GetMesh();
-			
+
 			// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
 			// Update vertices, faces and normals arrays
 			void UpdateMeshConnectivity();
@@ -113,24 +115,25 @@ namespace Core
 			// Update all vertices
 			void UpdateMeshGeometry();
 			// Update a subset of all vertices
-			void UpdateMeshGeometry(std::vector<Model::Vertex*> vertices);
+			void UpdateMeshGeometry(std::vector<Rendering::Model::Vertex*> vertices);
 			// Update a single vertex
-			void UpdateMeshGeometry(Model::Vertex* vertex);
+			void UpdateMeshGeometry(Rendering::Model::Vertex* vertex);
 
 			// Display the model by sending the vertices, faces and normals arrays to the graphic card
 			void Display();
 
 			void SetRenderMode(RenderMode renderMode);
-			
+
 			void SetLightType(LightType lightType);
 			void SetLightColor(glm::vec4 color);
 			void SetLightPosition(glm::vec3 position);
 			void SetLightDirection(glm::vec3 direction);
 			void SetLightAngle(float angle);
 
-			void SetViewPort(int viewportWidth, int viewportHeight);			
+			void SetViewPort(int viewportWidth, int viewportHeight);
 			void Rotate(float x, float y); // Rotate the model around the x axis by x degrees and around the y axis by y degrees
 			void Translate(float x, float y);
 			void Zoom(float value);
-	};
+		};
+	}
 }

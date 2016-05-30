@@ -3,13 +3,15 @@
 #include <vector>
 #include "Dependencies\glm\glm.hpp"
 
-namespace Model
+namespace Rendering
 {
-	class HalfEdge;
-	class Vertex;
-
-	class Face
+	namespace Model
 	{
+		class HalfEdge;
+		class Vertex;
+
+		class Face
+		{
 		public:
 			HalfEdge* adjacentHalfEdge;
 			glm::vec3 normal;
@@ -24,5 +26,6 @@ namespace Model
 			int CountVertices(); // Return the number of vertices of the face
 			void ListNeighbourFaces(std::vector<Face*> &faces); // List the faces around the face
 			int CountNeighbourFaces(); // Return the number of faces around the face
-	};
+		};
+	}
 }

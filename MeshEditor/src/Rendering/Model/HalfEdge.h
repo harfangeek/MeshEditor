@@ -2,13 +2,15 @@
 
 #include "Dependencies/glm/glm.hpp"
 
-namespace Model
+namespace Rendering
 {
-	class Vertex;
-	class Face;
-
-	class HalfEdge
+	namespace Model
 	{
+		class Vertex;
+		class Face;
+
+		class HalfEdge
+		{
 		public:
 			Vertex* source;
 			HalfEdge* next;
@@ -20,5 +22,6 @@ namespace Model
 			~HalfEdge();
 
 			double GetLength(); // Get edge length
-	};
+		};
+	}
 }

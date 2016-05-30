@@ -1,7 +1,7 @@
-#include "Model\Mesh.h"
+#include "Rendering\Model\Mesh.h"
 #include <sstream>
 
-using namespace Model;
+using namespace Rendering::Model;
 
 Mesh::Mesh()
 {

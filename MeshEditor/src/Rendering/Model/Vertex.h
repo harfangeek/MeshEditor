@@ -3,13 +3,15 @@
 #include <vector>
 #include "Dependencies\glm\glm.hpp"
 
-namespace Model
+namespace Rendering
 {
-	class HalfEdge;
-	class Face;
-
-	class Vertex
+	namespace Model
 	{
+		class HalfEdge;
+		class Face;
+
+		class Vertex
+		{
 		public:
 			glm::vec3 position;
 			glm::vec3 normal;
@@ -23,5 +25,6 @@ namespace Model
 			void ListFaces(std::vector<Face*> &faces); // List faces around the vertex
 			int CountFaces(); // Return the number of faces around the vertex
 			void ComputeNormal(); // Compute the normal of the vertex (update normal member)
-	};
+		};
+	}
 }

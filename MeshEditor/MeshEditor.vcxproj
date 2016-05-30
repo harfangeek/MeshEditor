@@ -11,38 +11,52 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\FreeglutWrapper.cpp" />
-    <ClCompile Include="src\Core\MeshRenderer.cpp" />
-    <ClCompile Include="src\Core\ShaderLoader.cpp" />
-    <ClCompile Include="src\Core\WindowManager.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Model\Face.cpp" />
-    <ClCompile Include="src\Model\HalfEdge.cpp" />
-    <ClCompile Include="src\Model\Mesh.cpp" />
-    <ClCompile Include="src\Model\StaticData.cpp" />
-    <ClCompile Include="src\Model\Vertex.cpp" />
-    <ClCompile Include="src\Operators\MeshConverter.cpp" />
-    <ClCompile Include="src\Operators\MeshTransformation.cpp" />
-    <ClCompile Include="src\Operators\ObjReader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Core\FreeglutWrapper.h" />
-    <ClInclude Include="src\Core\MeshRenderer.h" />
-    <ClInclude Include="src\Core\ShaderLoader.h" />
-    <ClInclude Include="src\Core\WindowManager.h" />
-    <ClInclude Include="src\Model\Face.h" />
-    <ClInclude Include="src\Model\HalfEdge.h" />
-    <ClInclude Include="src\Model\Mesh.h" />
-    <ClInclude Include="src\Model\StaticData.h" />
-    <ClInclude Include="src\Model\Vertex.h" />
-    <ClInclude Include="src\Operators\MeshConverter.h" />
-    <ClInclude Include="src\Operators\MeshTransformation.h" />
-    <ClInclude Include="src\Operators\ObjReader.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\README.md" />
     <None Include="Shaders\fragmentShader.glsl" />
     <None Include="Shaders\vertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\GUI\Core\FreeglutWrapper.cpp" />
+    <ClCompile Include="src\GUI\Core\KeyboardManager.cpp" />
+    <ClCompile Include="src\GUI\Core\MouseManager.cpp" />
+    <ClCompile Include="src\GUI\Core\SelectionManager.cpp" />
+    <ClCompile Include="src\GUI\Core\WindowManager.cpp" />
+    <ClCompile Include="src\GUI\Interfaces\ISelectionEventsListener.cpp" />
+    <ClCompile Include="src\MeshEditor\Core\main.cpp" />
+    <ClCompile Include="src\MeshEditor\Model\StaticData.cpp" />
+    <ClCompile Include="src\Rendering\Core\MeshRenderer.cpp" />
+    <ClCompile Include="src\Rendering\Core\ShaderLoader.cpp" />
+    <ClCompile Include="src\Rendering\Model\Face.cpp" />
+    <ClCompile Include="src\Rendering\Model\HalfEdge.cpp" />
+    <ClCompile Include="src\Rendering\Model\Mesh.cpp" />
+    <ClCompile Include="src\Rendering\Model\Vertex.cpp" />
+    <ClCompile Include="src\Rendering\Operators\MeshConverter.cpp" />
+    <ClCompile Include="src\Rendering\Operators\MeshTransformation.cpp" />
+    <ClCompile Include="src\Rendering\Operators\ObjReader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GUI\Core\FreeglutWrapper.h" />
+    <ClInclude Include="src\GUI\Core\KeyboardManager.h" />
+    <ClInclude Include="src\GUI\Core\MouseManager.h" />
+    <ClInclude Include="src\GUI\Core\SelectionManager.h" />
+    <ClInclude Include="src\GUI\Core\WindowManager.h" />
+    <ClInclude Include="src\GUI\Interfaces\IKeyboardEventsDispatcher.h" />
+    <ClInclude Include="src\GUI\Interfaces\IKeyboardEventsListener.h" />
+    <ClInclude Include="src\GUI\Interfaces\IMouseEventsDispatcher.h" />
+    <ClInclude Include="src\GUI\Interfaces\IMouseEventsListener.h" />
+    <ClInclude Include="src\GUI\Interfaces\ISelectionEventsListener.h" />
+    <ClInclude Include="src\GUI\Interfaces\IWindowEventsDispatcher.h" />
+    <ClInclude Include="src\GUI\Interfaces\IWindowEventsListener.h" />
+    <ClInclude Include="src\MeshEditor\Model\StaticData.h" />
+    <ClInclude Include="src\Rendering\Core\MeshRenderer.h" />
+    <ClInclude Include="src\Rendering\Core\ShaderLoader.h" />
+    <ClInclude Include="src\Rendering\Model\Face.h" />
+    <ClInclude Include="src\Rendering\Model\HalfEdge.h" />
+    <ClInclude Include="src\Rendering\Model\Mesh.h" />
+    <ClInclude Include="src\Rendering\Model\Vertex.h" />
+    <ClInclude Include="src\Rendering\Operators\MeshConverter.h" />
+    <ClInclude Include="src\Rendering\Operators\MeshTransformation.h" />
+    <ClInclude Include="src\Rendering\Operators\ObjReader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1194D84-9BEF-4D50-AE46-A3090D8183C5}</ProjectGuid>

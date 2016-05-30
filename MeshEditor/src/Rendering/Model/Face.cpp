@@ -1,8 +1,8 @@
-#include "Model\Face.h"
-#include "Model\Vertex.h"
-#include "Model\HalfEdge.h"
+#include "Rendering\Model\Face.h"
+#include "Rendering\Model\Vertex.h"
+#include "Rendering\Model\HalfEdge.h"
 
-using namespace Model;
+using namespace Rendering::Model;
 using namespace glm;
 
 Face::Face()

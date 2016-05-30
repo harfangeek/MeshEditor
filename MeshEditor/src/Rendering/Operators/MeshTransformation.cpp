@@ -1,11 +1,11 @@
-#include "Operators/MeshTransformation.h"
-#include "Model\Vertex.h"
-#include "Model\HalfEdge.h"
-#include "Model\Face.h"
+#include "Rendering\Operators\MeshTransformation.h"
+#include "Rendering\Model\Vertex.h"
+#include "Rendering\Model\HalfEdge.h"
+#include "Rendering\Model\Face.h"
 #include <vector>
 
-using namespace Operators;
-using namespace Model;
+using namespace Rendering::Operators;
+using namespace Rendering::Model;
 using namespace std;
 
 void MeshTransformation::Triangulate(Model::Mesh* mesh)

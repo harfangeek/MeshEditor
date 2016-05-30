@@ -5,8 +5,9 @@
 #include "Dependencies\glm\gtc\matrix_transform.hpp"
 #include "Dependencies\glm\gtx\rotate_vector.hpp"
 
-using namespace Core;
-using namespace Model;
+using namespace Rendering;
+using namespace Rendering::Core;
+using namespace Rendering::Model;
 using namespace std;
 
 MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* mesh) :	cameraEye(0, 0, 2),

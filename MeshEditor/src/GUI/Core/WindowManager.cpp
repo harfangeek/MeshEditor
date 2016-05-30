@@ -1,7 +1,8 @@
-#include "Core\WindowManager.h"
+#include "GUI\Core\WindowManager.h"
 #include "Dependencies\freeglut\freeglut.h"
 
-using namespace Core;
+using namespace GUI::Core;
+using namespace Rendering::Core;
 
 WindowManager::WindowManager()
 {

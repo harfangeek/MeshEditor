@@ -1,16 +1,18 @@
 #pragma once
 
-#include "Core\MeshRenderer.h"
+#include "Rendering\Core\MeshRenderer.h"
 
 #define NB_MOUSE_BUTTON 3
 
-namespace Core
+namespace GUI
 {
-	enum MouseButton { RIGHT=0, MIDDLE=1, LEFT=2};
-	class WindowManager
+	namespace Core
 	{
+		enum MouseButton { RIGHT = 0, MIDDLE = 1, LEFT = 2 };
+		class WindowManager
+		{
 		private:
-			MeshRenderer* meshRenderer;
+			Rendering::Core::MeshRenderer* meshRenderer;
 			int width;
 			int height;
 			int mouseX;
@@ -21,14 +23,15 @@ namespace Core
 			WindowManager();
 			~WindowManager();
 
-			void Init(int widt, int height, int argc, char** argv);			
+			void Init(int widt, int height, int argc, char** argv);
 			void MouseClick(MouseButton button, bool state, int x, int y);
 			void MouseMotion(int x, int y);
 			void MouseWheel(int wheel, int dir, int x, int y);
 			void Reshape(int width, int height);
 			void Render();
-			
-			void SetMeshRenderer(MeshRenderer* meshRenderer);
-			MeshRenderer* GetMeshRenderer();
-	};
+
+			void SetMeshRenderer(Rendering::Core::MeshRenderer* meshRenderer);
+			Rendering::Core::MeshRenderer* GetMeshRenderer();
+		};
+	}
 }

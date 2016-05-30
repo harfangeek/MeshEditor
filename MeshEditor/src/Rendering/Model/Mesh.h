@@ -1,14 +1,16 @@
 #pragma once
 
 #include <Vector>
-#include "Model\Face.h"
-#include "Model\Vertex.h"
-#include "Model\HalfEdge.h"
+#include "Rendering\Model\Face.h"
+#include "Rendering\Model\Vertex.h"
+#include "Rendering\Model\HalfEdge.h"
 
-namespace Model
+namespace Rendering
 {
-	class Mesh
+	namespace Model
 	{
+		class Mesh
+		{
 		public:
 			std::vector<Vertex*> vertices;
 			std::vector<HalfEdge*> halfEdges;
@@ -23,5 +25,6 @@ namespace Model
 			void Mesh::Normalize(); // TODO
 			void ComputeNormals(); // Compute faces and vertices normals
 
-	};
+		};
+	}
 }

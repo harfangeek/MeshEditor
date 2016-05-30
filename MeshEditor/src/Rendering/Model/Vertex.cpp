@@ -1,9 +1,9 @@
-#include "Model\Vertex.h"
-#include "Model\HalfEdge.h"
-#include "Model\Face.h"
+#include "Rendering\Model\Vertex.h"
+#include "Rendering\Model\HalfEdge.h"
+#include "Rendering\Model\Face.h"
 #include <vector>
 
-using namespace Model;
+using namespace Rendering::Model;
 using namespace glm;
 
 Vertex::Vertex()
