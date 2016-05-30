@@ -20,6 +20,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{7851f185-3f44-4f4a-ab8e-9c253acc6abe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Interfaces">
+      <UniqueIdentifier>{33201527-4c5e-4d7a-be7f-e777a813effb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
