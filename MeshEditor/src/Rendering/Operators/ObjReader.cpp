@@ -6,7 +6,8 @@
 #include <sstream>
 #include <string>
 
-using namespace Operators;
+using namespace Rendering;
+using namespace Rendering::Operators;
 using namespace std;
 
 bool ObjReader::Read(std::string fileName, std::vector<glm::vec3> &vertices, std::vector<std::vector<unsigned int>> &faces)

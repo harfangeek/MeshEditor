@@ -34,9 +34,9 @@ int main(int argc, char** argv)
 
 	// Load mesh
 	Mesh* mesh = NULL;
-	Operators::ObjReader::LoadMesh("Models\\apple.obj", mesh, true);
+	Rendering::Operators::ObjReader::LoadMesh("Models\\apple.obj", mesh, true);
 
-	Operators::MeshTransformation::Triangulate(mesh);
+	Rendering::Operators::MeshTransformation::Triangulate(mesh);
 	mesh->ComputeNormals();
 	mesh->color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 

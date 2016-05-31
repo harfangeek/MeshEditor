@@ -20,7 +20,7 @@ A simple mesh editor. Import an .obj model or create one from scratch.
   - [x] Translate the model
   - [x] Zoom
 
-- Mesh edition  
+- Mesh edition
   - [ ] Selection of a vertex/edge/face
   - [ ] Translation/rotation of the selected vertex/edge/face
   - [ ] Add edge (cut a face into two faces)

@@ -3,7 +3,8 @@
 #include <fstream>
 #include <vector>
 
-using namespace Core;
+using namespace Rendering;
+using namespace Rendering::Core;
 using namespace std;
 
 ShaderLoader::ShaderLoader()

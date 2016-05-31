@@ -5,10 +5,12 @@
 #include "Dependencies\glm\glm.hpp"
 #include "Dependencies\glew\glew.h"
 
-namespace Operators
+namespace Rendering
 {
-	class MeshConverter
+	namespace Operators
 	{
+		class MeshConverter
+		{
 		public:
 			// Generate a mesh in half edge structure from an array of vertices and an array of indices
 			// @param mesh : The mesh to construct
@@ -23,5 +25,6 @@ namespace Operators
 			// @param faces : The list of faces, reprensented by a continus set of vertices indices
 			// @param normals : faces' normals
 			static void HalfEdgeStructureToArray(Rendering::Model::Mesh *mesh, std::vector<GLfloat> &vertices, std::vector<GLuint> &faces, std::vector<GLfloat> &normals);
-	};
+		};
+	}
 }

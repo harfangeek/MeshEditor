@@ -1,7 +1,7 @@
-#include "Core\MeshRenderer.h"
-#include "Operators\MeshConverter.h"
-#include "Core\ShaderLoader.h"
-#include "Model\Vertex.h"
+#include "Rendering\Core\MeshRenderer.h"
+#include "Rendering\Operators\MeshConverter.h"
+#include "Rendering\Core\ShaderLoader.h"
+#include "Rendering\Model\Vertex.h"
 #include "Dependencies\glm\gtc\matrix_transform.hpp"
 #include "Dependencies\glm\gtx\rotate_vector.hpp"
 
@@ -64,7 +64,7 @@ void MeshRenderer::Init()
 		std::cout << "Glew 3.3 not supported" << std::endl;
 	
 	// Create shaders
-	Core::ShaderLoader shaderLoader;
+	Rendering::Core::ShaderLoader shaderLoader;
 	program = shaderLoader.CreateProgram("Shaders\\vertexShader.glsl", "Shaders\\fragmentShader.glsl");	
 		
 	// Create shader buffers and variables

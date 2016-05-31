@@ -70,7 +70,7 @@ void WindowManager::MouseMotion(int x, int y)
 
 void WindowManager::MouseWheel(int wheel, int dir, int x, int y)
 {
-	meshRenderer->Zoom(dir > 0 ? 0.1 : -0.1);
+	meshRenderer->Zoom(dir > 0 ? 0.1f : -0.1f);
 	glutPostRedisplay();
 }
 

@@ -4,6 +4,7 @@
 #include "Rendering\Model\Face.h"
 #include <vector>
 
+using namespace Rendering;
 using namespace Rendering::Operators;
 using namespace Rendering::Model;
 using namespace std;

@@ -1,11 +1,12 @@
-#include "Operators\MeshConverter.h"
-#include "Model\Vertex.h"
-#include "Model\HalfEdge.h"
-#include "Model\Face.h"
+#include "Rendering\Operators\MeshConverter.h"
+#include "Rendering\Model\Vertex.h"
+#include "Rendering\Model\HalfEdge.h"
+#include "Rendering\Model\Face.h"
 #include <map>
 
-using namespace Operators;
-using namespace Model;
+using namespace Rendering;
+using namespace Rendering::Operators;
+using namespace Rendering::Model;
 using namespace std;
 
 void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh *mesh, vector<glm::vec3> &vertices, vector<vector<unsigned int>> &faces)

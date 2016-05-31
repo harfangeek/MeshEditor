@@ -141,7 +141,7 @@ bool Mesh::Check(std::vector<std::string>& errors)
 
 void Mesh::Normalize()
 {
-	int i;
+	unsigned int i;
 	int tmpxmin = 0, tmpymin = 0, tmpzmin = 0, tmpxmax = 0, tmpymax = 0, tmpzmax = 0;
 
 	for (i = 0; i < vertices.size(); i++) {
@@ -163,13 +163,13 @@ void Mesh::Normalize()
 	scale = scale > (zmax - zmin) ? scale : (zmax - zmin);
 
 	for (i = 0; i < vertices.size(); i++) {
-		vertices[i]->position.x -= (xmax + xmin) / 2;
-		vertices[i]->position.y -= (ymax + ymin) / 2;
-		vertices[i]->position.z -= (zmax + zmin) / 2;
+		vertices[i]->position.x -= (float)(xmax + xmin) / 2.0f;
+		vertices[i]->position.y -= (float)(ymax + ymin) / 2.0f;
+		vertices[i]->position.z -= (float)(zmax + zmin) / 2.0f;
 
-		vertices[i]->position.x /= scale;
-		vertices[i]->position.y /= scale;
-		vertices[i]->position.z /= scale;
+		vertices[i]->position.x /= (float)scale;
+		vertices[i]->position.y /= (float)scale;
+		vertices[i]->position.z /= (float)scale;
 	}
 }
 
