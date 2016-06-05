@@ -7,6 +7,7 @@ namespace GUI
 		class Event
 		{
 		public:
+			Event(int eventType);
 			virtual ~Event();
 
 			int type;

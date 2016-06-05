@@ -9,6 +9,13 @@ namespace GUI
 		class WindowEvent : public Event
 		{
 		public:
+			WindowEvent(int eventType);
+
+			int width;
+			int height;
+
+			static const int RESHAPE = 101;
+			static const int RENDER = 102;
 		};
 	}
 }
