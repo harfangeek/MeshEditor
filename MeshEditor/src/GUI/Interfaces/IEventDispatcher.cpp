@@ -14,23 +14,26 @@ IEventDispatcher::~IEventDispatcher()
 	DetachAll();
 }
 
-void IEventDispatcher::Attach(IEventListener* listener)
+void IEventDispatcher::Attach(IEventListener* listener, bool notify)
 {
 	if (listener != NULL)
 	{
 		listeners.push_back(listener);
-		listener->OnAttach(this);
+		if(notify)
+			listener->OnAttach(this); // Notify the listener
 	}
 }
 
-void IEventDispatcher::Detach(IEventListener* listener)
+void IEventDispatcher::Detach(IEventListener* listener, bool notify)
 {
 	if (listener != NULL)
 	{
+		// If the listener was effectively attached to this dispatcher
 		std::vector<IEventListener*>::iterator listenerIt = std::find(listeners.begin(), listeners.end(), listener);
 		if (listenerIt != listeners.end())
 		{
-			(*listenerIt)->OnDetach(this);
+			if (notify)
+				(*listenerIt)->OnDetach(this); // Notify the listener
 			listeners.erase(listenerIt, listenerIt);
 		}
 	}
