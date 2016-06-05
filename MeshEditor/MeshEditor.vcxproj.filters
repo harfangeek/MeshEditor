@@ -70,14 +70,8 @@
     <ClCompile Include="src\GUI\Core\MouseManager.cpp">
       <Filter>Src\GUI\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Core\SelectionManager.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\GUI\Core\WindowManager.cpp">
       <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Interfaces\ISelectionEventsListener.cpp">
-      <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\MeshEditor\Core\main.cpp">
       <Filter>Src\MeshEditor\Core</Filter>
@@ -112,6 +106,24 @@
     <ClCompile Include="src\Rendering\Operators\ObjReader.cpp">
       <Filter>Src\Rendering\Operators</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\Model\Event.cpp">
+      <Filter>Src\GUI\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Model\KeyboardEvent.cpp">
+      <Filter>Src\GUI\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Model\MouseEvent.cpp">
+      <Filter>Src\GUI\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Model\WindowEvent.cpp">
+      <Filter>Src\GUI\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\IEventDispatcher.cpp">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\IEventListener.cpp">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\Core\FreeglutWrapper.h">
@@ -123,32 +135,8 @@
     <ClInclude Include="src\GUI\Core\MouseManager.h">
       <Filter>Src\GUI\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\Core\SelectionManager.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\GUI\Core\WindowManager.h">
       <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\IKeyboardEventsDispatcher.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\IKeyboardEventsListener.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\IMouseEventsDispatcher.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\IMouseEventsListener.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\ISelectionEventsListener.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\IWindowEventsDispatcher.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\IWindowEventsListener.h">
-      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\MeshEditor\Model\StaticData.h">
       <Filter>Src\MeshEditor\Model</Filter>
@@ -179,6 +167,33 @@
     </ClInclude>
     <ClInclude Include="src\Rendering\Operators\ObjReader.h">
       <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Model\Event.h">
+      <Filter>Src\GUI\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Model\KeyboardEvent.h">
+      <Filter>Src\GUI\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Model\MouseEvent.h">
+      <Filter>Src\GUI\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Model\WindowEvent.h">
+      <Filter>Src\GUI\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\IKeyboardManager.h">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\IMouseManager.h">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\IWindowManager.h">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\IEventDispatcher.h">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\IEventListener.h">
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
