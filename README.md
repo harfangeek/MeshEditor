@@ -38,3 +38,12 @@ A simple mesh editor. Import an .obj model or create one from scratch.
   - [ ] Mesh simplification
 
 - GUI : To be defined
+  - Event architecture:
+    - [x] Base architecture (dispatcher/listener interfaces)
+    - [ ] IWindowManager interface + freeglut implementation
+    - [ ] IMouseManager interface + freeglut implementation
+    - [ ] IKeyboardManager interface + freeglut implementation
+  - Multi window support:
+    - [ ] Open same mesh in multiple window
+    - [ ] Open different meshs in different window
+    - [ ] Lock/Unlock synchronized manipulation
