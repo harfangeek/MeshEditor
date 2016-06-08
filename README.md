@@ -45,5 +45,4 @@ A simple mesh editor. Import an .obj model or create one from scratch.
     - [ ] IKeyboardManager interface + freeglut implementation
   - Multi window support:
     - [ ] Open same mesh in multiple window
-    - [ ] Open different meshs in different window
     - [ ] Lock/Unlock synchronized manipulation
