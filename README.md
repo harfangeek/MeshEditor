@@ -1,6 +1,12 @@
 # MeshEditor
-A simple mesh editor. Import an .obj model or create one from scratch.
+A simple mesh editor. Import an .obj model and edit it or create one from scratch.
 
+## Libraries:
+- Freeglut 2.8.1 : http://freeglut.sourceforge.net/
+- Glew 1.13.0 : http://glew.sourceforge.net/
+- Glm : http://glm.g-truc.net/0.9.7/index.html
+
+## ToDoList
 - Mesh loading
   - [x] Implement Mesh data model (half-edge structure)
   - [x] Load Obj file
