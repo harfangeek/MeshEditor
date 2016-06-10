@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "Dependencies\glew\glew.h"
-#include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\glew\include\glew.h"
+#include "Dependencies\freeglut\include\freeglut.h"
 
 namespace Rendering
 {

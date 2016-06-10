@@ -3,7 +3,7 @@
 #include "Rendering\Model\Mesh.h"
 #include <vector>
 #include "Dependencies\glm\glm.hpp"
-#include "Dependencies\glew\glew.h"
+#include "Dependencies\glew\include\glew.h"
 
 namespace Rendering
 {

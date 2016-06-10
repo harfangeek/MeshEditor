@@ -2,7 +2,7 @@
 
 #include "Rendering\Model\Mesh.h"
 #include <vector>
-#include "Dependencies\glew\glew.h"
+#include "Dependencies\glew\include\glew.h"
 #include "Dependencies\glm\glm.hpp"
 
 #define NB_BUFFER 5

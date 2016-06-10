@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "Dependencies\glew\glew.h"
+#include "Dependencies\glew\include\glew.h"
 #include "Rendering\Model\Mesh.h"
 #include "MeshEditor\Model\StaticData.h"
 #include "Rendering\Operators\ObjReader.h"

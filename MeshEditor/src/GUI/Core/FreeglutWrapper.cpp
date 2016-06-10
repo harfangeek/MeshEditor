@@ -2,7 +2,7 @@
 #include "GUI\Core\WindowManager.h"
 #include "GUI\Model\MouseEvent.h"
 #include "MeshEditor\Model\StaticData.h"
-#include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\freeglut\include\freeglut.h"
 
 using namespace GUI::Core;
 using namespace GUI::Model;

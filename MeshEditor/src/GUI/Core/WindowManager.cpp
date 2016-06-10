@@ -1,5 +1,5 @@
 #include "GUI\Core\WindowManager.h"
-#include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\freeglut\include\freeglut.h"
 
 using namespace GUI::Core;
 using namespace Rendering::Core;
