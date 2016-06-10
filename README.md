@@ -6,6 +6,12 @@ A simple mesh editor. Import an .obj model and edit it or create one from scratc
 - Glew 1.13.0 : http://glew.sourceforge.net/
 - Glm : http://glm.g-truc.net/0.9.7/index.html
 
+In order to compile and run the project you need to compile first freeglut and glew. 
+- Open corresponding visual studio projects (MeshEditor\Dependencies\freeglut\freeglut.sln and MeshEditor\Dependencies\glew\glew.sln). 
+- Chose the proper configuration and generate each solution. 
+- Libraries are generated in the lib folders. They are already referenced in the project setting so just let them here. 
+- The DLLs are generated in the bin folders. Copy them with the project executable.
+
 ## ToDoList
 - Mesh loading
   - [x] Implement Mesh data model (half-edge structure)
