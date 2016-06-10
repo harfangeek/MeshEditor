@@ -121,23 +121,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bin\Debug\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\lib\x64\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_Static|Win32'">lib\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_Static|Win32'">bin\Debug\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_Static|x64'">..\..\lib\x64\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_Static|Win32'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_Static|x64'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lib\Release</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bin\Release</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\lib\x64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">lib\Release</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">bin\Release</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">..\..\lib\x64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">build\$(Configuration)\$(PlatformName)_$(PlatformToolset)\</IntDir>
@@ -182,6 +182,7 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>src\freeglutdll.def</ModuleDefinitionFile>
+      <ImportLibrary>lib\Debug\$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -226,6 +227,7 @@
     </ResourceCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>lib\Debug\$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static|x64'">
@@ -272,6 +274,7 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>src\freeglutdll.def</ModuleDefinitionFile>
+      <ImportLibrary>lib\Release\$(TargetName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -316,6 +319,7 @@
     </ResourceCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>lib\Release\$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">

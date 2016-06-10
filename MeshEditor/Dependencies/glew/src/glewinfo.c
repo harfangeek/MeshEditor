@@ -33,11 +33,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <GL/glew.h>
+#include <ew.h>
 #if defined(_WIN32)
-#include <GL/wglew.h>
+#include <wglew.h>
 #elif !defined(__APPLE__) && !defined(__HAIKU__) || defined(GLEW_APPLE_GLX)
-#include <GL/glxew.h>
+#include <xew.h>
 #endif
 
 #if defined(__APPLE__)
@@ -45,7 +45,7 @@
 #endif
 
 #ifdef GLEW_REGAL
-#include <GL/Regal.h>
+#include <Regal.h>
 #endif
 
 static FILE* f;

@@ -25,7 +25,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <GL/freeglut.h>
+#include <freeglut.h>
 #include "freeglut_internal.h"
 
 /*
@@ -136,7 +136,7 @@ void FGAPIENTRY glutSetOption( GLenum eWhat, int value )
 
 #if TARGET_HOST_MS_WINDOWS
 /* The following include file is available from SGI but is not standard:
- *   #include <GL/wglext.h>
+ *   #include <wglext.h>
  * So we copy the necessary parts out of it to support the multisampling query
  */
 #define WGL_SAMPLES_ARB                0x2042

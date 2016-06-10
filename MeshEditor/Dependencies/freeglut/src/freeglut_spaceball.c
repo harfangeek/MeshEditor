@@ -7,7 +7,7 @@
  * magellan X-based protocol.
  */
 
-#include <GL/freeglut.h>
+#include <freeglut.h>
 #include "freeglut_internal.h"
 
 /* -- PRIVATE FUNCTIONS --------------------------------------------------- */

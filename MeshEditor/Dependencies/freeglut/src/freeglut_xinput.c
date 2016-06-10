@@ -1,7 +1,7 @@
 /* Written for XI1 by Nikolas Doerfler <doerflen@in.tum.de> (c) 2008 *
  * Rewritten for XI2 by Florian Echtler <echtler@in.tum.de> (c) 2009 */
 
-#include <GL/freeglut.h>
+#include <freeglut.h>
 
 #include "freeglut_internal.h"
 

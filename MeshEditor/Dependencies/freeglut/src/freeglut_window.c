@@ -26,7 +26,7 @@
  */
 
 #define FREEGLUT_BUILDING_LIB
-#include <GL/freeglut.h>
+#include <freeglut.h>
 #include "freeglut_internal.h"
 
 #if TARGET_HOST_POSIX_X11
@@ -91,7 +91,7 @@
 
 #if TARGET_HOST_MS_WINDOWS
 /* The following include file is available from SGI but is not standard:
- *   #include <GL/wglext.h>
+ *   #include <wglext.h>
  * So we copy the necessary parts out of it.
  * XXX: should local definitions for extensions be put in a separate include file?
  */
