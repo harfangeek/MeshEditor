@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GUI\Interfaces\IMouseManager.h"
-#include "GUI\Interfaces\IEventDispatcher.h"
+#include "GUI\Interfaces\MouseManager.h"
+#include "GUI\Interfaces\EventDispatcher.h"
 #include "GUI\Model\MouseEvent.h"
 
 #define NB_MOUSE_BUTTON 3
@@ -12,8 +12,8 @@ namespace GUI
 
 	namespace Core
 	{
-		class MouseManager : public GUI::Interfaces::IMouseManager, 
-							 public GUI::Interfaces::IEventDispatcher
+		class GlutMouseManager : public GUI::Interfaces::MouseManager, 
+							 public GUI::Interfaces::EventDispatcher
 		{
 		private:
 			int x;
@@ -24,8 +24,8 @@ namespace GUI
 			bool buttons[NB_MOUSE_BUTTON];
 
 		public:
-			MouseManager();
-			~MouseManager();
+			GlutMouseManager();
+			~GlutMouseManager();
 
 			void MouseClick(GUI::Model::MouseButton button, bool state, int x, int y);
 			void MouseMotion(int x, int y);

@@ -1,19 +1,19 @@
 #pragma once
 
-#include "GUI\Model\KeyboardEvent.h"
+#include "GUI\Model\WindowEvent.h"
 #include <vector>
 
 namespace GUI
 {
 	namespace Interfaces
 	{
-		class IKeyboardManager
+		class Window
 		{
 		public:
-			
+
 
 		protected:
-			
+
 		};
 	}
 }

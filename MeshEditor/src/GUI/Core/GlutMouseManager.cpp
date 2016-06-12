@@ -1,10 +1,10 @@
-#include "GUI\Core\MouseManager.h"
+#include "GUI\Core\GlutMouseManager.h"
 #include "GUI\Model\MouseEvent.h"
 
 using namespace GUI::Core;
 using namespace GUI::Model;
 
-MouseManager::MouseManager()
+GlutMouseManager::GlutMouseManager()
 {
 	x = 0;
 	y = 0;
@@ -14,11 +14,11 @@ MouseManager::MouseManager()
 		buttons[i] = false;
 }
 
-MouseManager::~MouseManager()
+GlutMouseManager::~GlutMouseManager()
 {
 }
 
-void MouseManager::MouseClick(MouseButton button, bool state, int x, int y)
+void GlutMouseManager::MouseClick(MouseButton button, bool state, int x, int y)
 {
 	oldX = x;
 	oldY = y;
@@ -31,7 +31,7 @@ void MouseManager::MouseClick(MouseButton button, bool state, int x, int y)
 	Notify(&event);
 }
 
-void MouseManager::MouseMotion(int x, int y)
+void GlutMouseManager::MouseMotion(int x, int y)
 {
 	oldX = x;
 	oldY = y;
@@ -46,7 +46,7 @@ void MouseManager::MouseMotion(int x, int y)
 	Notify(&event);
 }
 
-void MouseManager::MouseWheel(int wheel, int dir, int x, int y)
+void GlutMouseManager::MouseWheel(int wheel, int dir, int x, int y)
 {
 	this->wheel = wheel;
 
@@ -55,27 +55,27 @@ void MouseManager::MouseWheel(int wheel, int dir, int x, int y)
 	Notify(&event);
 }
 
-int MouseManager::GetX()
+int GlutMouseManager::GetX()
 {
 	return x;
 }
 
-int MouseManager::GetY()
+int GlutMouseManager::GetY()
 {
 	return y;
 }
 
-int MouseManager::GetDX()
+int GlutMouseManager::GetDX()
 {
 	return x - oldX;
 }
 
-int MouseManager::GetDY()
+int GlutMouseManager::GetDY()
 {
 	return y - oldY;
 }
 
-bool MouseManager::GetButtonState(MouseButton button)
+bool GlutMouseManager::GetButtonState(MouseButton button)
 {
 	return buttons[button];
 }

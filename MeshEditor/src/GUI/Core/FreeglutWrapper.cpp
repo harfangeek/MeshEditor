@@ -1,8 +1,8 @@
-#include "GUI\Core\FreeglutWrapper.h"
-#include "GUI\Core\WindowManager.h"
+/*#include "GUI\Core\FreeglutWrapper.h"
+#include "GUI\Core\GlutWindow.h"
 #include "GUI\Model\MouseEvent.h"
 #include "MeshEditor\Model\StaticData.h"
-#include "Dependencies\freeglut\include\freeglut.h"
+#include "Dependencies\freeglut\include\freeglut.h"*/
 
 using namespace GUI::Core;
 using namespace GUI::Model;
@@ -22,36 +22,36 @@ void MouseClick(int button, int state, int x, int y)
 {
 	MouseButton mouseButton = button == GLUT_LEFT_BUTTON ? MouseButton::LEFT :
 							  (button == GLUT_MIDDLE_BUTTON ? MouseButton::MIDDLE : MouseButton::RIGHT);
-	WindowManager* windowManager = StaticData::GetWindowManager();
+	//GlutWindow* windowManager = StaticData::GetWindowManager();
 	//if (windowManager)
 	//	windowManager->MouseClick(mouseButton, state == 0, x, y);
 }
 
 void MouseMotion(int x, int y)
 {
-	WindowManager* windowManager = StaticData::GetWindowManager();
+	//WindowManager* windowManager = StaticData::GetWindowManager();
 	//if (windowManager)
 	//	windowManager->MouseMotion(x, y);
 }
 
 void MouseWheel(int button, int dir, int x, int y)
 {
-	WindowManager* windowManager = StaticData::GetWindowManager();
+	//WindowManager* windowManager = StaticData::GetWindowManager();
 	//if (windowManager)
 	//	windowManager->MouseWheel(button, dir, x, y);
 }
 
 void WindowReshape(int width, int height)
 {
-	WindowManager* windowManager = StaticData::GetWindowManager();
-	if (windowManager)
-		windowManager->Reshape(width, height);
+	//WindowManager* windowManager = StaticData::GetWindowManager();
+	//if (windowManager)
+	//	windowManager->Reshape(width, height);
 }
 
 
 void RenderWindow()
 {
-	WindowManager* windowManager = StaticData::GetWindowManager();
-	if (windowManager)
-		windowManager->Render();
+	//WindowManager* windowManager = StaticData::GetWindowManager();
+	//if (windowManager)
+	//	windowManager->Render();
 }

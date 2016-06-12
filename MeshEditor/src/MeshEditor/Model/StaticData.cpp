@@ -1,18 +1,18 @@
 #include "MeshEditor\Model\StaticData.h"
 
 using namespace MeshEditor::Model;
-using namespace GUI::Core;
+using namespace GUI::Interfaces;
 using namespace Rendering::Core;
 
-WindowManager* staticWindowManager;
+Window* staticWindowManager;
 MeshRenderer* staticMeshRenderer;
 
-void StaticData::SetWindowManager(WindowManager* windowManager)
+void StaticData::SetWindowManager(Window* windowManager)
 {
 	staticWindowManager = windowManager;
 }
 
-WindowManager* StaticData::GetWindowManager()
+Window* StaticData::GetWindowManager()
 {
 	return staticWindowManager;
 }

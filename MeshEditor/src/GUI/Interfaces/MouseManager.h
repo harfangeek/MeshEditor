@@ -8,7 +8,7 @@ namespace GUI
 
 	namespace Interfaces
 	{
-		class IMouseManager
+		class MouseManager
 		{
 		public:
 			virtual int GetX() = 0;

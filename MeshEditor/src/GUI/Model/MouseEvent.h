@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GUI\Model\Event.h"
-#include "GUI\Interfaces\IMouseManager.h"
+#include "GUI\Interfaces\MouseManager.h"
 
 namespace GUI
 {
