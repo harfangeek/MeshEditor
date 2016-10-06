@@ -1,21 +1,29 @@
 #pragma once
 
 #include "GUI\Model\Event.h"
+#include "GUI\Interfaces\Window.h"
 
 namespace GUI
 {
 	namespace Model
 	{
+		enum WindowMessages {
+			WINDOW_RESIZED,
+			WINDOW_RENDERED
+		};
+
 		class WindowEvent : public Event
 		{
 		public:
-			WindowEvent(int eventType);
+			WindowEvent(GUI::Interfaces::Window* window, WindowMessages msg);
 
+			WindowMessages msg;
+			int windowId;
 			int width;
 			int height;
-
-			static const int RESHAPE = 101;
-			static const int RENDER = 102;
+			int prevWidth;
+			int prevHeight;
+			double timeSinceLastFrame;
 		};
 	}
 }

@@ -11,31 +11,20 @@ namespace GUI
 	{
 		class GlutWindow : public GUI::Interfaces::Window
 		{
-		private:
-			friend class GlutWindowManager;
-			GlutWindow(int width, int height, int posX, int posY, std::string title);
-
-			// Instance data
-			int id;
-			int width;
-			int height;
-			int x;
-			int y;
-			std::string title;
-			//Rendering::Core::MeshRenderer* meshRenderer;
-
-			void CreateGlutWindow();
-
 		public:
-			
+			GlutWindow(int id, int width, int height, int posX, int posY, std::string title);
 			virtual ~GlutWindow();
 
+			virtual void Resize(int width, int height);
+			virtual void Move(int x, int y);
+			virtual void SetTitle(std::string title);
+			virtual void Render();
+			virtual int GetGlutId();
 
-			/*void Reshape(int width, int height);
-			void Render();
+		protected:
+			int glutId;
 
-			void SetMeshRenderer(Rendering::Core::MeshRenderer* meshRenderer);
-			Rendering::Core::MeshRenderer* GetMeshRenderer();*/
+			void SetWindow();
 		};
 	}
 }

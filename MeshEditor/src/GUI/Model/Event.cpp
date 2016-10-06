@@ -1,11 +1,11 @@
 #include "GUI\Model\Event.h"
+#include "GUI\Interfaces\EventDispatcher.h"
 
 using namespace GUI;
 using namespace GUI::Model;
 
-Event::Event(int eventType)
+Event::Event(GUI::Interfaces::EventDispatcher* src, MessageType msgType) : src(src), msgType(msgType)
 {
-	type = eventType;
 }
 
 Event::~Event()

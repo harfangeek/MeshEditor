@@ -1,10 +1,9 @@
 #include "MeshEditor\Model\StaticData.h"
 
 using namespace MeshEditor::Model;
-using namespace GUI::Interfaces;
 using namespace Rendering::Core;
 
-Window* staticWindowManager;
+/*Window* staticWindowManager;
 MeshRenderer* staticMeshRenderer;
 
 void StaticData::SetWindowManager(Window* windowManager)
@@ -25,4 +24,4 @@ void StaticData::SetMeshRenderer(MeshRenderer* meshRenderer)
 MeshRenderer* StaticData::GetMeshRenderer()
 {
 	return staticMeshRenderer;
-}
+}*/

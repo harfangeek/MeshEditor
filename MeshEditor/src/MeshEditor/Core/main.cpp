@@ -59,8 +59,11 @@ int main(int argc, char** argv)
 	return 0;
 }*/
 
-#include "GUI\Core\GlutWindowManager.h"
 #include "GUI\Interfaces\Window.h"
+#include "GUI\Interfaces\Mouse.h"
+
+#include "GUI\Core\GlutWindowManager.h"
+#include "GUi\Core\GlutMouse.h"
 
 using namespace GUI::Core;
 using namespace GUI::Interfaces;
@@ -69,10 +72,15 @@ int main(int argc, char** argv)
 {
 	GlutWindowManager* winMgr = GlutWindowManager::GetInstance();
 
+
 	winMgr->Init(argc, argv);
-	winMgr->NewWindow(500, 500, 200, 200, "Window 1");
-	winMgr->NewWindow(50, 500, 400, 400, "Window 2");
-	winMgr->NewWindow(500, 50, 600, 600, "Window 3");
+	winMgr->NewWindow(1, 500, 500, 200, 200, "Window 1");
+
+	//Mouse* mouse = GlutMouse::GetInstance();
+
+	winMgr->NewWindow(2, 50, 500, 400, 400, "Window 2");
+	winMgr->NewWindow(3, 500, 50, 600, 600, "Window 3");
+	
 	winMgr->Display();
 
 	return 0;

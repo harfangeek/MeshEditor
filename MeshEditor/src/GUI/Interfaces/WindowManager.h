@@ -10,7 +10,8 @@ namespace GUI
 		class WindowManager
 		{
 		public:
-			virtual Window* NewWindow(int width, int height, int posX, int posY, std::string title) = 0;
+			virtual GUI::Interfaces::Window* NewWindow(int id, int width, int height, int posX, int posY, std::string title) = 0;
+			virtual GUI::Interfaces::Window* GetWindow(int id) = 0;
 
 		protected:
 

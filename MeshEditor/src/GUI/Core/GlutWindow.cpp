@@ -1,32 +1,16 @@
-#include "GUI\Core\GlutWindow.h"
 #include "Dependencies\freeglut\include\freeglut.h"
-
 #include <iostream>
 
+#include "GUI\Core\GlutWindow.h"
+
 using namespace GUI::Core;
-//using namespace Rendering::Core;
 using namespace std;
 
-/*void Reshape2(int width, int height)
+GlutWindow::GlutWindow(int id, int width, int height, int x, int y, string title) : Window(id, width, height, x, y, title)
 {
-	std::cout << glutGetWindow() << " : " << width << " / " << height << std::endl;
-}
-
-void GlutWindow::MouseClick3(int button, int state, int x, int y)
-{
-	std::cout << glutGetWindow() << " : " << x << " / " << y << std::endl;
-}*/
-
-GlutWindow::GlutWindow(int width, int height, int posX, int posY, string title)
-{
-	this->width = width;
-	this->height = height;
-	x = posX;
-	y = posY;
-	this->title = title;
-	//meshRenderer = NULL;
-
-	CreateGlutWindow();
+	glutId = glutCreateWindow(title.c_str());
+	glutInitWindowPosition(x, y);
+	glutInitWindowSize(width, height);
 }
 
 GlutWindow::~GlutWindow()
@@ -34,41 +18,39 @@ GlutWindow::~GlutWindow()
 
 }
 
-void GlutWindow::CreateGlutWindow()
+int GlutWindow::GetGlutId()
 {
-	id = glutCreateWindow(title.c_str());
-	glutInitWindowPosition(x, y);
+	return glutId;
+}
+
+void GlutWindow::SetWindow()
+{
+	glutSetWindow(glutId);
+}
+
+void GlutWindow::Resize(int width, int height)
+{	
+	SetWindow();
 	glutInitWindowSize(width, height);
-
-	//(MouseClick3);
+	Window::Resize(width, height);
 }
 
-/*void GlutWindow::Reshape(int width, int height)
+void GlutWindow::Move(int x, int y)
 {
-	std::cout << glutGetWindow() << " : " << width << " / " << height << std::endl;
-}*/
-
-/*void GlutWindow::SetMeshRenderer(MeshRenderer* meshRenderer)
-{
-	this->meshRenderer = meshRenderer;
+	SetWindow();
+	glutInitWindowPosition(x, y);
+	Window::Move(x, y);
 }
 
-MeshRenderer* GlutWindow::GetMeshRenderer()
+void GlutWindow::SetTitle(std::string title)
 {
-	return meshRenderer;
+	SetWindow();
+	glutSetWindowTitle(title.c_str());
+	Window::SetTitle(title);
 }
 
 void GlutWindow::Render()
 {
-	if (meshRenderer)
-	{
-		meshRenderer->Display();
-		glutSwapBuffers();
-	}
+	SetWindow();
+	Window::Render();
 }
-
-void GlutWindow::Reshape(int width, int height)
-{
-	if (meshRenderer)
-		meshRenderer->SetViewPort(width, height);
-}*/

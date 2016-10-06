@@ -49,12 +49,12 @@ In order to compile and run the project you need to compile first freeglut and g
   - [ ] Mesh improvement (Catmull Clarck)
   - [ ] Mesh simplification
 
-- GUI : To be defined
+- GUI
   - Event architecture:
     - [x] Base architecture (dispatcher/listener interfaces)
-    - [ ] IWindowManager interface + freeglut implementation
-    - [ ] IMouseManager interface + freeglut implementation
-    - [ ] IKeyboardManager interface + freeglut implementation
+    - [x] Window manager + window classes + window events
+    - [ ] Mouse class + mouse events
+    - [ ] Keyboard class + keyboard events
   - Multi window support:
     - [ ] Open same mesh in multiple window
     - [ ] Lock/Unlock synchronized manipulation

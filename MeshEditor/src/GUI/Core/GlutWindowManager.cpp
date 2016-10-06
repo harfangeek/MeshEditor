@@ -37,9 +37,63 @@ void GlutWindowManager::Display()
 	glutMainLoop();
 }
 
-Window* GlutWindowManager::NewWindow(int width, int height, int posX, int posY, string title)
+Window* GlutWindowManager::GetWindow(int id)
 {
-	GlutWindow* window = new GlutWindow(width, height, posX, posY, title);
+	Window* window = NULL;
+
+	if (windows.count(id) != 0)
+		window = windows[id];
 
 	return window;
+}
+
+GlutWindow* GlutWindowManager::GetWindowFromGlutId(int glutId)
+{
+	GlutWindow* window = NULL;
+
+	if (glutWindows.count(glutId) != 0)
+		window = glutWindows[glutId];
+
+	return window;
+}
+
+GlutWindow* GlutWindowManager::GetCurrentWindow()
+{
+	GlutWindow* window = NULL;
+	int glutId = glutGetWindow();
+
+	if (instance != NULL)
+		window = instance->GetWindowFromGlutId(glutId);
+
+	return window;
+}
+
+Window* GlutWindowManager::NewWindow(int id, int width, int height, int posX, int posY, string title)
+{
+	GlutWindow* window = NULL;
+
+	if (windows.count(id) == 0)
+	{
+		window = new GlutWindow(id, width, height, posX, posY, title);
+		windows[id] = window;
+		glutWindows[window->GetGlutId()] = window;
+		glutDisplayFunc(GlutWindowManager::RenderWindow);
+		glutReshapeFunc(GlutWindowManager::WindowReshape);
+	}	
+
+	return window;
+}
+
+void GlutWindowManager::RenderWindow()
+{
+	GlutWindow* window = GetCurrentWindow();
+	if (window)
+		window->Render();
+}
+
+void GlutWindowManager::WindowReshape(int width, int height)
+{
+	GlutWindow* window = GetCurrentWindow();
+	if (window)
+		window->Resize(width, height);
 }

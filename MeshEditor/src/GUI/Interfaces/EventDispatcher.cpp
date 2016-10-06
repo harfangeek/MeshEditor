@@ -47,7 +47,7 @@ void EventDispatcher::DetachAll()
 	listeners.clear();
 }
 
-void EventDispatcher::Notify(Model::Event* event)
+void EventDispatcher::Notify(const Model::Event* event)
 {
 	for (std::vector<EventListener*>::iterator it = listeners.begin(); it != listeners.end(); it++)
 		(*it)->OnEvent(this, event);

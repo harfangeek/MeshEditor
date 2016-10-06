@@ -20,7 +20,7 @@ namespace GUI
 			void OnAttach(GUI::Interfaces::EventDispatcher* dispatcher);			
 			void OnDetach(GUI::Interfaces::EventDispatcher* dispatcher);
 			// Called when an event is send by a dispatcher. Need to be implemented by subclasses
-			virtual void OnEvent(GUI::Interfaces::EventDispatcher* source, GUI::Model::Event* event) = 0;
+			virtual void OnEvent(GUI::Interfaces::EventDispatcher* source, const GUI::Model::Event* event) = 0;
 
 		protected:
 			// To prevent instanciation of the interface

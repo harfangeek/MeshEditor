@@ -1,29 +1,33 @@
 #pragma once
 
 #include "GUI\Model\Event.h"
-#include "GUI\Interfaces\MouseManager.h"
+#include "GUI\Interfaces\Mouse.h"
 
 namespace GUI
 {
 	namespace Model
 	{
-		enum MouseButton{ LEFT, RIGHT, MIDDLE };
+		enum MouseMessages { LEFT_BUTTON_PRESSED, 
+							  LEFT_BUTTON_RELEASED,
+							  RIGHT_BUTTON_PRESSED,
+							  RIGHT_BUTTON_RELEASED,
+							  MIDDLE_BUTTON_PRESSED,
+							  MIDDLE_BUTTON_RELEASED,
+							  WHEEL_SCROLL,
+							  MOUSE_MOVE};
 
 		class MouseEvent : public Event
 		{
-		public:
-			MouseEvent(int eventType);
+		/*public:
+			MouseEvent(MouseMessages msg);
 
+			MouseMessages msg;
 			int x;
 			int y;
 			int dx;
 			int dy;
 			int wheel; // > 0 => up, < 0 => down
-			GUI::Model::MouseButton button;
-
-			static const int CLICK = 201; // Set x, y and button
-			static const int MOVE = 202; // Set x, y, dx and dy
-			static const int WHEEL = 203; // Set wheel
+			GUI::Interfaces::MouseButton button*/
 		};
 	}
 }

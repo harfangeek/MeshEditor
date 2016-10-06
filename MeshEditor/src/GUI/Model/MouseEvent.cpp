@@ -2,6 +2,6 @@
 
 using namespace GUI::Model;
 
-MouseEvent::MouseEvent(int eventType) : Event(eventType)
+/*MouseEvent::MouseEvent(MouseMessages msg) : msg(msg)
 {
-}
+}*/

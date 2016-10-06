@@ -16,12 +16,13 @@
     <None Include="Shaders\vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GUI\Core\GlutKeyboardManager.cpp" />
-    <ClCompile Include="src\GUI\Core\GlutMouseManager.cpp" />
+    <ClCompile Include="src\GUI\Core\GlutKeyboard.cpp" />
+    <ClCompile Include="src\GUI\Core\GlutMouse.cpp" />
     <ClCompile Include="src\GUI\Core\GlutWindow.cpp" />
     <ClCompile Include="src\GUI\Core\GlutWindowManager.cpp" />
     <ClCompile Include="src\GUI\Interfaces\EventDispatcher.cpp" />
     <ClCompile Include="src\GUI\Interfaces\EventListener.cpp" />
+    <ClCompile Include="src\GUI\Interfaces\Window.cpp" />
     <ClCompile Include="src\GUI\Model\Event.cpp" />
     <ClCompile Include="src\GUI\Model\KeyboardEvent.cpp" />
     <ClCompile Include="src\GUI\Model\MouseEvent.cpp" />
@@ -39,14 +40,14 @@
     <ClCompile Include="src\Rendering\Operators\ObjReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GUI\Core\GlutKeyboardManager.h" />
-    <ClInclude Include="src\GUI\Core\GlutMouseManager.h" />
+    <ClInclude Include="src\GUI\Core\GlutKeyboard.h" />
+    <ClInclude Include="src\GUI\Core\GlutMouse.h" />
     <ClInclude Include="src\GUI\Core\GlutWindow.h" />
     <ClInclude Include="src\GUI\Core\GlutWindowManager.h" />
     <ClInclude Include="src\GUI\Interfaces\EventDispatcher.h" />
     <ClInclude Include="src\GUI\Interfaces\EventListener.h" />
-    <ClInclude Include="src\GUI\Interfaces\KeyboardManager.h" />
-    <ClInclude Include="src\GUI\Interfaces\MouseManager.h" />
+    <ClInclude Include="src\GUI\Interfaces\Keyboard.h" />
+    <ClInclude Include="src\GUI\Interfaces\Mouse.h" />
     <ClInclude Include="src\GUI\Interfaces\Window.h" />
     <ClInclude Include="src\GUI\Interfaces\WindowManager.h" />
     <ClInclude Include="src\GUI\Model\Event.h" />

@@ -27,7 +27,7 @@ namespace GUI
 			virtual ~EventDispatcher();
 
 			// Send an event to all listeners
-			virtual void Notify(GUI::Model::Event* event);
+			virtual void Notify(const GUI::Model::Event* evt);
 
 			// List of listeners currently attached to this dispatcher
 			std::vector<GUI::Interfaces::EventListener*> listeners;

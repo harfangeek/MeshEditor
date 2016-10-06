@@ -106,12 +106,6 @@
     <ClCompile Include="src\GUI\Model\WindowEvent.cpp">
       <Filter>Src\GUI\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Core\GlutKeyboardManager.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Core\GlutMouseManager.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\GUI\Core\GlutWindow.cpp">
       <Filter>Src\GUI\Core</Filter>
     </ClCompile>
@@ -122,6 +116,15 @@
       <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Interfaces\EventListener.cpp">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Core\GlutKeyboard.cpp">
+      <Filter>Src\GUI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Core\GlutMouse.cpp">
+      <Filter>Src\GUI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\Window.cpp">
       <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
@@ -168,12 +171,6 @@
     <ClInclude Include="src\GUI\Model\WindowEvent.h">
       <Filter>Src\GUI\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\Core\GlutKeyboardManager.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Core\GlutMouseManager.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\GUI\Core\GlutWindow.h">
       <Filter>Src\GUI\Core</Filter>
     </ClInclude>
@@ -186,16 +183,22 @@
     <ClInclude Include="src\GUI\Interfaces\EventListener.h">
       <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\KeyboardManager.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\MouseManager.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\Window.h">
       <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\WindowManager.h">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Core\GlutKeyboard.h">
+      <Filter>Src\GUI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Core\GlutMouse.h">
+      <Filter>Src\GUI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\Keyboard.h">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\Mouse.h">
       <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>

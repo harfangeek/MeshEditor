@@ -2,15 +2,22 @@
 
 namespace GUI
 {
+	namespace Interfaces {
+		class EventDispatcher;
+	}
+
 	namespace Model
 	{
+		enum MessageType { WINDOW, MOUSE, KEYBOARD };
+
 		class Event
 		{
 		public:
-			Event(int eventType);
+			Event(GUI::Interfaces::EventDispatcher* src, MessageType eventType);
 			virtual ~Event();
 
-			int type;
+			GUI::Interfaces::EventDispatcher* src;
+			MessageType msgType;
 		};
 	}
 }
