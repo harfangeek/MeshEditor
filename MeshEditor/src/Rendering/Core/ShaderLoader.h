@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "Dependencies\glew\include\glew.h"
-#include "Dependencies\freeglut\include\freeglut.h"
 
 namespace Rendering
 {
