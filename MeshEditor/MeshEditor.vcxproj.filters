@@ -127,6 +127,9 @@
     <ClCompile Include="src\GUI\Interfaces\Window.cpp">
       <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="src\MeshEditor\Core\WindowRenderer.cpp">
+      <Filter>Src\MeshEditor\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshEditor\Model\StaticData.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\Mouse.h">
       <Filter>Src\GUI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Core\WindowRenderer.h">
+      <Filter>Src\MeshEditor\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

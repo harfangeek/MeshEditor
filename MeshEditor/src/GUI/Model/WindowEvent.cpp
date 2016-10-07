@@ -5,6 +5,7 @@ using namespace GUI::Model;
 using namespace GUI::Interfaces;
 
 WindowEvent::WindowEvent(GUI::Interfaces::Window* window, WindowMessages msg) : Event(window, MessageType::WINDOW),
+																				msg(msg),
 						 													    windowId(window->GetId()),
 																				width(window->GetWidth()),
 																				height(window->GetHeight()),

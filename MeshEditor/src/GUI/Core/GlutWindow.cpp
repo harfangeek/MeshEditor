@@ -53,4 +53,5 @@ void GlutWindow::Render()
 {
 	SetWindow();
 	Window::Render();
+	glutSwapBuffers();
 }
