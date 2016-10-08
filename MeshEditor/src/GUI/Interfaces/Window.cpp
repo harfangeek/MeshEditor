@@ -57,9 +57,11 @@ double Window::GetTimeSinceLastFrame()
 
 void Window::Resize(int width, int height)
 {
+	int prevWidth = this->width;
+	int prevHeight = this->height;
 	this->width = width;
 	this->height = height;
-	WindowEvent event(this, WindowMessages::WINDOW_RESIZED);
+	WindowEvent event(this, WindowMessages::WINDOW_RESIZED, prevWidth, prevHeight);
 	Notify(&event);
 }
 

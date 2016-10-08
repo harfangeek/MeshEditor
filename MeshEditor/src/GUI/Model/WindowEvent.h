@@ -15,7 +15,7 @@ namespace GUI
 		class WindowEvent : public Event
 		{
 		public:
-			WindowEvent(GUI::Interfaces::Window* window, WindowMessages msg);
+			WindowEvent(GUI::Interfaces::Window* window, WindowMessages msg, int prevWidth=0, int prevHeight=0);
 
 			WindowMessages msg;
 			int windowId;
