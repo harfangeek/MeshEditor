@@ -1,5 +1,6 @@
 #include "GUI\Core\GlutWindowManager.h"
 #include "GUI\Core\GlutWindow.h"
+#include "GUI\Core\GlutMouse.h"
 
 using namespace GUI::Core;
 using namespace GUI::Interfaces;
@@ -17,7 +18,7 @@ GlutWindowManager* GlutWindowManager::GetInstance()
 
 GlutWindowManager::GlutWindowManager()
 {
-
+	mouse = GlutMouse::GetInstance();
 }
 
 GlutWindowManager::~GlutWindowManager()
@@ -35,16 +36,6 @@ void GlutWindowManager::Init(int argc, char** argv, unsigned int displayMode)
 void GlutWindowManager::Display()
 {
 	glutMainLoop();
-}
-
-Window* GlutWindowManager::GetWindow(int id)
-{
-	Window* window = NULL;
-
-	if (windows.count(id) != 0)
-		window = windows[id];
-
-	return window;
 }
 
 GlutWindow* GlutWindowManager::GetWindowFromGlutId(int glutId)
@@ -71,14 +62,17 @@ GlutWindow* GlutWindowManager::GetCurrentWindow()
 Window* GlutWindowManager::NewWindow(int id, int width, int height, int posX, int posY, string title)
 {
 	GlutWindow* window = NULL;
-
-	if (windows.count(id) == 0)
+	
+	window = new GlutWindow(id, width, height, posX, posY, title);
+	if (window != NULL)
 	{
-		window = new GlutWindow(id, width, height, posX, posY, title);
-		windows[id] = window;
 		glutWindows[window->GetGlutId()] = window;
+		
 		glutDisplayFunc(GlutWindowManager::RenderWindow);
 		glutReshapeFunc(GlutWindowManager::WindowReshape);
+		
+		glutMouseFunc(GlutWindowManager::MouseClick);
+		glutPassiveMotionFunc(GlutWindowManager::MouseMove);
 	}	
 
 	return window;
@@ -97,3 +91,51 @@ void GlutWindowManager::WindowReshape(int width, int height)
 	if (window)
 		window->Resize(width, height);
 }
+
+MouseButton GlutWindowManager::GetMouseButton(int glutButton)
+{
+	switch (glutButton)
+	{
+	case GLUT_RIGHT_BUTTON:
+		return MouseButton::RIGHT_BUTTON;
+	case GLUT_MIDDLE_BUTTON:
+		return MouseButton::MIDDLE_BUTTON;
+	default:
+		return MouseButton::LEFT_BUTTON;
+	}
+}
+
+void GlutWindowManager::MouseClick(int button, int state, int x, int y)
+{
+	GlutWindow* window = GetCurrentWindow();
+	if (window && instance)
+	{
+		GlutMouse* mouse = (GlutMouse*)instance->GetMouse();
+		if (mouse)
+		{
+			if (button == 3 || button == 4)
+			{
+				mouse->ScrollWheel(window->GetId(), button == 3 ? -1 : 1);
+			}
+			else
+			{
+				if (state == GLUT_DOWN)
+					mouse->PressButton(window->GetId(), GetMouseButton(button));
+				else if (state == GLUT_UP)
+					mouse->ReleaseButton(window->GetId(), GetMouseButton(button));
+			}
+		}
+	}
+}
+
+void GlutWindowManager::MouseMove(int x, int y)
+{
+	GlutWindow* window = GetCurrentWindow();
+	if (window && instance)
+	{
+		GlutMouse* mouse = (GlutMouse*)instance->GetMouse();
+		if (mouse)
+			mouse->Move(window->GetId(), x, y);
+	}
+}
+

@@ -7,25 +7,37 @@ namespace GUI
 {
 	namespace Model
 	{
-		enum MouseMessages { LEFT_BUTTON_PRESSED, 
-							 LEFT_BUTTON_RELEASED,
-							 RIGHT_BUTTON_PRESSED,
-							 RIGHT_BUTTON_RELEASED,
-							 MIDDLE_BUTTON_PRESSED,
-							 MIDDLE_BUTTON_RELEASED,
-							 WHEEL_SCROLL,
-							 MOUSE_MOVE};
+		enum MouseMessage {
+							 MOUSE_MOVE,
+							 MOUSE_DRAG,
+							 BUTTON_PRESSED,
+							 BUTTON_RELEASED,
+							 WHEEL_SCROLL
+		};
 
 		class MouseEvent : public Event
 		{
 		public:
-			MouseEvent(MouseMessages msg);
+			MouseEvent(GUI::Interfaces::Mouse* mouse, MouseMessage msg,
+					   int windowId,
+					   int x, int y, 
+					   int dx, int dy, 
+					   double sx, double sy, 
+					   int wheel, GUI::Interfaces::MouseButton button);
 
-			MouseMessages msg;
-			int x;
+			static MouseEvent MouseMove(GUI::Interfaces::Mouse* mouse, int windowId, int dx, int dy);
+			static MouseEvent ButtonPressed(GUI::Interfaces::Mouse* mouse, int windowId, GUI::Interfaces::MouseButton button);
+			static MouseEvent ButtonReleased(GUI::Interfaces::Mouse* mouse, int windowId, GUI::Interfaces::MouseButton button);
+			static MouseEvent WheelScroll(GUI::Interfaces::Mouse* mouse, int windowId, int wheel);
+
+			MouseMessage msg;
+			int windowId;
+			int x; // New position
 			int y;
-			int dx;
+			int dx; // Movement in pixel
 			int dy;
+			double sx; // Speed in pixel/s
+			double sy;
 			int wheel; // > 0 => up, < 0 => down
 			GUI::Interfaces::MouseButton button;
 		};

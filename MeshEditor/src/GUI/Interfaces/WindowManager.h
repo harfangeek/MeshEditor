@@ -1,7 +1,9 @@
 #pragma once
 
 #include "GUI\Interfaces\Window.h"
+#include "GUI\Interfaces\Mouse.h"
 #include <string>
+#include <map>
 
 namespace GUI
 {
@@ -10,11 +12,13 @@ namespace GUI
 		class WindowManager
 		{
 		public:
-			virtual GUI::Interfaces::Window* NewWindow(int id, int width, int height, int posX, int posY, std::string title) = 0;
-			virtual GUI::Interfaces::Window* GetWindow(int id) = 0;
+			virtual GUI::Interfaces::Window* NewWindow(int id, int width, int height, int posX, int posY, std::string title);
+			virtual GUI::Interfaces::Window* GetWindow(int id);
+			virtual GUI::Interfaces::Mouse* GetMouse();
 
 		protected:
-
+			std::map<int, GUI::Interfaces::Window*> windows;
+			GUI::Interfaces::Mouse* mouse;
 		};
 	}
 }

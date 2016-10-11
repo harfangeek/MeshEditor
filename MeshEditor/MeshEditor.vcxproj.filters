@@ -130,6 +130,12 @@
     <ClCompile Include="src\MeshEditor\Core\WindowRenderer.cpp">
       <Filter>Src\MeshEditor\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\Mouse.cpp">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp">
+      <Filter>Src\GUI\Interfaces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshEditor\Model\StaticData.h">

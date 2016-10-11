@@ -22,7 +22,9 @@
     <ClCompile Include="src\GUI\Core\GlutWindowManager.cpp" />
     <ClCompile Include="src\GUI\Interfaces\EventDispatcher.cpp" />
     <ClCompile Include="src\GUI\Interfaces\EventListener.cpp" />
+    <ClCompile Include="src\GUI\Interfaces\Mouse.cpp" />
     <ClCompile Include="src\GUI\Interfaces\Window.cpp" />
+    <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp" />
     <ClCompile Include="src\GUI\Model\Event.cpp" />
     <ClCompile Include="src\GUI\Model\KeyboardEvent.cpp" />
     <ClCompile Include="src\GUI\Model\MouseEvent.cpp" />
