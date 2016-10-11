@@ -28,7 +28,7 @@ int Mouse::GetY()
 	return y;
 }
 
-bool Mouse::GetButtonState(MouseButton button)
+bool Mouse::IsButtonPressed(MouseButton button)
 {
 	return buttons[button];
 }

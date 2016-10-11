@@ -20,7 +20,7 @@ namespace GUI
 			virtual ~Mouse();
 			virtual int GetX();
 			virtual int GetY();
-			virtual bool GetButtonState(MouseButton button);
+			virtual bool IsButtonPressed(MouseButton button);
 			virtual double GetTimeSinceLastMovement();
 			
 			virtual void Move(int windowId, int x, int y);
