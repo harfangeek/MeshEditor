@@ -9,7 +9,6 @@ namespace GUI
 	{
 		enum MouseMessage {
 							 MOUSE_MOVE,
-							 MOUSE_DRAG,
 							 BUTTON_PRESSED,
 							 BUTTON_RELEASED,
 							 WHEEL_SCROLL
