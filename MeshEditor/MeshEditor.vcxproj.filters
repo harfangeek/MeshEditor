@@ -23,9 +23,6 @@
     <Filter Include="Src\GUI\Model">
       <UniqueIdentifier>{ec5d73a7-6e58-47c0-bb3a-6c1982cd299b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\GUI\Operators">
-      <UniqueIdentifier>{bfd918c4-3a50-46f2-8628-f49bfcc98e74}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\GUI\Core">
       <UniqueIdentifier>{ca168251-b1cc-4844-987d-c8fd7cfde176}</UniqueIdentifier>
     </Filter>
@@ -136,6 +133,9 @@
     <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp">
       <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="src\MeshEditor\Operators\MouseManipulator.cpp">
+      <Filter>Src\MeshEditor\Operators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshEditor\Model\StaticData.h">
@@ -212,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="src\MeshEditor\Core\WindowRenderer.h">
       <Filter>Src\MeshEditor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Operators\MouseManipulator.h">
+      <Filter>Src\MeshEditor\Operators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -27,8 +27,8 @@ GlutMouse::~GlutMouse()
 
 }
 
-void GlutMouse::Move(int windowId, int x, int y)
+void GlutMouse::Move(GUI::Interfaces::Window* window, int x, int y)
 {
 	//glutWarpPointer()
-	Mouse::Move(windowId, x, y);
+	Mouse::Move(window, x, y);
 }

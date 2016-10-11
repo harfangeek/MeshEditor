@@ -73,6 +73,7 @@ Window* GlutWindowManager::NewWindow(int id, int width, int height, int posX, in
 		
 		glutMouseFunc(GlutWindowManager::MouseClick);
 		glutPassiveMotionFunc(GlutWindowManager::MouseMove);
+		glutMotionFunc(GlutWindowManager::MouseMove);
 	}	
 
 	return window;
@@ -115,14 +116,14 @@ void GlutWindowManager::MouseClick(int button, int state, int x, int y)
 		{
 			if (button == 3 || button == 4)
 			{
-				mouse->ScrollWheel(window->GetId(), button == 3 ? -1 : 1);
+				mouse->ScrollWheel(window, button == 3 ? 1 : -1);
 			}
 			else
 			{
 				if (state == GLUT_DOWN)
-					mouse->PressButton(window->GetId(), GetMouseButton(button));
+					mouse->PressButton(window, GetMouseButton(button));
 				else if (state == GLUT_UP)
-					mouse->ReleaseButton(window->GetId(), GetMouseButton(button));
+					mouse->ReleaseButton(window, GetMouseButton(button));
 			}
 		}
 	}
@@ -135,7 +136,7 @@ void GlutWindowManager::MouseMove(int x, int y)
 	{
 		GlutMouse* mouse = (GlutMouse*)instance->GetMouse();
 		if (mouse)
-			mouse->Move(window->GetId(), x, y);
+			mouse->Move(window, x, y);
 	}
 }
 

@@ -2,6 +2,7 @@
 
 #include <ctime>
 #include "GUI\Interfaces\EventDispatcher.h"
+#include "GUI\Interfaces\Window.h"
 
 namespace GUI
 {
@@ -23,10 +24,10 @@ namespace GUI
 			virtual bool IsButtonPressed(MouseButton button);
 			virtual double GetTimeSinceLastMovement();
 			
-			virtual void Move(int windowId, int x, int y);
-			virtual void PressButton(int windowId, MouseButton button);
-			virtual void ReleaseButton(int windowId, MouseButton button);
-			virtual void ScrollWheel(int windowId, int value);
+			virtual void Move(GUI::Interfaces::Window* window, int x, int y);
+			virtual void PressButton(GUI::Interfaces::Window* window, MouseButton button);
+			virtual void ReleaseButton(GUI::Interfaces::Window* window, MouseButton button);
+			virtual void ScrollWheel(GUI::Interfaces::Window* window, int value);
 
 		protected:
 

@@ -14,7 +14,7 @@ namespace GUI
 			static GlutMouse* GetInstance();
 			virtual ~GlutMouse();
 
-			virtual void Move(int windowId, int x, int y);
+			virtual void Move(GUI::Interfaces::Window* window, int x, int y);
 
 		private:
 			GlutMouse();

@@ -32,6 +32,7 @@
     <ClCompile Include="src\MeshEditor\Core\main.cpp" />
     <ClCompile Include="src\MeshEditor\Core\WindowRenderer.cpp" />
     <ClCompile Include="src\MeshEditor\Model\StaticData.cpp" />
+    <ClCompile Include="src\MeshEditor\Operators\MouseManipulator.cpp" />
     <ClCompile Include="src\Rendering\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Rendering\Core\ShaderLoader.cpp" />
     <ClCompile Include="src\Rendering\Model\Face.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="src\GUI\Model\WindowEvent.h" />
     <ClInclude Include="src\MeshEditor\Core\WindowRenderer.h" />
     <ClInclude Include="src\MeshEditor\Model\StaticData.h" />
+    <ClInclude Include="src\MeshEditor\Operators\MouseManipulator.h" />
     <ClInclude Include="src\Rendering\Core\MeshRenderer.h" />
     <ClInclude Include="src\Rendering\Core\ShaderLoader.h" />
     <ClInclude Include="src\Rendering\Model\Face.h" />

@@ -39,32 +39,32 @@ double Mouse::GetTimeSinceLastMovement()
 	return difftime(currTime, lastMovement);
 }
 
-void Mouse::Move(int windowId, int x, int y)
+void Mouse::Move(GUI::Interfaces::Window* window, int x, int y)
 {
 	int dx = x - this->x;
 	int dy = y - this->y;
 	this->x = x;
 	this->y = y;
-	MouseEvent event = MouseEvent::MouseMove(this, windowId, dx, dy);
+	MouseEvent event = MouseEvent::MouseMove(this, window, dx, dy);
 	Notify(&event);
 }
 
-void Mouse::PressButton(int windowId, MouseButton button)
+void Mouse::PressButton(GUI::Interfaces::Window* window, MouseButton button)
 {
 	buttons[button] = true;
-	MouseEvent event = MouseEvent::ButtonPressed(this, windowId, button);
+	MouseEvent event = MouseEvent::ButtonPressed(this, window, button);
 	Notify(&event);
 }
 
-void Mouse::ReleaseButton(int windowId, MouseButton button)
+void Mouse::ReleaseButton(GUI::Interfaces::Window* window, MouseButton button)
 {
 	buttons[button] = false;
-	MouseEvent event = MouseEvent::ButtonPressed(this, windowId, button);
+	MouseEvent event = MouseEvent::ButtonPressed(this, window, button);
 	Notify(&event);
 }
 
-void Mouse::ScrollWheel(int windowId, int value)
+void Mouse::ScrollWheel(GUI::Interfaces::Window* window, int value)
 {
-	MouseEvent event = MouseEvent::WheelScroll(this, windowId, value);
+	MouseEvent event = MouseEvent::WheelScroll(this, window, value);
 	Notify(&event);
 }
