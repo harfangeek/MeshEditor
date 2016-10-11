@@ -50,11 +50,11 @@ In order to compile and run the project you need to compile first freeglut and g
   - [ ] Mesh simplification
 
 - GUI
-  - Event architecture:
+  - Windowing architecture:
     - [x] Base architecture (dispatcher/listener interfaces)
     - [x] Window manager + window classes + window events
-    - [ ] Mouse class + mouse events
-    - [ ] Keyboard class + keyboard events
+    - [x] Mouse classes + mouse events
+    - [ ] Keyboard classes + keyboard events
   - Multi window support:
     - [ ] Open same mesh in multiple window
     - [ ] Lock/Unlock synchronized manipulation
