@@ -11,7 +11,7 @@ namespace MeshEditor
 		{
 		public:
 			WindowRenderer(Rendering::Core::MeshRenderer* meshRenderer);
-			virtual void OnEvent(GUI::Interfaces::EventDispatcher* source, const GUI::Model::Event* event);
+			virtual void OnEvent(const GUI::Model::Event* event);
 
 		private:
 			Rendering::Core::MeshRenderer* meshRenderer;

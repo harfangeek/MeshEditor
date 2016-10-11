@@ -8,7 +8,7 @@ WindowRenderer::WindowRenderer(Rendering::Core::MeshRenderer* meshRenderer) : me
 {
 }
 
-void WindowRenderer::OnEvent(GUI::Interfaces::EventDispatcher* source, const GUI::Model::Event* event)
+void WindowRenderer::OnEvent(const GUI::Model::Event* event)
 {
 	if (event->msgType == MessageType::WINDOW && meshRenderer)
 	{
