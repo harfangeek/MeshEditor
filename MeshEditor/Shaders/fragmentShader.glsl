@@ -9,6 +9,7 @@ uniform uint light_angle;		// For spot light
 
 in vec4 normal;
 in vec4 position;
+flat in int selected;
 
 out vec4 out_color;
 
@@ -67,5 +68,10 @@ void main (void)
 	else // Uniform
 	{
 		out_color = mesh_color;	
+	}
+
+	if(selected)
+	{
+		out_color = vec4(1.0, 0.0, 0.0, 1.0);
 	}
 }

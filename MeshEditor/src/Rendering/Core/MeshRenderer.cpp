@@ -62,6 +62,8 @@ void MeshRenderer::Init()
 		std::cout << "GLEW version is 3.3" << std::endl;
 	else
 		std::cout << "Glew 3.3 not supported" << std::endl;
+
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 	
 	// Create shaders
 	Rendering::Core::ShaderLoader shaderLoader;
@@ -85,6 +87,10 @@ void MeshRenderer::UpdateMeshConnectivity()
 {
 	// Update vertices/faces/normals arrays from half-edge structure
 	Operators::MeshConverter::HalfEdgeStructureToArray(mesh, vertices, faces, normals);
+	
+	std::fill(verticesSelection.begin(), verticesSelection.end(), 0);
+	verticesSelection.resize(vertices.size());
+	
 	facesNormalsUpdated = false;
 	verticesNormalsUpdated = false;
 	
@@ -97,8 +103,12 @@ void MeshRenderer::UpdateMeshConnectivity()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, faces.size() * sizeof(GLuint), &faces.front(), GL_STATIC_DRAW);
 
 	// Send the new normals
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[BUF_NORMALS]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, normals.size() * sizeof(GLfloat), &normals.front(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_NORMALS]);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(GLfloat), &normals.front(), GL_STATIC_DRAW);
+
+	// Send the vertices selection
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES_SELECTION]);
+	glBufferData(GL_ARRAY_BUFFER, verticesSelection.size() * sizeof(GLint), &verticesSelection.front(), GL_STATIC_DRAW);
 }
 
 void MeshRenderer::UpdateVerticesNormals()
@@ -247,11 +257,40 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_NORMALS]);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+	glDisableVertexAttribArray(2);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[BUF_FACES]);
 	glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
 }
 
-void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType)
+void MeshRenderer::DrawVertices(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType)
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	glUseProgram(program);
+
+	glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
+	glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, &projection_matrix[0][0]);
+
+	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
+	glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &view_matrix[0][0]);
+
+	glUniform4f(meshColorLoc, color.r, color.g, color.b, color.a);
+	glUniform1i(lightTypeLoc, lightType);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[buffer]);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glDisableVertexAttribArray(1);
+
+	glEnableVertexAttribArray(2);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES_SELECTION]);
+	glVertexAttribPointer(2, 1, GL_INT, GL_FALSE, 0, 0);
+
+	glDrawArrays(GL_POINTS, 0, mesh->vertices.size());
+}
+
+void MeshRenderer::DrawNormals(BufferId buffer, unsigned int size, GLuint program, glm::vec4 color, LightType lightType)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glUseProgram(program);
@@ -269,7 +308,10 @@ void MeshRenderer::DrawNormals(BufferId buffer, GLuint program, glm::vec4 color,
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[buffer]);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glDrawArrays(GL_LINES, 0, vertices.size());
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	glDrawArrays(GL_LINES, 0, size);
 }
 
 void MeshRenderer::DisplayMesh()
@@ -284,18 +326,19 @@ void MeshRenderer::DisplayWireframe()
 
 void MeshRenderer::DisplayVertices()
 {
-	glPointSize(5.0f);
-	DrawMesh(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
+	//glPointSize(5.0f);
+	//DrawMesh(GL_POINT, program, glm::vec4(0.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
+	DrawVertices(BufferId::BUF_VERTICES, program, glm::vec4(0.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::DisplayFacesNormals()
 {
-	DrawNormals(BufferId::BUF_FACES_NORMALS, program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::AMBIANT);
+	DrawNormals(BufferId::BUF_FACES_NORMALS, mesh->faces.size() * 2, program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::DisplayVerticesNormals()
 {
-	DrawNormals(BufferId::BUF_VERTICES_NORMALS, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
+	DrawNormals(BufferId::BUF_VERTICES_NORMALS, mesh->vertices.size() * 2, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::Rotate(float x, float y)
@@ -327,4 +370,12 @@ void MeshRenderer::Translate(float x, float y)
 void MeshRenderer::Zoom(float value)
 {
 	cameraEye += value * cameraForward;
+}
+
+void MeshRenderer::SetVertexSelected(int index, bool selected)
+{
+	verticesSelection[index] = selected ? 1 : 0;
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES_SELECTION]);
+	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(GLint), sizeof(GLint), &verticesSelection[index]);
 }

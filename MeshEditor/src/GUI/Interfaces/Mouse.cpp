@@ -59,7 +59,7 @@ void Mouse::PressButton(GUI::Interfaces::Window* window, MouseButton button)
 void Mouse::ReleaseButton(GUI::Interfaces::Window* window, MouseButton button)
 {
 	buttons[button] = false;
-	MouseEvent event = MouseEvent::ButtonPressed(this, window, button);
+	MouseEvent event = MouseEvent::ButtonReleased(this, window, button);
 	Notify(&event);
 }
 

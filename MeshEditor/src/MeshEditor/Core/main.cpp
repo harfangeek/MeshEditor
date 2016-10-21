@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
 	// Load mesh
 	Mesh* mesh = NULL;
-	Rendering::Operators::ObjReader::LoadMesh("Models\\apple.obj", mesh, true);
+	Rendering::Operators::ObjReader::LoadMesh("Models\\cube.obj", mesh, true);
 
 	Rendering::Operators::MeshTransformation::Triangulate(mesh);
 	mesh->ComputeNormals();
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
 	meshRenderer->SetMesh(mesh);
 
-	meshRenderer->SetRenderMode((RenderMode)(RenderMode::MESH | RenderMode::VERTICES | RenderMode::WIREFRAME | RenderMode::FACES_NORMALS | RenderMode::VERTICES_NORMALS));
+	meshRenderer->SetRenderMode((RenderMode)(RenderMode::VERTICES | RenderMode::WIREFRAME));
 	meshRenderer->SetLightType(LightType::POINT_LIGHT);
 	meshRenderer->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 

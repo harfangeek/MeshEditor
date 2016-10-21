@@ -5,7 +5,7 @@
 #include "Dependencies\glew\include\glew.h"
 #include "Dependencies\glm\glm.hpp"
 
-#define NB_BUFFER 5
+#define NB_BUFFER 6
 
 namespace Rendering
 {
@@ -24,7 +24,8 @@ namespace Rendering
 			BUF_FACES = 1,
 			BUF_NORMALS = 2,
 			BUF_FACES_NORMALS = 3,
-			BUF_VERTICES_NORMALS = 4
+			BUF_VERTICES_NORMALS = 4,
+			BUF_VERTICES_SELECTION = 5
 		};
 
 		enum LightType {
@@ -47,6 +48,7 @@ namespace Rendering
 			std::vector<GLfloat> normals;
 			std::vector<GLfloat> verticesNormals;
 			std::vector<GLfloat> facesNormals;
+			std::vector<GLint> verticesSelection;
 
 			GLuint buffers[NB_BUFFER]; // Buffers for each previous arrays
 			bool verticesNormalsUpdated;
@@ -91,7 +93,8 @@ namespace Rendering
 			void DisplayVerticesNormals();
 
 			void DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType);
-			void DrawNormals(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType);
+			void DrawVertices(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType);
+			void DrawNormals(BufferId buffer, unsigned int size, GLuint program, glm::vec4 color, LightType lightType);
 
 			void UpdateFacesNormals();
 			void UpdateVerticesNormals();
@@ -134,6 +137,8 @@ namespace Rendering
 			void Rotate(float x, float y); // Rotate the model around the x axis by x degrees and around the y axis by y degrees
 			void Translate(float x, float y);
 			void Zoom(float value);
+
+			void SetVertexSelected(int index, bool selected);
 		};
 	}
 }

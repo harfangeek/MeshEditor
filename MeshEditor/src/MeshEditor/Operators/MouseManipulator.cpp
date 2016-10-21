@@ -19,6 +19,8 @@ MouseManipulator::~MouseManipulator()
 
 void MouseManipulator::OnEvent(const GUI::Model::Event* event)
 {
+	static int i = 0;
+
 	if (event->msgType == MessageType::MOUSE)
 	{
 		MouseEvent* mouseEvent = (MouseEvent*)event;
@@ -41,6 +43,13 @@ void MouseManipulator::OnEvent(const GUI::Model::Event* event)
 		else if (mouseEvent->msg == MouseMessage::WHEEL_SCROLL)
 		{
 			meshRenderer->Zoom((float)mouseEvent->wheel * 0.1);
+			mouseEvent->window->Render();
+		}
+		else if (mouseEvent->msg == MouseMessage::BUTTON_PRESSED && mouseEvent->button == MouseButton::RIGHT_BUTTON)
+		{
+			meshRenderer->SetVertexSelected(i, false);
+			i = (i + 1) % 8;
+			meshRenderer->SetVertexSelected(i, true);
 			mouseEvent->window->Render();
 		}
 	}
