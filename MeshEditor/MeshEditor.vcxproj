@@ -33,6 +33,7 @@
     <ClCompile Include="src\MeshEditor\Core\WindowRenderer.cpp" />
     <ClCompile Include="src\MeshEditor\Model\StaticData.cpp" />
     <ClCompile Include="src\MeshEditor\Operators\MouseManipulator.cpp" />
+    <ClCompile Include="src\MeshEditor\Operators\MouseSelector.cpp" />
     <ClCompile Include="src\Rendering\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Rendering\Core\ShaderLoader.cpp" />
     <ClCompile Include="src\Rendering\Model\Face.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="src\Rendering\Operators\MeshConverter.cpp" />
     <ClCompile Include="src\Rendering\Operators\MeshTransformation.cpp" />
     <ClCompile Include="src\Rendering\Operators\ObjReader.cpp" />
+    <ClCompile Include="src\Rendering\Operators\ViewerUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\Core\GlutKeyboard.h" />
@@ -61,6 +63,7 @@
     <ClInclude Include="src\MeshEditor\Core\WindowRenderer.h" />
     <ClInclude Include="src\MeshEditor\Model\StaticData.h" />
     <ClInclude Include="src\MeshEditor\Operators\MouseManipulator.h" />
+    <ClInclude Include="src\MeshEditor\Operators\MouseSelector.h" />
     <ClInclude Include="src\Rendering\Core\MeshRenderer.h" />
     <ClInclude Include="src\Rendering\Core\ShaderLoader.h" />
     <ClInclude Include="src\Rendering\Model\Face.h" />
@@ -70,6 +73,7 @@
     <ClInclude Include="src\Rendering\Operators\MeshConverter.h" />
     <ClInclude Include="src\Rendering\Operators\MeshTransformation.h" />
     <ClInclude Include="src\Rendering\Operators\ObjReader.h" />
+    <ClInclude Include="src\Rendering\Operators\ViewerUtility.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1194D84-9BEF-4D50-AE46-A3090D8183C5}</ProjectGuid>

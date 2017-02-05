@@ -136,6 +136,12 @@
     <ClCompile Include="src\MeshEditor\Operators\MouseManipulator.cpp">
       <Filter>Src\MeshEditor\Operators</Filter>
     </ClCompile>
+    <ClCompile Include="src\MeshEditor\Operators\MouseSelector.cpp">
+      <Filter>Src\MeshEditor\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\Operators\ViewerUtility.cpp">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshEditor\Model\StaticData.h">
@@ -215,6 +221,12 @@
     </ClInclude>
     <ClInclude Include="src\MeshEditor\Operators\MouseManipulator.h">
       <Filter>Src\MeshEditor\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Operators\MouseSelector.h">
+      <Filter>Src\MeshEditor\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\ViewerUtility.h">
+      <Filter>Src\Rendering\Operators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

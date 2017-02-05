@@ -15,6 +15,7 @@
 //#include "MeshEditor\Model\StaticData.h"
 #include "MeshEditor\Core\WindowRenderer.h"
 #include "MeshEditor\Operators\MouseManipulator.h"
+#include "MeshEditor\Operators\MouseSelector.h"
 
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 600
@@ -49,7 +50,7 @@ int main(int argc, char** argv)
 
 	meshRenderer->SetMesh(mesh);
 
-	meshRenderer->SetRenderMode((RenderMode)(RenderMode::VERTICES | RenderMode::WIREFRAME));
+	meshRenderer->SetRenderMode((RenderMode)(RenderMode::VERTICES));
 	meshRenderer->SetLightType(LightType::POINT_LIGHT);
 	meshRenderer->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -62,8 +63,10 @@ int main(int argc, char** argv)
 
 	// Create manipulators
 	MouseManipulator mouseManip(meshRenderer);
+	MouseSelector mouseSelector(meshRenderer);
 	Mouse* mouse = windowMgr->GetMouse();
 	mouse->Attach(&mouseManip);
+	mouse->Attach(&mouseSelector);
 
 	// Start main loop
 	windowMgr->Display();

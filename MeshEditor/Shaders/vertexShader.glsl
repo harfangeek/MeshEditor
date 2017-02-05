@@ -9,7 +9,7 @@ uniform mat4 view_matrix;
 
 out vec4 normal;
 out vec4 position;
-out int selected;
+flat out int selected;
 
 void main() {
     gl_Position = projection_matrix * view_matrix * vertex_modelspace; 
@@ -17,8 +17,8 @@ void main() {
 	normal = /*projection_matrix * */view_matrix * vec4(normal_modelspace, 0);
 	selected = vertex_selected;
 	
-	if(selected)
-		gl_PointSize = 10.0f;
+	if(selected != 0)
+		gl_PointSize = 20.0f;
 	else
 		gl_PointSize = 5.0f;
 }

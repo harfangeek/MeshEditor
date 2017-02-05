@@ -139,6 +139,16 @@ namespace Rendering
 			void Zoom(float value);
 
 			void SetVertexSelected(int index, bool selected);
+			void ClearVertexSelection();
+
+			int GetViewportWidth();
+			int GetViewportHeight();
+			float GetFovy();
+			float GetZNear();
+			float GetZFar();
+			glm::vec3 GetCameraEye();
+			glm::vec3 GetCameraUp();
+			glm::vec3 GetCameraForward();
 		};
 	}
 }

@@ -70,7 +70,7 @@ void main (void)
 		out_color = mesh_color;	
 	}
 
-	if(selected)
+	if(selected == 1)
 	{
 		out_color = vec4(1.0, 0.0, 0.0, 1.0);
 	}

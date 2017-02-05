@@ -379,3 +379,49 @@ void MeshRenderer::SetVertexSelected(int index, bool selected)
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES_SELECTION]);
 	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(GLint), sizeof(GLint), &verticesSelection[index]);
 }
+
+void MeshRenderer::ClearVertexSelection()
+{
+	for (int i = 0; i < verticesSelection.size(); i++)
+		SetVertexSelected(i, false);
+}
+
+int MeshRenderer::GetViewportWidth()
+{
+	return viewportWidth;
+}
+
+int MeshRenderer::GetViewportHeight()
+{
+	return viewportHeight;
+}
+
+float MeshRenderer::GetFovy()
+{
+	return fovy;
+}
+
+float MeshRenderer::GetZNear()
+{
+	return zNear;
+}
+
+float MeshRenderer::GetZFar()
+{
+	return zFar;
+}
+
+glm::vec3 MeshRenderer::GetCameraEye()
+{
+	return cameraEye;
+}
+
+glm::vec3 MeshRenderer::GetCameraUp()
+{
+	return cameraUp;
+}
+
+glm::vec3 MeshRenderer::GetCameraForward()
+{
+	return cameraForward;
+}
