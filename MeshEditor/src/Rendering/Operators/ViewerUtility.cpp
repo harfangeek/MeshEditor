@@ -8,6 +8,8 @@ using namespace Rendering::Core;
 using namespace Rendering::Model;
 using namespace Rendering::Operators;
 
+/*
+// Dummy version of vertex selection. "Render" each point to get the position on screen and compare it to the mouse position.
 void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer, GUI::Interfaces::Window* window, int x, int y, std::vector<unsigned int> &selectedVertices, float precision)
 {
 	float fovy = renderer->GetFovy();
@@ -21,7 +23,6 @@ void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer,
 	glm::vec3 cameraUp = renderer->GetCameraUp();
 	glm::vec3 cameraForward = renderer->GetCameraForward();
 
-	// Normaliser position de la souris de -1.0 à 1.0
 	float xNorm = (float)x / (float)windowWidth * 2.0f - 1.0f;
 	float yNorm = -((float)y / (float)windowHeight * 2.0f - 1.0f);
 
@@ -36,21 +37,57 @@ void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer,
 		vertexPosition3D = glm::vec4(mesh->vertices[i]->position.x, mesh->vertices[i]->position.y, mesh->vertices[i]->position.z, 1.0);
 		vertexPositionView = view_matrix * vertexPosition3D;
 		vertexPosition2D = projection_matrix * vertexPositionView;
-		//vertexPosition2D.w = -vertexPositionView.z;
 
 		vertexPosition2D = vertexPosition2D / vertexPosition2D.w;
 		
 		d = sqrtf(powf(vertexPosition2D.x - xNorm, 2) + powf(vertexPosition2D.y - yNorm, 2));
 		if (d < precision)
 			selectedVertices.push_back(i);
+	}
+}*/
 
-		if (i == 0 || i == 6)
-		{
-			std::cout << vertexPosition3D.x << " : " << vertexPosition3D.y << " : " << vertexPosition3D.z << " : " << vertexPosition3D.w << std::endl;
-			std::cout << vertexPositionView.x << " : " << vertexPositionView.y << " : " << vertexPositionView.z << " : " << vertexPositionView.w << std::endl;
-			std::cout << vertexPosition2D.x << " : " << vertexPosition2D.y << " : " << vertexPosition2D.z << " : " << vertexPosition2D.w << std::endl;
-			std::cout << xNorm <<  " : " << yNorm << std::endl;
-			std::cout << d << std::endl << std::endl;
-		}
+void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer, GUI::Interfaces::Window* window, int x, int y, std::vector<unsigned int> &selectedVertices, float precision)
+{
+	// Get all viewer data
+	float fovy = renderer->GetFovy();
+	int viewportWidth = renderer->GetViewportWidth();
+	int viewportHeight = renderer->GetViewportHeight();
+	int windowWidth = window->GetWidth();
+	int windowHeight = window->GetHeight();
+	float zNear = renderer->GetZNear();
+	float zFar = renderer->GetZFar();
+	glm::vec3 cameraEye = renderer->GetCameraEye();
+	glm::vec3 cameraUp = renderer->GetCameraUp();
+	glm::vec3 cameraForward = renderer->GetCameraForward();
+
+	// Compute projection and view matrices
+	glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
+	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
+
+	// Normalize mouse position to [-1.0,1.0]
+	float xNorm = (float)x / (float)windowWidth * 2.0f - 1.0f;
+	float yNorm = -((float)y / (float)windowHeight * 2.0f - 1.0f);
+	
+	// Compute the seletion ray. First set it to mouse position as x and y and -1 to z (looking forward)
+	glm::vec4 homogeneousRay(xNorm, yNorm, -1.0f, 1.0f);
+	// Reverse the projection
+	glm::vec4 cameraRay = glm::inverse(projection_matrix) * homogeneousRay;
+	cameraRay.z = -1.0f;
+	cameraRay.w = 0.0f;
+	// Reverse the view matrix
+	glm::vec4 worldRay = glm::inverse(view_matrix) * cameraRay;
+	glm::vec3 selectionRay = glm::normalize(glm::vec3(worldRay.x, worldRay.y, worldRay.z));
+
+	// Loop over all vertices
+	Mesh* mesh = renderer->GetMesh();
+	float d = 0.0;
+	glm::vec3 vertexRay;
+	for (unsigned int i = 0; i < mesh->vertices.size(); i++)
+	{
+		// Compute the vertex position from the camera and "compare" it to the selection ray using dot product
+		vertexRay = glm::normalize(mesh->vertices[i]->position - cameraEye);
+		float delta = glm::abs(glm::dot(vertexRay, selectionRay));
+		if (delta >= 1.0 - precision)
+			selectedVertices.push_back(i);
 	}
 }
