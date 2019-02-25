@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Dependencies/glm/glm.hpp"
+#define GLM_FORCE_SILENT_WARNINGS 1
+#include "GLM/glm.hpp"
 
 namespace Rendering
 {

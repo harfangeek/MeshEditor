@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "Dependencies\glm\glm.hpp"
+
+#define GLM_FORCE_SILENT_WARNINGS 1
+#include "GLM/glm.hpp"
 
 namespace Rendering
 {
@@ -19,11 +21,11 @@ namespace Rendering
 			unsigned int index;
 
 			Vertex();
-			Vertex(glm::vec3 pos);
+			Vertex(const glm::vec3& pos);
 			~Vertex();
 
-			void ListFaces(std::vector<Face*> &faces); // List faces around the vertex
-			int CountFaces(); // Return the number of faces around the vertex
+			std::vector<Face*> ListFaces(); // List faces around the vertex
+			unsigned int CountFaces(); // Return the number of faces around the vertex
 			void ComputeNormal(); // Compute the normal of the vertex (update normal member)
 		};
 	}

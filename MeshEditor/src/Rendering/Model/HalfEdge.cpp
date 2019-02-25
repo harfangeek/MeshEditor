@@ -1,17 +1,17 @@
-#include "Rendering\Model\HalfEdge.h"
-#include "Rendering\Model\Vertex.h"
-#include "Rendering\Model\Face.h"
+#include "Rendering/Model/HalfEdge.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/Face.h"
 
 using namespace Rendering::Model;
 using namespace glm;
 
 HalfEdge::HalfEdge()
 {
-	Vertex* source = NULL;
-	HalfEdge* next = NULL;
-	HalfEdge* prev = NULL;
-	HalfEdge* twin = NULL;
-	Face* adjacentFace = NULL;
+	source = NULL;
+	next = NULL;
+	prev = NULL;
+	twin = NULL;
+	adjacentFace = NULL;
 }
 
 HalfEdge::~HalfEdge()

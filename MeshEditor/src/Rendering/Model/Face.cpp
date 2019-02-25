@@ -1,13 +1,15 @@
-#include "Rendering\Model\Face.h"
-#include "Rendering\Model\Vertex.h"
-#include "Rendering\Model\HalfEdge.h"
+#include "Rendering/Model/Face.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/HalfEdge.h"
+
+#include <iostream>
 
 using namespace Rendering::Model;
 using namespace glm;
 
 Face::Face()
 {
-	adjacentHalfEdge = NULL;
+	adjacentHalfEdge = NULL;		
 }
 
 Face::~Face()
@@ -26,57 +28,64 @@ void Face::ComputeNormal()
 	normal = normalize(normal);
 }
 
-void Face::ListHalfEdges(std::vector<HalfEdge*> &halfEdges)
+std::vector<HalfEdge*> Face::ListHalfEdges()
 {
-	halfEdges.clear();
+	std::vector<HalfEdge*> halfEdges;
+	halfEdges.reserve(3);
+
 	if (adjacentHalfEdge != NULL)
 	{
 		halfEdges.push_back(adjacentHalfEdge);
-		HalfEdge* currHalgedge = adjacentHalfEdge->next;
+		HalfEdge* currHalfedge = adjacentHalfEdge->next;
 
-		while (currHalgedge != adjacentHalfEdge)
+		while (currHalfedge != adjacentHalfEdge)
 		{
-			halfEdges.push_back(currHalgedge);
-			currHalgedge = currHalgedge->next;
+			halfEdges.push_back(currHalfedge);
+			currHalfedge = currHalfedge->next;
 		}
 	}
+
+	return halfEdges;
 }
 
-int Face::CountHalfEdges()
+unsigned int Face::CountHalfEdges()
 {
-	std::vector<HalfEdge*> halfEdges;
-	ListHalfEdges(halfEdges);
-	return halfEdges.size();
+	std::vector<HalfEdge*> halfEdges = ListHalfEdges();
+	return (unsigned int)halfEdges.size();
 }
 
-void Face::ListVertices(std::vector<Vertex*> &vertices)
-{
-	std::vector<HalfEdge*> halfEdges;
-	ListHalfEdges(halfEdges);
-	vertices.clear();
-	for (unsigned int i = 0; i < halfEdges.size(); i++)
-		vertices.push_back(halfEdges[i]->source);
-}
-
-int Face::CountVertices()
+std::vector<Vertex*> Face::ListVertices()
 {
 	std::vector<Vertex*> vertices;
-	ListVertices(vertices);
-	return vertices.size();
+	std::vector<HalfEdge*> halfEdges = ListHalfEdges();
+	
+	vertices.reserve(halfEdges.size());
+	for (auto halfEdge : halfEdges)
+		vertices.push_back(halfEdge->source);
+
+	return vertices;
 }
 
-void Face::ListNeighbourFaces(std::vector<Face*> &faces)
+unsigned int Face::CountVertices()
 {
-	std::vector<HalfEdge*> halfEdges;
-	ListHalfEdges(halfEdges);
-	faces.clear();
-	for (unsigned int i = 0; i < halfEdges.size(); i++)
-		faces.push_back(halfEdges[i]->twin->adjacentFace);
+	std::vector<Vertex*> vertices = ListVertices();
+	return (unsigned int)vertices.size();
 }
 
-int Face::CountNeighbourFaces()
+std::vector<Face*> Face::ListNeighbourFaces()
 {
 	std::vector<Face*> faces;
-	ListNeighbourFaces(faces);
-	return faces.size();
+	std::vector<HalfEdge*> halfEdges = ListHalfEdges();
+
+	faces.reserve(halfEdges.size());
+	for (auto halfEdge : halfEdges)
+		faces.push_back(halfEdge->twin->adjacentFace);
+
+	return faces;
+}
+
+unsigned int Face::CountNeighbourFaces()
+{
+	std::vector<Face*> faces = ListNeighbourFaces();
+	return (unsigned int)faces.size();
 }

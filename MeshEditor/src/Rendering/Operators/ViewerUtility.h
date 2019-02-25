@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Rendering\Core\MeshRenderer.h"
-#include "GUI\Interfaces\Window.h"
+#include "Rendering/Core/MeshRenderer.h"
+#include "GUI/Interfaces/Window.h"
 #include <vector>
 
 namespace Rendering

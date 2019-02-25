@@ -1,8 +1,16 @@
-#include "GUI\Interfaces\WindowManager.h"
+#include "GUI/Interfaces/WindowManager.h"
 
 using namespace GUI::Interfaces;
 
-GUI::Interfaces::Window* WindowManager::NewWindow(int id, int width, int height, int posX, int posY, std::string title)
+void WindowManager::Start()
+{
+}
+
+void WindowManager::Terminate()
+{
+}
+
+GUI::Interfaces::Window* WindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title)
 {
 	Window* window = NULL;
 
@@ -15,12 +23,13 @@ GUI::Interfaces::Window* WindowManager::NewWindow(int id, int width, int height,
 	return window;
 }
 
-GUI::Interfaces::Mouse* WindowManager::GetMouse()
+void WindowManager::DisplayWindows()
 {
-	return mouse;
+	for (auto window : windows)
+		window.second->Display();
 }
 
-Window* WindowManager::GetWindow(int id)
+Window* WindowManager::GetWindow(unsigned int id)
 {
 	Window* window = NULL;
 

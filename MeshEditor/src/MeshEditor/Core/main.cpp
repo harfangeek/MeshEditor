@@ -1,78 +1,69 @@
-#include <iostream>
-#include <vector>
-#include "Dependencies\glew\include\glew.h"
+#include "GUI/Interfaces/Window.h"
+#include "GUI/Interfaces/WindowManager.h"
+#include "GUI/Core/ImGuiDialog.h"
+#include "GUI/Core/GlfwWindowManager.h"
 
-#include "Rendering\Model\Mesh.h"
-#include "Rendering\Operators\ObjReader.h"
-#include "Rendering\Operators\MeshConverter.h"
-#include "Rendering\Operators\MeshTransformation.h"
-#include "Rendering\Core\MeshRenderer.h"
+#include "MeshEditor/Views/MeshDialog.h"
+#include "MeshEditor/Views/MeshEditorPanel.h"
+#include "MeshEditor/Views/FilePanel.h"
+#include "MeshEditor/Controllers/MeshEditorController.h"
+#include "MeshEditor/Controllers/CameraController.h"
+#include "MeshEditor/Controllers/FileController.h"
 
-#include "GUI\Interfaces\Window.h"
-#include "GUI\Core\GlutWindow.h"
-#include "GUI\Interfaces\Mouse.h"
+#include "Rendering/Core/MeshRenderer.h"
 
-//#include "MeshEditor\Model\StaticData.h"
-#include "MeshEditor\Core\WindowRenderer.h"
-#include "MeshEditor\Operators\MouseManipulator.h"
-#include "MeshEditor\Operators\MouseSelector.h"
-
-#define WINDOW_WIDTH 600
-#define WINDOW_HEIGHT 600
+using namespace MeshEditor::Views;
+using namespace MeshEditor::Controllers;
 
 using namespace GUI::Core;
 using namespace GUI::Interfaces;
+
 using namespace Rendering::Core;
-using namespace Rendering::Model;
-using namespace MeshEditor::Core;
-using namespace MeshEditor::Operators;
 
-int main(int argc, char** argv)
+constexpr unsigned int WINDOW_WIDTH = 1200;
+constexpr unsigned int WINDOW_HEIGHT = 700;
+
+int main(int, char**)
 {
-	// Create freeglut window
-	GlutWindowManager* windowMgr = GlutWindowManager::GetInstance();
-	//StaticData::SetWindowManager(windowManager);
-	windowMgr->Init(argc, argv);
-	Window* window = windowMgr->NewWindow(1, 500, 500, 200, 200, "Window 1");
+	// Create window manager
+	WindowManager* manager = GlfwWindowManager::GetInstance();
+	Window* window = manager->NewWindow(42, WINDOW_WIDTH, WINDOW_HEIGHT, 400, 400, "Test Window");
 
-	// Create mesh renderer (init openGL)
+	// Create Mesh renderer
 	MeshRenderer* meshRenderer = new MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-	//StaticData::SetMeshRenderer(meshRenderer);
 	meshRenderer->Init();
-
-	// Load mesh
-	Mesh* mesh = NULL;
-	Rendering::Operators::ObjReader::LoadMesh("Models\\cube.obj", mesh, true);
-
-	Rendering::Operators::MeshTransformation::Triangulate(mesh);
-	mesh->ComputeNormals();
-	mesh->color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-
-	meshRenderer->SetMesh(mesh);
-
-	meshRenderer->SetRenderMode((RenderMode)(RenderMode::VERTICES));
 	meshRenderer->SetLightType(LightType::POINT_LIGHT);
 	meshRenderer->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshRenderer->SetRenderMode(RenderMode::WIREFRAME);
 
-	//Operators::MeshTransformation::Inflate(mesh, 0.1f);
-	//meshRenderer->UpdateMeshConnectivity();
+	// Mesh dialog
+	MeshDialog* meshDialog = new MeshDialog(42);
+	meshDialog->SetMeshRenderer(meshRenderer);
 
-	// Create a WindowRenderer and link it to the window
-	WindowRenderer winRenderer(meshRenderer);
-	window->Attach(&winRenderer);
+	// Mesh editor dialog
+	ImGuiDialog* meshEditorDialog = new ImGuiDialog(12, "Mesh editor", 50, 220, 200, 400);
+	MeshEditorController* meshEditorController = new MeshEditorController(meshRenderer);
+	MeshEditorPanel* meshEditorPanel = new MeshEditorPanel(meshEditorController);
+	meshEditorDialog->SetPanel(meshEditorPanel);
 
-	// Create manipulators
-	MouseManipulator mouseManip(meshRenderer);
-	MouseSelector mouseSelector(meshRenderer);
-	Mouse* mouse = windowMgr->GetMouse();
-	mouse->Attach(&mouseManip);
-	mouse->Attach(&mouseSelector);
+	// File dialog
+	ImGuiDialog* fileDialog = new ImGuiDialog(1, "File dialog", 50, 50, 200, 150);
+	FileController* fileController = new FileController(meshRenderer);
+	FilePanel* filePanel = new FilePanel(fileController);
+	fileDialog->SetPanel(filePanel);
 
-	// Start main loop
-	windowMgr->Display();
+	// Add all dialogs
+	window->AddDialog(meshDialog);
+	window->AddDialog(meshEditorDialog);
+	window->AddDialog(fileDialog);
+	
+	// Camera controller
+	CameraController* cameraController = new CameraController(meshRenderer);
+	window->AddMouseListener(cameraController);
+	window->AddWindowListener(cameraController);
 
-	//delete windowManager;
-	delete meshRenderer;
+	// Start application
+	manager->Start();   
 
-	return 0;	
+    return 0;
 }

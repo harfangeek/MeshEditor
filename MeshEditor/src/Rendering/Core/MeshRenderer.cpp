@@ -1,16 +1,26 @@
-#include "Rendering\Core\MeshRenderer.h"
-#include "Rendering\Operators\MeshConverter.h"
-#include "Rendering\Core\ShaderLoader.h"
-#include "Rendering\Model\Vertex.h"
-#include "Dependencies\glm\gtc\matrix_transform.hpp"
-#include "Dependencies\glm\gtx\rotate_vector.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+
+#include "Rendering/Core/MeshRenderer.h"
+#include "Rendering/Operators/MeshConverter.h"
+#include "Rendering/Operators/ShaderLoader.h"
+#include "Rendering/Model/Vertex.h"
+
+#include "GLM/gtc/matrix_transform.hpp"
+#include "GLM/gtx/rotate_vector.hpp"
+#include "GLM/gtx/quaternion.hpp"
 
 using namespace Rendering;
 using namespace Rendering::Core;
 using namespace Rendering::Model;
 using namespace std;
 
-MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* mesh) :	cameraEye(0, 0, 2),
+MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* mesh) : mesh(mesh),
+																						translation(0.0f, 0.0f, 0.0f),
+																						rotation(0.0f, 0.0f, 0.0f),
+																						scale(1.0f, 1.0f, 1.0f),
+																						verticesNormalsUpdated(false),
+																						facesNormalsUpdated(false),
+																						cameraEye(0, 0, 2),
 																						cameraUp(0, 1, 0), 
 																						cameraForward(0, 0, -1),
 																						fovy(90.0f),
@@ -21,9 +31,7 @@ MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* m
 																						lightColor(1.0f, 1.0f, 1.0f, 1.0f),
 																						lightPosition(0.0f, 0.0f, 4.0f),
 																						lightDirection(0.0f, -1.0f, 0.0f),
-																						lightAngle(30.0f),
-																						facesNormalsUpdated(false),
-																						verticesNormalsUpdated(false)
+																						lightAngle(30.0f)																					
 {
 	SetViewPort(viewportWidth, viewportHeight);
 	SetMesh(mesh);
@@ -31,13 +39,26 @@ MeshRenderer::MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* m
 
 MeshRenderer::~MeshRenderer()
 {
+	glDeleteBuffers(NB_BUFFER, buffers);
 	glDeleteProgram(program);
+}
+
+void MeshRenderer::Clean()
+{
+	vertices.clear();
+	faces.clear();
+	normals.clear();
+	verticesNormals.clear();
+	facesNormals.clear();
+	verticesSelection.clear();
+	edgesSelection.clear();
 }
 
 void MeshRenderer::SetMesh(Model::Mesh* mesh)
 {
 	if (mesh != NULL)
 	{
+		Clean();
 		this->mesh = mesh;
 		UpdateMeshConnectivity();
 	}
@@ -56,23 +77,17 @@ Model::Mesh* MeshRenderer::GetMesh()
 
 void MeshRenderer::Init()
 {
-	// OpenGL init
-	glewInit();
-	if (glewIsSupported("GL_VERSION_3_3"))
-		std::cout << "GLEW version is 3.3" << std::endl;
-	else
-		std::cout << "Glew 3.3 not supported" << std::endl;
-
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 	
 	// Create shaders
-	Rendering::Core::ShaderLoader shaderLoader;
-	program = shaderLoader.CreateProgram("Shaders\\vertexShader.glsl", "Shaders\\fragmentShader.glsl");	
+	program = Operators::ShaderLoader::CreateProgram("Shaders/vertexShader.glsl", "Shaders/fragmentShader.glsl");
 		
 	// Create shader buffers and variables
+	glGenVertexArrays(1, &vao);
 	glGenBuffers(NB_BUFFER, buffers);
 	projectionMatrixLoc = glGetUniformLocation(program, "projection_matrix");
 	viewMatrixLoc = glGetUniformLocation(program, "view_matrix");
+	modelMatrixLoc = glGetUniformLocation(program, "model_matrix");
 	meshColorLoc = glGetUniformLocation(program, "mesh_color");
 	lightTypeLoc = glGetUniformLocation(program, "light_type");
 	lightColorLoc = glGetUniformLocation(program, "light_color");
@@ -86,14 +101,22 @@ void MeshRenderer::Init()
 void MeshRenderer::UpdateMeshConnectivity()
 {
 	// Update vertices/faces/normals arrays from half-edge structure
-	Operators::MeshConverter::HalfEdgeStructureToArray(mesh, vertices, faces, normals);
+	vertices.clear();
+	faces.clear();
+	normals.clear();
+	Operators::MeshConverter::HalfEdgeStructureToArray(*mesh, vertices, faces, normals);
 	
-	std::fill(verticesSelection.begin(), verticesSelection.end(), 0);
+	verticesSelection.clear();
 	verticesSelection.resize(vertices.size());
+	std::fill(verticesSelection.begin(), verticesSelection.end(), 0);
 	
+	edgesSelection.clear();
+	edgesSelection.resize(vertices.size());
+	std::fill(edgesSelection.begin(), edgesSelection.end(), 0);
+		
 	facesNormalsUpdated = false;
 	verticesNormalsUpdated = false;
-	
+
 	// Send the new vertices
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES]);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices.front(), GL_STATIC_DRAW);
@@ -109,6 +132,10 @@ void MeshRenderer::UpdateMeshConnectivity()
 	// Send the vertices selection
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES_SELECTION]);
 	glBufferData(GL_ARRAY_BUFFER, verticesSelection.size() * sizeof(GLint), &verticesSelection.front(), GL_STATIC_DRAW);
+
+	// Send the edges selection
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_EDGES_SELECTION]);
+	glBufferData(GL_ARRAY_BUFFER, edgesSelection.size() * sizeof(GLint), &edgesSelection.front(), GL_STATIC_DRAW);
 }
 
 void MeshRenderer::UpdateVerticesNormals()
@@ -124,13 +151,13 @@ void MeshRenderer::UpdateVerticesNormals()
 
 void MeshRenderer::GenerateVerticesNormals()
 {
-	Vertex* vertex;
+	glm::vec3 v1, v2;
 	verticesNormals.clear();
-	for (unsigned int i = 0; i < mesh->vertices.size(); i++)
+	vertices.reserve(mesh->vertices.size() * 6);
+	for(auto vertex : mesh->vertices)
 	{
-		vertex = mesh->vertices[i];
-		glm::vec3 v1 = vertex->position;
-		glm::vec3 v2 = vertex->position + 0.03f * vertex->normal;
+		v1 = vertex->position;
+		v2 = vertex->position + 0.03f * vertex->normal;
 		verticesNormals.push_back(v1.x);
 		verticesNormals.push_back(v1.y);
 		verticesNormals.push_back(v1.z);
@@ -153,18 +180,16 @@ void MeshRenderer::UpdateFacesNormals()
 
 void MeshRenderer::GenerateFacesNormals()
 {
-	Face* face;
-	vector<Vertex*> vertices;
 	facesNormals.clear();
-	for (unsigned int i = 0; i < mesh->faces.size(); i++)
-	{
-		face = mesh->faces[i];
-		face->ListVertices(vertices);
+	facesNormals.reserve(mesh->faces.size() * 6);
+	for(auto face : mesh->faces)
+	{		
+		vector<Vertex*> vertices = face->ListVertices();
 
 		glm::vec3 v1(0.0f, 0.0f, 0.0f);
-		for (unsigned int j = 0; j < vertices.size(); j++)
+		for(auto vertex : vertices)
 		{
-			v1 += vertices[j]->position;
+			v1 += vertex->position;
 		}
 		v1 /= vertices.size();
 		glm::vec3 v2 = v1 + 0.03f * face->normal;
@@ -215,20 +240,25 @@ void MeshRenderer::SetLightAngle(float angle)
 // Display the model by sending the vertices, faces and normals arrays to the graphic card
 void MeshRenderer::Display()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	glViewport(0, 0, viewportWidth, viewportHeight);
+	if (mesh)
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glViewport(0, 0, viewportWidth, viewportHeight);
 
-	if (renderMode & RenderMode::MESH)
-		DisplayMesh();
-	if (renderMode & RenderMode::WIREFRAME)
-		DisplayWireframe();
-	if (renderMode & RenderMode::VERTICES)
-		DisplayVertices();
-	if (renderMode & RenderMode::FACES_NORMALS)
-		DisplayFacesNormals();
-	if (renderMode & RenderMode::VERTICES_NORMALS)
-		DisplayVerticesNormals();
+		glBindVertexArray(vao);
+
+		if (renderMode & RenderMode::MESH)
+			DisplayMesh();
+		if (renderMode & RenderMode::WIREFRAME)
+			DisplayWireframe();
+		if (renderMode & RenderMode::VERTICES)
+			DisplayVertices();
+		if (renderMode & RenderMode::FACES_NORMALS)
+			DisplayFacesNormals();
+		if (renderMode & RenderMode::VERTICES_NORMALS)
+			DisplayVerticesNormals();
+	}
 }
 
 void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType)
@@ -241,6 +271,12 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 
 	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
 	glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &view_matrix[0][0]);
+	
+	glm::mat4 model_matrix = glm::translate(translation) *
+		glm::toMat4(glm::quat(glm::radians(rotation))) *
+		glm::scale(scale);
+
+	glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &model_matrix[0][0]);
 
 	glUniform4f(meshColorLoc, color.r, color.g, color.b, color.a);
 	glUniform1ui(lightTypeLoc, lightType);
@@ -259,8 +295,12 @@ void MeshRenderer::DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 col
 
 	glDisableVertexAttribArray(2);
 
+	glEnableVertexAttribArray(3);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_EDGES_SELECTION]);
+	glVertexAttribPointer(3, 1, GL_INT, GL_FALSE, 0, 0);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[BUF_FACES]);
-	glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, GLsizei(faces.size()), GL_UNSIGNED_INT, 0);
 }
 
 void MeshRenderer::DrawVertices(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType)
@@ -287,14 +327,18 @@ void MeshRenderer::DrawVertices(BufferId buffer, GLuint program, glm::vec4 color
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_VERTICES_SELECTION]);
 	glVertexAttribPointer(2, 1, GL_INT, GL_FALSE, 0, 0);
 
-	glDrawArrays(GL_POINTS, 0, mesh->vertices.size());
+	glEnableVertexAttribArray(3);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_EDGES_SELECTION]);
+	glVertexAttribPointer(3, 1, GL_INT, GL_FALSE, 0, 0);
+
+	glDrawArrays(GL_POINTS, 0, GLsizei(mesh->vertices.size()));
 }
 
 void MeshRenderer::DrawNormals(BufferId buffer, unsigned int size, GLuint program, glm::vec4 color, LightType lightType)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glUseProgram(program);
-
+	
 	glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
 	glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, &projection_matrix[0][0]);
 
@@ -310,6 +354,7 @@ void MeshRenderer::DrawNormals(BufferId buffer, unsigned int size, GLuint progra
 
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
 
 	glDrawArrays(GL_LINES, 0, size);
 }
@@ -333,31 +378,33 @@ void MeshRenderer::DisplayVertices()
 
 void MeshRenderer::DisplayFacesNormals()
 {
-	DrawNormals(BufferId::BUF_FACES_NORMALS, mesh->faces.size() * 2, program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::AMBIANT);
+	DrawNormals(BufferId::BUF_FACES_NORMALS, GLsizei(mesh->faces.size() * 2), program, glm::vec4(1.0, 1.0, 0.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::DisplayVerticesNormals()
 {
-	DrawNormals(BufferId::BUF_VERTICES_NORMALS, mesh->vertices.size() * 2, program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
+	DrawNormals(BufferId::BUF_VERTICES_NORMALS, GLsizei(mesh->vertices.size() * 2), program, glm::vec4(1.0, 0.0, 1.0, 0.0), LightType::AMBIANT);
 }
 
 void MeshRenderer::Rotate(float x, float y)
 {
 	float theta = 4.0f * (fabs(x) + fabs(y));
+	if (theta > 0.00000001)
+	{
+		glm::vec3 cameraRight = glm::cross(cameraUp, -cameraForward);
+		// Compute a vector between (1, 0, 0) (only X rotation) and (0, 1, 0) (only Y rotation)
+		// This vector represents the rotation axis combining the two rotations
+		glm::vec3 rotationAxis = x * -cameraUp + y * -cameraRight;
+		rotationAxis = glm::normalize(rotationAxis);
 
-	glm::vec3 cameraRight = glm::cross(cameraUp, -cameraForward);
-	// Compute a vector between (1, 0, 0) (only X rotation) and (0, 1, 0) (only Y rotation)
-	// This vector represents the rotation axis combining the two rotations
-	glm::vec3 rotationAxis = x * -cameraUp + y * -cameraRight; 
-	rotationAxis = glm::normalize(rotationAxis);
+		cameraForward = glm::rotate(cameraForward, theta, rotationAxis);
+		cameraUp = glm::rotate(cameraUp, theta, rotationAxis);
+		cameraEye = glm::rotate(cameraEye, theta, rotationAxis);
 
-	cameraForward = glm::rotate(cameraForward, theta, rotationAxis);
-	cameraUp = glm::rotate(cameraUp, theta, rotationAxis);
-	cameraEye = glm::rotate(cameraEye, theta, rotationAxis);
-
-	cameraUp = glm::normalize(cameraUp);
-	//cameraEye = glm::normalize(cameraEye);
-	cameraForward = glm::normalize(cameraForward);
+		cameraUp = glm::normalize(cameraUp);
+		//cameraEye = glm::normalize(cameraEye);
+		cameraForward = glm::normalize(cameraForward);
+	}
 }
 
 void MeshRenderer::Translate(float x, float y)
@@ -382,8 +429,29 @@ void MeshRenderer::SetVertexSelected(int index, bool selected)
 
 void MeshRenderer::ClearVertexSelection()
 {
-	for (int i = 0; i < verticesSelection.size(); i++)
+	for (unsigned int i = 0; i < verticesSelection.size(); i++)
 		SetVertexSelected(i, false);
+}
+
+void MeshRenderer::SetEdgeSelected(int index, bool selected)
+{
+	if (mesh) {
+		int vertex1 = mesh->halfEdges[index]->source->index;
+		int vertex2 = mesh->halfEdges[index]->next->source->index;
+
+		edgesSelection[vertex1] = selected ? 1 : 0;
+		edgesSelection[vertex2] = selected ? 1 : 0;
+
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[BUF_EDGES_SELECTION]);
+		glBufferSubData(GL_ARRAY_BUFFER, vertex1 * sizeof(GLint), sizeof(GLint), &edgesSelection[vertex1]);
+		glBufferSubData(GL_ARRAY_BUFFER, vertex2 * sizeof(GLint), sizeof(GLint), &edgesSelection[vertex2]);
+	}
+}
+
+void MeshRenderer::ClearEdgeSelection()
+{
+	for (unsigned int i = 0; i < edgesSelection.size(); i++)
+		SetEdgeSelected(i, false);
 }
 
 int MeshRenderer::GetViewportWidth()
@@ -425,3 +493,34 @@ glm::vec3 MeshRenderer::GetCameraForward()
 {
 	return cameraForward;
 }
+
+void MeshRenderer::SetTranslation(glm::vec3 translation)
+{
+	this->translation = translation;
+}
+
+glm::vec3 MeshRenderer::GetTranslation()
+{
+	return translation;
+}
+
+void MeshRenderer::SetRotation(glm::vec3 rotation)
+{
+	this->rotation = rotation;
+}
+
+glm::vec3 MeshRenderer::GetRotation()
+{
+	return rotation;
+}
+void MeshRenderer::SetScale(glm::vec3 scale)
+{
+	this->scale = scale;
+}
+
+glm::vec3 MeshRenderer::GetScale()
+{
+	return scale;
+}
+
+

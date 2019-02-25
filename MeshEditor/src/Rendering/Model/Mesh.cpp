@@ -1,11 +1,11 @@
-#include "Rendering\Model\Mesh.h"
-#include <sstream>
+#include "Rendering/Model/Mesh.h"
+#include <string>
 
 using namespace Rendering::Model;
+using namespace std;
 
 Mesh::Mesh()
 {
-
 }
 
 Mesh::~Mesh()
@@ -15,32 +15,47 @@ Mesh::~Mesh()
 
 void Mesh::Clean()
 {
-	for (unsigned int i = 0; i < halfEdges.size(); i++)
-	{
-		if (halfEdges[i] != NULL)
-			delete halfEdges[i];
-	}
+	for (auto halfEdge : halfEdges)
+		if (halfEdge != NULL)
+			delete halfEdge;
+
 	halfEdges.clear();
 
-	for (unsigned int i = 0; i < vertices.size(); i++)
-	{
-		if (vertices[i] != NULL)
-			delete vertices[i];
-	}
+	for (auto vertex : vertices)
+		if (vertex != NULL)
+			delete vertex;
+
 	vertices.clear();
 
-	for (unsigned int i = 0; i < faces.size(); i++)
-	{
-		if (faces[i] != NULL)
-			delete faces[i];
-	}
+	for (auto face : faces)
+		if (face != NULL)
+			delete face;
+
 	faces.clear();
 }
 
-bool Mesh::Check(std::vector<std::string>& errors)
+Mesh::Mesh(Mesh&& other) : vertices{move(other.vertices)},
+								halfEdges{move(other.halfEdges)},
+								faces{move(other.faces)},
+								color{other.color}
 {
-	errors.clear();	
-	
+}
+
+Mesh& Mesh::operator=(Mesh&& other)
+{
+	Clean();
+	vertices = move(other.vertices);
+	halfEdges = move(other.halfEdges);
+	faces = move(other.faces);
+	color = other.color;
+
+	return *this;
+}
+
+std::vector<std::string> Mesh::Check()
+{	
+	std::vector<std::string> errors;
+
 	// HalfEdges:
 	// - source != NULL;
 	// - next != NULL;
@@ -50,137 +65,148 @@ bool Mesh::Check(std::vector<std::string>& errors)
 	// - twin != NULL;
 	// - twin->twin = halfEdge
 	// - adjacentFace != NULL;
-	HalfEdge* halfEdge;
-	for (unsigned int i = 0; i < halfEdges.size(); i++)
+	int i = 0;
+	for (auto halfEdge : halfEdges)
 	{
-		std::stringstream sst;
-		sst << i;
-		halfEdge = halfEdges[i];
 		if (halfEdge->source == NULL)
-			errors.push_back(std::string("halfEdges[" + sst.str() + "] : halfEdge->source == NULL"));
+			errors.push_back(std::string("halfEdges[" + std::to_string(i) + "] : halfEdge->source == NULL"));
 		if (halfEdge->next == NULL)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->next == NULL");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->next == NULL");
 		else if (halfEdge->next->prev != halfEdge)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->next->prev != halfEdge");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->next->prev != halfEdge");
 		if (halfEdge->prev == NULL)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->prev == NULL");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->prev == NULL");
 		else if (halfEdge->prev->next != halfEdge)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->prev->next != halfEdge");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->prev->next != halfEdge");
 		if (halfEdge->twin == NULL)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->twin == NULL");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->twin == NULL");
 		else if (halfEdge->twin->twin != halfEdge)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->twin->twin != halfEdge");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->twin->twin != halfEdge");
 		if (halfEdge->adjacentFace == NULL)
-			errors.push_back("halfEdges[" + sst.str() + "] : halfEdge->adjacentFace == NULL");
+			errors.push_back("halfEdges[" + std::to_string(i) + "] : halfEdge->adjacentFace == NULL");
+
+		i++;
 	}
 
 	// Vertices:
 	// - originOf != NULL;
 	// - vertex == vertex->orginOf->source
 	// - closed fan
-	Vertex* vertex;
-	for (unsigned int i = 0; i < vertices.size(); i++)
-	{
-		std::stringstream sst;
-		sst << i;
-		vertex = vertices[i];
+	HalfEdge* e;
+	i = 0;
+	for (auto vertex : vertices)
+	{		
 		if (vertex->originOf == NULL)
-			errors.push_back("vertices[" + sst.str() + "] : originOf == NULL");
+			errors.push_back("vertices[" + std::to_string(i) + "] : originOf == NULL");
 		else if (vertex->originOf->source != vertex)
-			errors.push_back("vertices[" + sst.str() + "] : vertex != vertex->orginOf->source");
+			errors.push_back("vertices[" + std::to_string(i) + "] : vertex != vertex->orginOf->source");
 		else
 		{
-			HalfEdge* e = vertex->originOf;
+			e = vertex->originOf;
 			int k = 0;
 			do
 			{
 				k++;
 				e = e->next;
-			} while (e != vertex->originOf && k < 10000);
+			} while (e != vertex->originOf && k < 10000); // Avoid infinite loop
 
 			if (e != vertex->originOf)
-				errors.push_back("vertices[" + sst.str() + "] : incorrect fan");
+				errors.push_back("vertices[" + std::to_string(i) + "] : incorrect fan");
 		}
+
+		i++;
 	}
 
 	// Faces
 	// - adjacentHalfEdge != NULL
 	// - Check if faces are closed + count halfEdges
 	// - Total halfedges = halfedges.size()
-	Face* face;
+	i = 0;
 	unsigned int nbHalfEdges = 0;
-	for (unsigned int i = 0; i < faces.size(); i++)
+	int k;
+	for (auto face : faces)
 	{
-		std::stringstream sst;
-		sst << i;
-		face = faces[i];
 		if (face->adjacentHalfEdge == NULL)
-			errors.push_back("faces[" + sst.str() + "] : face->adjacentHalfEdge == NULL");
+			errors.push_back("faces[" + std::to_string(i) + "] : face->adjacentHalfEdge == NULL");
 		else
 		{
-			HalfEdge* e = face->adjacentHalfEdge;
-			int k = 0;
+			e = face->adjacentHalfEdge;
+			k = 0;
 			do
 			{
 				k++;
 				e = e->next;
-			} while (e != face->adjacentHalfEdge && k < 10000);
+			} while (e != face->adjacentHalfEdge && k < 10000);  // Avoid infinite loop
 
 			if (e != face->adjacentHalfEdge)
-				errors.push_back("faces[" + sst.str() + "] : face not closed");
+				errors.push_back("faces[" + std::to_string(i) + "] : face not closed");
 			else
 				nbHalfEdges += k;
 		}
+
+		i++;
 	}
 
 	if (nbHalfEdges != halfEdges.size())
 		errors.push_back("faces : nbHalfEdges != halfEdges.size()");
 
-	return errors.size() == 0;
+	return errors;
 }
 
 void Mesh::Normalize()
 {
-	unsigned int i;
-	int tmpxmin = 0, tmpymin = 0, tmpzmin = 0, tmpxmax = 0, tmpymax = 0, tmpzmax = 0;
+	if (vertices.size() > 0)
+	{
+		Vertex *v = vertices[0];
+		Vertex *vxmin = v, *vymin = v, *vzmin = v, *vxmax = v, *vymax = v, *vzmax = v;
 
-	for (i = 0; i < vertices.size(); i++) {
-		if (vertices[i]->position.x < vertices[tmpxmin]->position.x) tmpxmin = i;
-		if (vertices[i]->position.x > vertices[tmpxmax]->position.x) tmpxmax = i;
+		// Find the minimum and maximum for all x,y,z components between all the vertices positions
+		for (auto v : vertices)
+		{
+			if (v->position.x < vxmin->position.x)
+				vxmin = v;
+			if (v->position.x > vxmax->position.x)
+				vxmax = v;
 
-		if (vertices[i]->position.y < vertices[tmpymin]->position.y) tmpymin = i;
-		if (vertices[i]->position.y > vertices[tmpymax]->position.y) tmpymax = i;
+			if (v->position.y < vymin->position.y)
+				vymin = v;
+			if (v->position.y > vymax->position.y)
+				vymax = v;
 
-		if (vertices[i]->position.z < vertices[tmpzmin]->position.z) tmpzmin = i;
-		if (vertices[i]->position.z > vertices[tmpzmax]->position.z) tmpzmax = i;
-	}
+			if (v->position.z < vzmin->position.z)
+				vzmin = v;
+			if (v->position.z > vzmax->position.z)
+				vzmax = v;
+		}
 
-	double xmin = vertices[tmpxmin]->position.x, xmax = vertices[tmpxmax]->position.x,
-		ymin = vertices[tmpymin]->position.y, ymax = vertices[tmpymax]->position.y,
-		zmin = vertices[tmpzmin]->position.z, zmax = vertices[tmpzmax]->position.z;
+		float xmin = vxmin->position.x, xmax = vxmax->position.x,
+			ymin = vymin->position.y, ymax = vymax->position.y,
+			zmin = vzmin->position.z, zmax = vzmax->position.z;
 
-	double scale = (xmax - xmin) > (ymax - ymin) ? (xmax - xmin) : (ymax - ymin);
-	scale = scale > (zmax - zmin) ? scale : (zmax - zmin);
+		float distx = xmax - xmin, disty = ymax - ymin, distz = zmax - zmin;
+		float diffx = (xmax + xmin) / 2.0f, diffy = (ymax + ymin) / 2.0f, diffz = (zmax + zmin) / 2.0f;
 
-	for (i = 0; i < vertices.size(); i++) {
-		vertices[i]->position.x -= (float)(xmax + xmin) / 2.0f;
-		vertices[i]->position.y -= (float)(ymax + ymin) / 2.0f;
-		vertices[i]->position.z -= (float)(zmax + zmin) / 2.0f;
+		// The scale factor corresponds to the greatest distance between the three maximums and minimums
+		float scale = distx > disty ? distx : disty > distz ? disty : distz;
 
-		vertices[i]->position.x /= (float)scale;
-		vertices[i]->position.y /= (float)scale;
-		vertices[i]->position.z /= (float)scale;
+		for (auto v : vertices)
+		{
+			// Center the model on the (0,0,0) position
+			v->position.x -= diffx;
+			v->position.y -= diffy;
+			v->position.z -= diffz;
+
+			// Scale down the model by diving all positions by the scale factor
+			v->position /= scale;
+		}
 	}
 }
 
 void Mesh::ComputeNormals()
 {
-	for (unsigned int i = 0; i < faces.size(); i++)
-		faces[i]->ComputeNormal();
+	for (auto face : faces)
+		face->ComputeNormal();
 
-	for (unsigned int i = 0; i < vertices.size(); i++)
-		vertices[i]->ComputeNormal();
+	for (auto vertex : vertices)
+		vertex->ComputeNormal();
 }
-
-
-

@@ -1,7 +1,7 @@
-#include "Rendering\Operators\MeshTransformation.h"
-#include "Rendering\Model\Vertex.h"
-#include "Rendering\Model\HalfEdge.h"
-#include "Rendering\Model\Face.h"
+#include "Rendering/Operators/MeshTransformation.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/HalfEdge.h"
+#include "Rendering/Model/Face.h"
 #include <vector>
 
 using namespace Rendering;
@@ -15,16 +15,21 @@ void MeshTransformation::Triangulate(Model::Mesh* mesh)
 	Face* newFace = NULL;
 	HalfEdge* edge = NULL;
 	HalfEdge *newEdge1, *newEdge2; // newEdge1 belong to the new face, newEdge2 belong to the remaining face
-	unsigned int nbFaces = mesh->faces.size();
-	for (unsigned int i = 0; i < nbFaces; i++)
+	unsigned int nbVertices, nbFaces;
+	vector<Face*> newFaces;
+
+	nbFaces = static_cast<unsigned int>(mesh->faces.size());
+
+	for (unsigned int i = 0 ; i < nbFaces; i++)
 	{
 		face = mesh->faces[i];
-		int nbVertices = face->CountVertices();
+		nbVertices = face->CountVertices();
 		edge = face->adjacentHalfEdge;
 
 		// Instanciate new faces, but we keep the original face as the last triangle
-		vector<Face*> newFaces;
-		for (int j = 0; j * 2 < nbVertices - 3; j++)
+		
+		newFaces.reserve(2);
+		for (unsigned int j = 0; j * 2 < nbVertices - 3; j++)
 		{
 			newFace = new Face();
 			newFaces.push_back(newFace);
@@ -33,7 +38,7 @@ void MeshTransformation::Triangulate(Model::Mesh* mesh)
 		newFaces.push_back(face);
 
 		// Triangulate the current face, each iteration create a new triangle
-		for (int j = 0; j * 2 < nbVertices - 3; j++)
+		for (unsigned int j = 0; j * 2 < nbVertices - 3; j++)
 		{
 			newFaces[j]->adjacentHalfEdge = edge;
 
@@ -68,13 +73,12 @@ void MeshTransformation::Triangulate(Model::Mesh* mesh)
 
 		// Consolidate original face (now the last triangle)
 		face->adjacentHalfEdge = edge;
+		newFaces.clear();
 	}
 }
 
 void MeshTransformation::Inflate(Model::Mesh* mesh, float value)
 {
-	for (vector<Vertex*>::iterator vertexIt = mesh->vertices.begin(); vertexIt != mesh->vertices.end(); vertexIt++)
-	{
-		(*vertexIt)->position += value * (*vertexIt)->normal;		
-	}
+	for (auto vertex : mesh->vertices)
+		vertex->position += value * vertex->normal;
 }

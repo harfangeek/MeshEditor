@@ -1,8 +1,8 @@
-#include "Rendering\Operators\ViewerUtility.h"
-#include "Dependencies\glm\gtc\matrix_transform.hpp"
-#include "Dependencies\glm\gtx\rotate_vector.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
 
-#include <iostream>
+#include "Rendering/Operators/ViewerUtility.h"
+#include "GLM/gtc/matrix_transform.hpp"
+#include "GLM/gtx/rotate_vector.hpp"
 
 using namespace Rendering::Core;
 using namespace Rendering::Model;
@@ -50,10 +50,10 @@ void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer,
 {
 	// Get all viewer data
 	float fovy = renderer->GetFovy();
-	int viewportWidth = renderer->GetViewportWidth();
-	int viewportHeight = renderer->GetViewportHeight();
-	int windowWidth = window->GetWidth();
-	int windowHeight = window->GetHeight();
+	auto viewportWidth = static_cast<float>(renderer->GetViewportWidth());
+	auto viewportHeight = static_cast<float>(renderer->GetViewportHeight());
+	auto windowWidth = static_cast<float>(window->GetWidth());
+	auto windowHeight = static_cast<float>(window->GetHeight());
 	float zNear = renderer->GetZNear();
 	float zFar = renderer->GetZFar();
 	glm::vec3 cameraEye = renderer->GetCameraEye();
@@ -61,12 +61,12 @@ void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer,
 	glm::vec3 cameraForward = renderer->GetCameraForward();
 
 	// Compute projection and view matrices
-	glm::mat4 projection_matrix = glm::perspective(fovy, (float)viewportWidth / (float)viewportHeight, zNear, zFar);
+	glm::mat4 projection_matrix = glm::perspective(fovy, viewportWidth / viewportHeight, zNear, zFar);
 	glm::mat4 view_matrix = glm::lookAt(cameraEye, cameraEye + cameraForward, cameraUp);
 
 	// Normalize mouse position to [-1.0,1.0]
-	float xNorm = (float)x / (float)windowWidth * 2.0f - 1.0f;
-	float yNorm = -((float)y / (float)windowHeight * 2.0f - 1.0f);
+	float xNorm = static_cast<float>(x) / windowWidth * 2.0f - 1.0f;
+	float yNorm = -(static_cast<float>(y) / windowHeight * 2.0f - 1.0f);
 	
 	// Compute the seletion ray. First set it to mouse position as x and y and -1 to z (looking forward)
 	glm::vec4 homogeneousRay(xNorm, yNorm, -1.0f, 1.0f);
@@ -80,13 +80,13 @@ void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer,
 
 	// Loop over all vertices
 	Mesh* mesh = renderer->GetMesh();
-	float d = 0.0;
+	float delta = 0.0f;
 	glm::vec3 vertexRay;
 	for (unsigned int i = 0; i < mesh->vertices.size(); i++)
 	{
 		// Compute the vertex position from the camera and "compare" it to the selection ray using dot product
 		vertexRay = glm::normalize(mesh->vertices[i]->position - cameraEye);
-		float delta = glm::abs(glm::dot(vertexRay, selectionRay));
+		delta = glm::abs(glm::dot(vertexRay, selectionRay));
 		if (delta >= 1.0 - precision)
 			selectedVertices.push_back(i);
 	}

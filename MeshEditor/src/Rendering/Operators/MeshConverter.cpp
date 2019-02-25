@@ -1,62 +1,77 @@
-#include "Rendering\Operators\MeshConverter.h"
-#include "Rendering\Model\Vertex.h"
-#include "Rendering\Model\HalfEdge.h"
-#include "Rendering\Model\Face.h"
+#include "Rendering/Operators/MeshConverter.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/HalfEdge.h"
+#include "Rendering/Model/Face.h"
 #include <map>
+#include <memory>
 
 using namespace Rendering;
 using namespace Rendering::Operators;
 using namespace Rendering::Model;
 using namespace std;
 
-void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh *mesh, vector<glm::vec3> &vertices, vector<vector<unsigned int>> &faces)
+void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh& mesh, const vector<glm::vec3> &vertices, const vector<vector<unsigned int>> &faces)
 {
-	map<pair<unsigned int, unsigned int>, HalfEdge*> hmap; // Store if we already created the edge between two vertices
-	mesh->Clean();
-	
-	// Create the vertices, set the position
-	for (unsigned int i = 0; i < vertices.size(); i++)
-	{ 
-		mesh->vertices.push_back(new Vertex(vertices[i]));
-	}
+	// Create vertices
+	size_t size_vertices = vertices.size();
+	mesh.vertices.reserve(size_vertices);
+	for (unsigned int i = 0; i < size_vertices; i++)
+		mesh.vertices.emplace_back(new Vertex(vertices[i]));
 
 	// Create faces
-	Face *face;
-	for (unsigned int i = 0; i < faces.size(); i++)
-	{
-		// New face
-		face = new Face();
-		mesh->faces.push_back(face);
+	size_t size_faces = faces.size();
+	mesh.faces.reserve(size_faces);
+	for (unsigned int i = 0; i < size_faces; i++)
+		mesh.faces.emplace_back(new Face());
 
-		vector<unsigned int> vertexIndices = faces[i]; // Get de vertex indices for the new face
+	Face *face;
+	HalfEdge *firstEdge, *lastEdge, *prev, *curr;
+	unsigned int v0, v1;
+	unsigned int currIndex, nextIndex, lastIndex;	
+	size_t sizeVertices;
+	int i = 0;
+	map<pair<unsigned int, unsigned int>, HalfEdge*> hmap; // Store if we already created the edge between two vertices
+	map<pair<unsigned int, unsigned int>, HalfEdge*>::iterator halfEdgeIt;
+	pair<unsigned int, unsigned int> pair;
+	
+	for(auto vertexIndices : faces)
+	{
+		face = mesh.faces[i];
+		v0 = vertexIndices[0];
+		v1 = vertexIndices[1];
+		sizeVertices = vertexIndices.size();
 
 		// Create the first half edge
-		HalfEdge* firstEdge = new HalfEdge();
+		firstEdge = new HalfEdge();
 		firstEdge->adjacentFace = face;
-		firstEdge->source = mesh->vertices[vertexIndices[0]];		
+		firstEdge->source = mesh.vertices[v0];		
 
 		face->adjacentHalfEdge = firstEdge; // Link the face to the first half edge
-		mesh->vertices[vertexIndices[0]]->originOf = firstEdge; // Link the first vertex to the first half edge
+		mesh.vertices[v0]->originOf = firstEdge; // Link the first vertex to the first half edge
 
 		// Consolidate faces. Check whether the half edge's twin has already been created, e.g. If there is an edge beetween the vertices 3 and 5, 
 		// and two faces sharing this edge, we will try to create first the half edge 3 to 5, and later the half edge 5 to 3 (or vice versa)
 		// The second time we have to link the two half edges by settings their twins
-		if (hmap.count(make_pair(vertexIndices[1], vertexIndices[0])) != 0)
+		pair.first = v1;
+		pair.second = v0;
+		halfEdgeIt = hmap.find(pair);
+		if (halfEdgeIt != hmap.end())
 		{
-			firstEdge->twin = hmap[make_pair(vertexIndices[1], vertexIndices[0])];
-			hmap[make_pair(vertexIndices[1], vertexIndices[0])]->twin = firstEdge;
+			firstEdge->twin = halfEdgeIt->second;
+			halfEdgeIt->second->twin = firstEdge;
 		}
 
-		mesh->halfEdges.push_back(firstEdge);
-		hmap[make_pair(vertexIndices[0], vertexIndices[1])] = firstEdge;
+		mesh.halfEdges.push_back(firstEdge);
+		pair.first = v0;
+		pair.second = v1;
+		hmap[pair] = firstEdge;
 
 		// Create intermediare edges
-		HalfEdge* prev = firstEdge;
-		HalfEdge* curr = NULL;
-		unsigned int currIndex = 0;
-		unsigned int nextIndex;
-		unsigned int lastIndex = vertexIndices[vertexIndices.size() - 1];
-		for (unsigned int j = 1; j < vertexIndices.size() - 1; j++)
+		prev = firstEdge;
+		curr = NULL;
+		currIndex = 0;
+		lastIndex = vertexIndices[sizeVertices - 1];
+		for (size_t j = 1; j < sizeVertices - 1; j++)
 		{
 			currIndex = vertexIndices[j];
 			nextIndex = vertexIndices[j + 1];
@@ -65,75 +80,85 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh *mesh, vector<glm::vec3
 			curr = new HalfEdge();
 			curr->prev = prev;
 			curr->adjacentFace = face;
-			curr->source = mesh->vertices[currIndex];
+			curr->source = mesh.vertices[currIndex];
 
 			prev->next = curr; // Set the next of previous half edge
-			mesh->vertices[currIndex]->originOf = curr; // Set current vertex has origin of the new half edge
+			mesh.vertices[currIndex]->originOf = curr; // Set current vertex has origin of the new half edge
 
 			// Consolidate faces
-			if (hmap.count(make_pair(nextIndex, currIndex)) != 0)
+			pair.first = nextIndex;
+			pair.second = currIndex;
+			halfEdgeIt = hmap.find(pair);
+			if (halfEdgeIt != hmap.end())
 			{
-				curr->twin = hmap[make_pair(nextIndex, currIndex)];
-				hmap[make_pair(nextIndex, currIndex)]->twin = curr;
+				curr->twin = halfEdgeIt->second;
+				halfEdgeIt->second->twin = curr;
 			}
 
-			mesh->halfEdges.push_back(curr);
-			hmap[make_pair(currIndex, nextIndex)] = curr;
+			mesh.halfEdges.push_back(curr);
+			pair.first = currIndex;
+			pair.second = nextIndex;
+			hmap[pair] = curr;
 			prev = curr;
 		}
 
 		// Create the last edge
-		HalfEdge* lastEdge = new HalfEdge();
+		lastEdge = new HalfEdge();
 		lastEdge->prev = curr;
 		lastEdge->next = firstEdge;
 		lastEdge->adjacentFace = face;
-		lastEdge->source = mesh->vertices[lastIndex];
+		lastEdge->source = mesh.vertices[lastIndex];
 
 		// Consolidate faces
-		if (hmap.count(make_pair(vertexIndices[0], lastIndex)) != 0)
+		pair.first = v0;
+		pair.second = lastIndex;
+		halfEdgeIt = hmap.find(pair);
+		if (halfEdgeIt != hmap.end())
 		{
-			lastEdge->twin = hmap[make_pair(vertexIndices[0], lastIndex)];
-			hmap[make_pair(vertexIndices[0], lastIndex)]->twin = lastEdge;
+			lastEdge->twin = halfEdgeIt->second;
+			halfEdgeIt->second->twin = lastEdge;
 		}
-
-		mesh->halfEdges.push_back(lastEdge);
-		hmap[make_pair(lastIndex, vertexIndices[0])] = lastEdge;
+		
+		mesh.halfEdges.push_back(lastEdge);
+		pair.first = lastIndex;
+		pair.second = v0;
+		hmap[pair] = lastEdge;
 
 		firstEdge->prev = lastEdge;
 		curr->next = lastEdge;
-		mesh->vertices[lastIndex]->originOf = lastEdge;
-	}
+		mesh.vertices[lastIndex]->originOf = lastEdge;
 
-	mesh->Normalize();
+		i++;
+	}
+	
+	mesh.Normalize();
 }
 
-void MeshConverter::HalfEdgeStructureToArray(Model::Mesh *mesh, vector<GLfloat> &vertices, vector<GLuint> &faces, std::vector<GLfloat> &normals)
+void MeshConverter::HalfEdgeStructureToArray(const Model::Mesh& mesh, vector<GLfloat>& vertices, vector<GLuint>& faces, std::vector<GLfloat>& normals)
 {
-	vertices.clear();
-	faces.clear();
-	normals.clear();
-
 	// Add vertices
 	int i = 0;
-	for (vector<Vertex*>::iterator vertexIt = mesh->vertices.begin(); vertexIt != mesh->vertices.end(); vertexIt++)
+	vertices.reserve(mesh.vertices.size() * 3);
+	normals.reserve(mesh.vertices.size() * 3);
+	for (auto vertex : mesh.vertices)
 	{
-		vertices.push_back((*vertexIt)->position.x);
-		vertices.push_back((*vertexIt)->position.y);
-		vertices.push_back((*vertexIt)->position.z);
-		normals.push_back((*vertexIt)->normal.x);
-		normals.push_back((*vertexIt)->normal.y);
-		normals.push_back((*vertexIt)->normal.z);
-		(*vertexIt)->index = i++;
+		vertices.push_back(vertex->position.x);
+		vertices.push_back(vertex->position.y);
+		vertices.push_back(vertex->position.z);
+		normals.push_back(vertex->normal.x);
+		normals.push_back(vertex->normal.y);
+		normals.push_back(vertex->normal.z);
+		vertex->index = i++;
 	}
 
 	// Add faces
-	vector<Vertex*> faceVertices;
-	for (vector<Face*>::iterator faceIt = mesh->faces.begin(); faceIt != mesh->faces.end(); faceIt++)
+	faces.reserve(mesh.faces.size() * 3);
+	for (auto face : mesh.faces)
 	{
-		(*faceIt)->ListVertices(faceVertices);
-		for (vector<Vertex*>::iterator vertexIt = faceVertices.begin(); vertexIt != faceVertices.end(); vertexIt++)
+		vector<Vertex*> faceVertices = face->ListVertices();
+		for (auto vertex : faceVertices)
 		{
-			faces.push_back((*vertexIt)->index);
+			faces.push_back(vertex->index);
 		}
 		/*normals.push_back((*faceIt)->normal.x);
 		normals.push_back((*faceIt)->normal.y);

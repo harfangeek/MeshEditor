@@ -194,3 +194,9 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+imgui.ini
+mesh-editor
+mesh-editor.exe
+MeshEditor.exe
+/Shaders

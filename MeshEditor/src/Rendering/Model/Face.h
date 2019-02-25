@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "Dependencies\glm\glm.hpp"
+#define GLM_FORCE_SILENT_WARNINGS 1
+#include "GLM/glm.hpp"
 
 namespace Rendering
 {
@@ -20,12 +21,12 @@ namespace Rendering
 			~Face();
 
 			void ComputeNormal(); // Compute the face's normal (update normal member)
-			void ListHalfEdges(std::vector<HalfEdge*> &halfEdges); // List the halfedges of the face
-			int CountHalfEdges(); // Return the number of halfedges of the face
-			void ListVertices(std::vector<Vertex*> &vertices); // List the vertices of the face
-			int CountVertices(); // Return the number of vertices of the face
-			void ListNeighbourFaces(std::vector<Face*> &faces); // List the faces around the face
-			int CountNeighbourFaces(); // Return the number of faces around the face
+			std::vector<HalfEdge*> ListHalfEdges(); // List the halfedges of the face
+			unsigned int CountHalfEdges(); // Return the number of halfedges of the face
+			std::vector<Vertex*> ListVertices(); // List the vertices of the face
+			unsigned int CountVertices(); // Return the number of vertices of the face
+			std::vector<Face*> ListNeighbourFaces(); // List the faces around the face
+			unsigned int CountNeighbourFaces(); // Return the number of faces around the face
 		};
 	}
 }

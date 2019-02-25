@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Rendering\Model\Mesh.h"
+#include "Rendering/Model/Mesh.h"
 #include <vector>
-#include "Dependencies\glew\include\glew.h"
-#include "Dependencies\glm\glm.hpp"
+#include "GL/gl3w.h"
+#define GLM_FORCE_SILENT_WARNINGS 1
+#include "GLM/glm.hpp"
 
-#define NB_BUFFER 6
+#define NB_BUFFER 7
 
 namespace Rendering
 {
@@ -25,7 +26,8 @@ namespace Rendering
 			BUF_NORMALS = 2,
 			BUF_FACES_NORMALS = 3,
 			BUF_VERTICES_NORMALS = 4,
-			BUF_VERTICES_SELECTION = 5
+			BUF_VERTICES_SELECTION = 5,
+			BUF_EDGES_SELECTION = 6
 		};
 
 		enum LightType {
@@ -41,6 +43,10 @@ namespace Rendering
 		private:
 			Model::Mesh* mesh; // Mesh in half-edge structure
 
+			glm::vec3 translation;
+			glm::vec3 rotation;
+			glm::vec3 scale;
+
 			// Mesh as vertices + faces + normals arrays for better performances
 			// Reloaded when the mesh is modified
 			std::vector<GLfloat> vertices;
@@ -49,11 +55,22 @@ namespace Rendering
 			std::vector<GLfloat> verticesNormals;
 			std::vector<GLfloat> facesNormals;
 			std::vector<GLint> verticesSelection;
+			std::vector<GLint> edgesSelection;
 
+			GLuint vao;
 			GLuint buffers[NB_BUFFER]; // Buffers for each previous arrays
 			bool verticesNormalsUpdated;
 			bool facesNormalsUpdated;
+						
 
+			GLuint program; // Shader program
+
+			// Shaders variables
+			GLuint projectionMatrixLoc;
+			GLuint viewMatrixLoc;
+			GLuint modelMatrixLoc;
+			GLuint meshColorLoc;
+			
 			glm::vec3 cameraEye; // Position of the camera
 			glm::vec3 cameraUp; // Camera orientation
 			glm::vec3 cameraForward; // Camera direction
@@ -72,18 +89,14 @@ namespace Rendering
 			glm::vec3 lightPosition;
 			glm::vec3 lightDirection;
 			float lightAngle;
-
-			GLuint program; // Shader program
-
-			// Shaders variables
-			GLuint projectionMatrixLoc;
-			GLuint viewMatrixLoc;
-			GLuint meshColorLoc;
+			
 			GLuint lightTypeLoc;
 			GLuint lightColorLoc;
 			GLuint lightPositionLoc;
 			GLuint lightDirectionLoc;
 			GLuint lightAngleLoc;
+
+			void Clean();
 
 			// Display functions
 			void DisplayMesh();
@@ -105,10 +118,17 @@ namespace Rendering
 			MeshRenderer(int viewportWidth, int viewportHeight, Model::Mesh* mesh = NULL);
 			~MeshRenderer();
 
-			void Init(); // Initialize opengl context
+			void Init(); // Initialize opengl context			
 
 			void SetMesh(Model::Mesh* mesh);
 			Model::Mesh* GetMesh();
+
+			void SetTranslation(glm::vec3 translation);
+			glm::vec3 GetTranslation();
+			void SetRotation(glm::vec3 rotation);
+			glm::vec3 GetRotation();
+			void SetScale(glm::vec3 scale);
+			glm::vec3 GetScale();
 
 			// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
 			// Update vertices, faces and normals arrays
@@ -133,14 +153,11 @@ namespace Rendering
 			void SetLightDirection(glm::vec3 direction);
 			void SetLightAngle(float angle);
 
-			void SetViewPort(int viewportWidth, int viewportHeight);
-			void Rotate(float x, float y); // Rotate the model around the x axis by x degrees and around the y axis by y degrees
-			void Translate(float x, float y);
-			void Zoom(float value);
-
 			void SetVertexSelected(int index, bool selected);
 			void ClearVertexSelection();
-
+			void SetEdgeSelected(int index, bool selected);
+			void ClearEdgeSelection();
+			
 			int GetViewportWidth();
 			int GetViewportHeight();
 			float GetFovy();
@@ -149,6 +166,14 @@ namespace Rendering
 			glm::vec3 GetCameraEye();
 			glm::vec3 GetCameraUp();
 			glm::vec3 GetCameraForward();
+
+			glm::vec3 cameraRotation;
+			glm::vec3 cameraPosition;
+
+			void SetViewPort(int viewportWidth, int viewportHeight);
+			void Rotate(float x, float y); // Rotate the camera around the x axis by x degrees and around the y axis by y degrees
+			void Translate(float x, float y);
+			void Zoom(float value);
 		};
 	}
 }

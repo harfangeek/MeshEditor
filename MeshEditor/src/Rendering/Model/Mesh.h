@@ -1,9 +1,10 @@
 #pragma once
 
-#include <Vector>
-#include "Rendering\Model\Face.h"
-#include "Rendering\Model\Vertex.h"
-#include "Rendering\Model\HalfEdge.h"
+#include <vector>
+#include <string>
+#include "Rendering/Model/Face.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/HalfEdge.h"
 
 namespace Rendering
 {
@@ -21,8 +22,11 @@ namespace Rendering
 			~Mesh();
 			void Clean();
 
-			bool Check(std::vector<std::string>& errors); // Check if the mesh contains errors (e.g. non closed face)
-			void Mesh::Normalize(); // TODO
+			Mesh& operator=(Mesh&& other);
+			Mesh(Mesh&& other);
+
+			std::vector<std::string> Check(); // Check if the mesh contains errors (e.g. non closed face)
+			void Normalize(); // Center the model on the (0,0,0) position and scale the model so it fits in a 1*1*1 cube
 			void ComputeNormals(); // Compute faces and vertices normals
 
 		};

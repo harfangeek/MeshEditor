@@ -1,6 +1,6 @@
-#include "Rendering\Model\Vertex.h"
-#include "Rendering\Model\HalfEdge.h"
-#include "Rendering\Model\Face.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/HalfEdge.h"
+#include "Rendering/Model/Face.h"
 #include <vector>
 
 using namespace Rendering::Model;
@@ -11,46 +11,44 @@ Vertex::Vertex()
 	originOf = NULL;
 }
 
-Vertex::Vertex(glm::vec3 pos) : position(pos)
+Vertex::Vertex(const glm::vec3& pos) : position(pos), originOf(NULL)
 {
-	Vertex();
 }
 
 Vertex::~Vertex()
 {
 }
 
-void Vertex::ListFaces(std::vector<Face*> &faces)
+std::vector<Face*> Vertex::ListFaces()
 {
-	faces.clear();
+	std::vector<Face*> faces;
+
 	if (originOf != NULL)
 	{
 		HalfEdge* e = originOf;
-		vec3 normal;
-
 		do
 		{
 			faces.push_back(e->adjacentFace);
 			e = e->prev->twin;
 		} while (e != originOf);
 	}
+
+	return faces;
 }
 
-int Vertex::CountFaces()
+unsigned int Vertex::CountFaces()
 {
-	std::vector<Face*> faces;
-	ListFaces(faces);
-	return faces.size();
+	std::vector<Face*> faces = ListFaces();
+	return (unsigned int)faces.size();
 }
 
 void Vertex::ComputeNormal()
 {	
-	std::vector<Face*> faces;
-	ListFaces(faces);
-	vec3 sum;
+	std::vector<Face*> faces = ListFaces();
+	vec3 sum(0.0f, 0.0f, 0.0f);
 
-	for (unsigned int i = 0; i < faces.size(); i++)
-		sum += faces[i]->normal;
+	for (auto face : faces)
+		sum += face->normal;
 
 	sum /= faces.size();
 	normal = normalize(sum);

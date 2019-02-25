@@ -1,73 +1,129 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Fichiers de ressources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Src">
-      <UniqueIdentifier>{0c0cf818-c865-459c-ba71-0721dcc9055e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{7851f185-3f44-4f4a-ab8e-9c253acc6abe}</UniqueIdentifier>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Src\GUI">
-      <UniqueIdentifier>{92898962-af67-40b6-9f9e-463cd6c79b51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\MeshEditor">
-      <UniqueIdentifier>{c6e5b31b-19c3-40c6-8ace-fcd4d461c0cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering">
-      <UniqueIdentifier>{b291013a-8a26-47aa-9f40-f8ce0d01a654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\GUI\Model">
-      <UniqueIdentifier>{ec5d73a7-6e58-47c0-bb3a-6c1982cd299b}</UniqueIdentifier>
+      <UniqueIdentifier>{389209c6-bd82-4ff8-a64f-23023c1f6efe}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\GUI\Core">
-      <UniqueIdentifier>{ca168251-b1cc-4844-987d-c8fd7cfde176}</UniqueIdentifier>
+      <UniqueIdentifier>{3410de09-9f9c-4482-80f6-c9a2fa3ce830}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\GUI\Interfaces">
-      <UniqueIdentifier>{ac28f4ce-7e72-43d7-a877-96f8ded18eb2}</UniqueIdentifier>
+    <Filter Include="Src\GUI\Interface">
+      <UniqueIdentifier>{c2729315-cd4b-4142-bf6b-8a9653a42c65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\MeshEditor\Core">
-      <UniqueIdentifier>{5aacc053-102c-413d-bfb5-4871136eba8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\MeshEditor\Model">
-      <UniqueIdentifier>{a4afa96a-338a-4222-9351-8bf1e37bed3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\MeshEditor\Operators">
-      <UniqueIdentifier>{f3e783f4-dc28-469c-a5e3-82bff179bc19}</UniqueIdentifier>
+    <Filter Include="Src\Rendering">
+      <UniqueIdentifier>{642d5332-83a4-45b8-817f-7c6a80cd8f88}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Rendering\Core">
-      <UniqueIdentifier>{47c05333-3a84-465e-9014-b1e09f8e140d}</UniqueIdentifier>
+      <UniqueIdentifier>{f30ff51d-fce8-4953-a541-5fbd8c47bc61}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Rendering\Model">
-      <UniqueIdentifier>{3daaf1ef-9775-4b19-9c8e-58068d623437}</UniqueIdentifier>
+      <UniqueIdentifier>{ab00264f-5291-4308-8a35-271961b9bc3a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Rendering\Operators">
-      <UniqueIdentifier>{fa8592cb-b4a2-4535-970e-2ff9e60ed2bb}</UniqueIdentifier>
+      <UniqueIdentifier>{81b6a685-bb2b-44d6-99f5-6b248a267a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Shaders">
+      <UniqueIdentifier>{36ce80ae-760b-4682-b9fb-3992a44d9d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\MeshEditor">
+      <UniqueIdentifier>{6c1b3bc1-c78f-4787-8f40-53cfe8ec3832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\MeshEditor\Core">
+      <UniqueIdentifier>{90928d91-1b16-44c6-a272-e2bbf2419325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\MeshEditor\Views">
+      <UniqueIdentifier>{60f038bf-5412-46e0-883a-b214792f07df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\MeshEditor\Controllers">
+      <UniqueIdentifier>{de71ae4f-2f38-4986-ac30-c31a75b4ac95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\fragmentShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\vertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\README.md" />
+    <ClInclude Include="src\Rendering\Core\MeshRenderer.h">
+      <Filter>Src\Rendering\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Model\Vertex.h">
+      <Filter>Src\Rendering\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Model\Face.h">
+      <Filter>Src\Rendering\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Model\HalfEdge.h">
+      <Filter>Src\Rendering\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Model\Mesh.h">
+      <Filter>Src\Rendering\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\ViewerUtility.h">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\MeshConverter.h">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\MeshTransformation.h">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\ObjReader.h">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\Window.h">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\WindowManager.h">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\Utility.h">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Core\GlfwWindow.h">
+      <Filter>Src\GUI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Core\GlfwWindowManager.h">
+      <Filter>Src\GUI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Core\ImGuiDialog.h">
+      <Filter>Src\GUI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\Dialog.h">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\Panel.h">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Views\MeshDialog.h">
+      <Filter>Src\MeshEditor\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\MouseListener.h">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Operators\ShaderLoader.h">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Views\MeshEditorPanel.h">
+      <Filter>Src\MeshEditor\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Controllers\CameraController.h">
+      <Filter>Src\MeshEditor\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Controllers\MeshEditorController.h">
+      <Filter>Src\MeshEditor\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Views\FilePanel.h">
+      <Filter>Src\MeshEditor\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshEditor\Controllers\FileController.h">
+      <Filter>Src\MeshEditor\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Interfaces\WindowListener.h">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MeshEditor\Core\main.cpp">
-      <Filter>Src\MeshEditor\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MeshEditor\Model\StaticData.cpp">
-      <Filter>Src\MeshEditor\Model</Filter>
-    </ClCompile>
     <ClCompile Include="src\Rendering\Core\MeshRenderer.cpp">
-      <Filter>Src\Rendering\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Rendering\Core\ShaderLoader.cpp">
       <Filter>Src\Rendering\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Model\Face.cpp">
@@ -91,142 +147,68 @@
     <ClCompile Include="src\Rendering\Operators\ObjReader.cpp">
       <Filter>Src\Rendering\Operators</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\Model\Event.cpp">
-      <Filter>Src\GUI\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Model\KeyboardEvent.cpp">
-      <Filter>Src\GUI\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Model\MouseEvent.cpp">
-      <Filter>Src\GUI\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Model\WindowEvent.cpp">
-      <Filter>Src\GUI\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Core\GlutWindow.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Core\GlutWindowManager.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Interfaces\EventDispatcher.cpp">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Interfaces\EventListener.cpp">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Core\GlutKeyboard.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Core\GlutMouse.cpp">
-      <Filter>Src\GUI\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Interfaces\Window.cpp">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MeshEditor\Core\WindowRenderer.cpp">
-      <Filter>Src\MeshEditor\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Interfaces\Mouse.cpp">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MeshEditor\Operators\MouseManipulator.cpp">
-      <Filter>Src\MeshEditor\Operators</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MeshEditor\Operators\MouseSelector.cpp">
-      <Filter>Src\MeshEditor\Operators</Filter>
-    </ClCompile>
     <ClCompile Include="src\Rendering\Operators\ViewerUtility.cpp">
       <Filter>Src\Rendering\Operators</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\Window.cpp">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Core\main.cpp">
+      <Filter>Src\MeshEditor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\Operators\Utility.cpp">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Core\GlfwWindow.cpp">
+      <Filter>Src\GUI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Core\GlfwWindowManager.cpp">
+      <Filter>Src\GUI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Core\ImGuiDialog.cpp">
+      <Filter>Src\GUI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\Dialog.cpp">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Interfaces\Panel.cpp">
+      <Filter>Src\GUI\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Views\MeshDialog.cpp">
+      <Filter>Src\MeshEditor\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\Operators\ShaderLoader.cpp">
+      <Filter>Src\Rendering\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Views\MeshEditorPanel.cpp">
+      <Filter>Src\MeshEditor\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Controllers\CameraController.cpp">
+      <Filter>Src\MeshEditor\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Controllers\MeshEditorController.cpp">
+      <Filter>Src\MeshEditor\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Views\FilePanel.cpp">
+      <Filter>Src\MeshEditor\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshEditor\Controllers\FileController.cpp">
+      <Filter>Src\MeshEditor\Controllers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\MeshEditor\Model\StaticData.h">
-      <Filter>Src\MeshEditor\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Core\MeshRenderer.h">
-      <Filter>Src\Rendering\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Core\ShaderLoader.h">
-      <Filter>Src\Rendering\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Model\Face.h">
-      <Filter>Src\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Model\HalfEdge.h">
-      <Filter>Src\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Model\Mesh.h">
-      <Filter>Src\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Model\Vertex.h">
-      <Filter>Src\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Operators\MeshConverter.h">
-      <Filter>Src\Rendering\Operators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Operators\MeshTransformation.h">
-      <Filter>Src\Rendering\Operators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Operators\ObjReader.h">
-      <Filter>Src\Rendering\Operators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Model\Event.h">
-      <Filter>Src\GUI\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Model\KeyboardEvent.h">
-      <Filter>Src\GUI\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Model\MouseEvent.h">
-      <Filter>Src\GUI\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Model\WindowEvent.h">
-      <Filter>Src\GUI\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Core\GlutWindow.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Core\GlutWindowManager.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\EventDispatcher.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\EventListener.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\Window.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\WindowManager.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Core\GlutKeyboard.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Core\GlutMouse.h">
-      <Filter>Src\GUI\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\Keyboard.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUI\Interfaces\Mouse.h">
-      <Filter>Src\GUI\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MeshEditor\Core\WindowRenderer.h">
-      <Filter>Src\MeshEditor\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MeshEditor\Operators\MouseManipulator.h">
-      <Filter>Src\MeshEditor\Operators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MeshEditor\Operators\MouseSelector.h">
-      <Filter>Src\MeshEditor\Operators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rendering\Operators\ViewerUtility.h">
-      <Filter>Src\Rendering\Operators</Filter>
-    </ClInclude>
+    <None Include="src\Rendering\Shaders\vertexShader.glsl">
+      <Filter>Src\Rendering\Shaders</Filter>
+    </None>
+    <None Include="src\Rendering\Shaders\fragmentShader.glsl">
+      <Filter>Src\Rendering\Shaders</Filter>
+    </None>
+    <None Include="src\Rendering\Shaders\geometryShader.glsl">
+      <Filter>Src\Rendering\Shaders</Filter>
+    </None>
+    <None Include="Makefile" />
   </ItemGroup>
 </Project>
