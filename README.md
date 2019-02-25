@@ -66,8 +66,8 @@ The project has been created with Visual Studio Community 2017.
 Go to the project root and execute `make`. Tested using Mingw-w64 from a standard Windows 7 command prompt and using gcc/g++ and clang/clang++ on Debian 9 64 bits.
 
 Some options are tweakable. Two examples:
-- 32 bits binary with debug info with clang/clang++: `make CC=clang CCPP=clang++ MODE=release ARCH=x86`
-- 64 bits binary with optimization with gcc/g++: `make CC=gcc CCPP=g++ MODE=debug ARCH=x64`
+- 32 bits binary with debug info with clang/clang++: `make CC=clang CCPP=clang++ MODE=debug ARCH=x86`
+- 64 bits binary with optimization with gcc/g++: `make CC=gcc CCPP=g++ MODE=release ARCH=x64`
 
 The second one is the default when simply invoking `make`
 
