@@ -200,3 +200,4 @@ mesh-editor
 mesh-editor.exe
 MeshEditor.exe
 /Shaders
+!/Models/*.obj
