@@ -8,7 +8,7 @@ using namespace MeshEditor::Controllers;
 using namespace GUI::Interfaces;
 using namespace std;
 
-MeshEditorController::MeshEditorController(Rendering::Core::MeshRenderer* meshRenderer) : meshRenderer(meshRenderer)
+MeshEditorController::MeshEditorController(Rendering::Core::MeshRenderer* meshRenderer) : meshRenderer(meshRenderer), scaleKeepRatio(true)
 {
 
 }
@@ -48,6 +48,9 @@ glm::vec3 MeshEditorController::GetRotation()
 
 void MeshEditorController::SetScale(glm::vec3 scale)
 {
+	if (scaleKeepRatio)
+		scale.y = scale.z = scale.x;
+
 	if (meshRenderer)
 		meshRenderer->SetScale(scale);
 }
@@ -58,4 +61,17 @@ glm::vec3 MeshEditorController::GetScale()
 		return meshRenderer->GetScale();
 
 	return glm::vec3(1.0f, 1.0f, 1.0f);
+}
+
+void MeshEditorController::SetScaleKeepRatio(bool scaleKeepRatio)
+{
+	this->scaleKeepRatio = scaleKeepRatio;
+
+	if (scaleKeepRatio)
+		SetScale(GetScale());
+}
+
+bool MeshEditorController::GetScaleKeepRatio()
+{
+	return this->scaleKeepRatio;
 }

@@ -20,9 +20,12 @@ namespace MeshEditor
 			glm::vec3 GetRotation();
 			void SetScale(glm::vec3 scale);
 			glm::vec3 GetScale();
+			void SetScaleKeepRatio(bool scaleKeepRatio);
+			bool GetScaleKeepRatio();
 			
 		private:
 			Rendering::Core::MeshRenderer* meshRenderer;
+			bool scaleKeepRatio;
 		};
 	}
 }

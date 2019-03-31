@@ -13,6 +13,7 @@ void MeshEditorPanel::Display()
 	auto translation = controller->GetTranslation();
 	auto rotation = controller->GetRotation();
 	auto scale = controller->GetScale();
+	auto scaleKeepRatio = controller->GetScaleKeepRatio();
 	
 	ImGui::Text("Translation");
 	if(ImGui::DragFloat("X##1", &translation.x) |
@@ -27,9 +28,23 @@ void MeshEditorPanel::Display()
 		controller->SetRotation(rotation);
 
 	ImGui::Text("Scale");
-	if(ImGui::DragFloat("X##3", &scale.x) |
+	if (ImGui::Checkbox("Keep ratio", &scaleKeepRatio))
+	{
+		controller->SetScaleKeepRatio(scaleKeepRatio);
+	}
+
+	if (scaleKeepRatio)
+	{
+		if (ImGui::DragFloat("Ratio", &scale.x, 0.1f))
+		{
+			controller->SetScale(scale);
+		}
+	}
+	else if (ImGui::DragFloat("X##3", &scale.x) |
 		ImGui::DragFloat("Y##3", &scale.y) |
 		ImGui::DragFloat("Z##3", &scale.z))
+	{
 		controller->SetScale(scale);
+	}
 }
 
