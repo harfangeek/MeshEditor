@@ -3,12 +3,8 @@
 #include "GUI/Interfaces/Window.h"
 
 #include <string>
-
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_glfw.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
+#include <IMGUI/imgui.h>
 
 namespace GUI
 {
@@ -18,8 +14,9 @@ namespace GUI
 		{
 		public:
 			GLFWwindow* window;
+			ImGuiContext* imguiContext;
 
-			GlfwWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title);
+			GlfwWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title, GlfwWindow* share);
 			virtual ~GlfwWindow();
 
 			virtual void Resize(unsigned int width, unsigned int height);

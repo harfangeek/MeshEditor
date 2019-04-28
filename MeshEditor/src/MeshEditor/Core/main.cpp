@@ -27,7 +27,10 @@ int main(int, char**)
 {
 	// Create window manager
 	WindowManager* manager = GlfwWindowManager::GetInstance();
+	
 	Window* window = manager->NewWindow(42, WINDOW_WIDTH, WINDOW_HEIGHT, 400, 400, "Test Window");
+	Window* window2 = manager->NewWindow(422, WINDOW_WIDTH, WINDOW_HEIGHT, 400, 400, "Test Window2");
+		
 
 	// Create Mesh renderer
 	MeshRenderer* meshRenderer = new MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -41,10 +44,20 @@ int main(int, char**)
 	meshDialog->SetMeshRenderer(meshRenderer);
 
 	// Mesh editor dialog
-	ImGuiDialog* meshEditorDialog = new ImGuiDialog(12, "Mesh editor", 50, 220, 200, 400);
+	ImGuiDialog* meshEditorDialog = new ImGuiDialog(12, "Mesh editor1", 50, 220, 200, 400);
 	MeshEditorController* meshEditorController = new MeshEditorController(meshRenderer);
 	MeshEditorPanel* meshEditorPanel = new MeshEditorPanel(meshEditorController);
 	meshEditorDialog->SetPanel(meshEditorPanel);
+
+	ImGuiDialog* meshEditorDialog2 = new ImGuiDialog(122, "Mesh editor2##2", 50, 220, 200, 400);
+	MeshEditorController* meshEditorController2 = new MeshEditorController(meshRenderer);
+	MeshEditorPanel* meshEditorPanel2 = new MeshEditorPanel(meshEditorController2);
+	meshEditorDialog2->SetPanel(meshEditorPanel2);
+
+	ImGuiDialog* meshEditorDialog3 = new ImGuiDialog(1222, "Mesh editor3##3", 50, 220, 200, 400);
+	MeshEditorController* meshEditorController3 = new MeshEditorController(meshRenderer);
+	MeshEditorPanel* meshEditorPanel3 = new MeshEditorPanel(meshEditorController3);
+	meshEditorDialog3->SetPanel(meshEditorPanel3);
 
 	// File dialog
 	ImGuiDialog* fileDialog = new ImGuiDialog(1, "File dialog", 50, 50, 200, 150);
@@ -56,6 +69,9 @@ int main(int, char**)
 	window->AddDialog(meshDialog);
 	window->AddDialog(meshEditorDialog);
 	window->AddDialog(fileDialog);
+
+	window->AddDialog(meshEditorDialog2);
+	window2->AddDialog(meshEditorDialog3);
 	
 	// Camera controller
 	CameraController* cameraController = new CameraController(meshRenderer);

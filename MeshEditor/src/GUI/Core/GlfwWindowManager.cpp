@@ -93,8 +93,13 @@ void  GlfwWindowManager::Start()
 
 Window* GlfwWindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, string title)
 {
+	GlfwWindow* share = NULL;
+	auto e = windows.begin();
+	if (e != windows.end())
+		share = dynamic_cast<GlfwWindow*>(e->second);
+
 	// Create window with graphics context
-	GlfwWindow* window = new GlfwWindow(id, width, height, posX, posY, title);
+	GlfwWindow* window = new GlfwWindow(id, width, height, posX, posY, title, share);
 
 	if (window && window->window)
 	{
