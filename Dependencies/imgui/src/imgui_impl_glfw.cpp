@@ -54,17 +54,37 @@ enum GlfwClientApi
     GlfwClientApi_OpenGL,
     GlfwClientApi_Vulkan
 };
-static GLFWwindow*          g_Window = NULL;
-static GlfwClientApi        g_ClientApi = GlfwClientApi_Unknown;
-static double               g_Time = 0.0;
-static bool                 g_MouseJustPressed[5] = { false, false, false, false, false };
-static GLFWcursor*          g_MouseCursors[ImGuiMouseCursor_COUNT] = { 0 };
 
-// Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
-static GLFWmousebuttonfun   g_PrevUserCallbackMousebutton = NULL;
-static GLFWscrollfun        g_PrevUserCallbackScroll = NULL;
-static GLFWkeyfun           g_PrevUserCallbackKey = NULL;
-static GLFWcharfun          g_PrevUserCallbackChar = NULL;
+struct ImGlfwContext
+{
+	GLFWwindow*          Window;
+	GlfwClientApi        ClientApi;
+	double               Time;
+	bool                 MouseJustPressed[5];
+	GLFWcursor*          MouseCursors[ImGuiMouseCursor_COUNT];
+
+	// Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
+	GLFWmousebuttonfun   PrevUserCallbackMousebutton;
+	GLFWscrollfun        PrevUserCallbackScroll;
+	GLFWkeyfun           PrevUserCallbackKey;
+	GLFWcharfun          PrevUserCallbackChar;
+
+	ImGlfwContext() : MouseJustPressed{ false, false, false, false, false }
+	{
+		Window = NULL;
+		ClientApi = GlfwClientApi_Unknown;
+		Time = 0.0;
+		memset(MouseCursors, 0, ImGuiMouseCursor_COUNT * sizeof(GLFWcursor*));
+
+		PrevUserCallbackMousebutton = NULL;
+		PrevUserCallbackScroll = NULL;
+		PrevUserCallbackKey = NULL;
+		PrevUserCallbackChar = NULL;
+	}
+};
+
+ImGlfwContext* g_Context = NULL;
+
 
 static const char* ImGui_ImplGlfw_GetClipboardText(void* user_data)
 {
@@ -78,17 +98,19 @@ static void ImGui_ImplGlfw_SetClipboardText(void* user_data, const char* text)
 
 void ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    if (g_PrevUserCallbackMousebutton != NULL)
-        g_PrevUserCallbackMousebutton(window, button, action, mods);
+	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
+    if (g_Context->PrevUserCallbackMousebutton != NULL)
+        g_Context->PrevUserCallbackMousebutton(window, button, action, mods);
 
-    if (action == GLFW_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_MouseJustPressed))
-        g_MouseJustPressed[button] = true;
+    if (action == GLFW_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_Context->MouseJustPressed))
+        g_Context->MouseJustPressed[button] = true;
 }
 
 void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    if (g_PrevUserCallbackScroll != NULL)
-        g_PrevUserCallbackScroll(window, xoffset, yoffset);
+	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
+    if (g_Context->PrevUserCallbackScroll != NULL)
+        g_Context->PrevUserCallbackScroll(window, xoffset, yoffset);
 
     ImGuiIO& io = ImGui::GetIO();
     io.MouseWheelH += (float)xoffset;
@@ -97,8 +119,9 @@ void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yo
 
 void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (g_PrevUserCallbackKey != NULL)
-        g_PrevUserCallbackKey(window, key, scancode, action, mods);
+	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
+    if (g_Context->PrevUserCallbackKey != NULL)
+        g_Context->PrevUserCallbackKey(window, key, scancode, action, mods);
 
     ImGuiIO& io = ImGui::GetIO();
     if (action == GLFW_PRESS)
@@ -115,18 +138,21 @@ void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int a
 
 void ImGui_ImplGlfw_CharCallback(GLFWwindow* window, unsigned int c)
 {
-    if (g_PrevUserCallbackChar != NULL)
-        g_PrevUserCallbackChar(window, c);
+	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
+    if (g_Context->PrevUserCallbackChar != NULL)
+        g_Context->PrevUserCallbackChar(window, c);
 
     ImGuiIO& io = ImGui::GetIO();
     if (c > 0 && c < 0x10000)
         io.AddInputCharacter((unsigned short)c);
 }
 
-static bool ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, GlfwClientApi client_api)
+ImGlfwContext* ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, GlfwClientApi client_api)
 {
-    g_Window = window;
-    g_Time = 0.0;
+	g_Context = IM_NEW(ImGlfwContext);
+
+    g_Context->Window = window;
+    g_Context->Time = 0.0;
 
     // Setup back-end capabilities flags
     ImGuiIO& io = ImGui::GetIO();
@@ -159,66 +185,72 @@ static bool ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, Glfw
 
     io.SetClipboardTextFn = ImGui_ImplGlfw_SetClipboardText;
     io.GetClipboardTextFn = ImGui_ImplGlfw_GetClipboardText;
-    io.ClipboardUserData = g_Window;
+    io.ClipboardUserData = g_Context->Window;
 #if defined(_WIN32)
-    io.ImeWindowHandle = (void*)glfwGetWin32Window(g_Window);
+    io.ImeWindowHandle = (void*)glfwGetWin32Window(g_Context->Window);
 #endif
 
-    g_MouseCursors[ImGuiMouseCursor_Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-    g_MouseCursors[ImGuiMouseCursor_TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
-    g_MouseCursors[ImGuiMouseCursor_ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);   // FIXME: GLFW doesn't have this.
-    g_MouseCursors[ImGuiMouseCursor_ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-    g_MouseCursors[ImGuiMouseCursor_ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-    g_MouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
-    g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
-    g_MouseCursors[ImGuiMouseCursor_Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+    g_Context->MouseCursors[ImGuiMouseCursor_Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+    g_Context->MouseCursors[ImGuiMouseCursor_TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+    g_Context->MouseCursors[ImGuiMouseCursor_ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);   // FIXME: GLFW doesn't have this.
+    g_Context->MouseCursors[ImGuiMouseCursor_ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+    g_Context->MouseCursors[ImGuiMouseCursor_ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+    g_Context->MouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
+    g_Context->MouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
+    g_Context->MouseCursors[ImGuiMouseCursor_Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
 
     // Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
-    g_PrevUserCallbackMousebutton = NULL;
-    g_PrevUserCallbackScroll = NULL;
-    g_PrevUserCallbackKey = NULL;
-    g_PrevUserCallbackChar = NULL;
+    g_Context->PrevUserCallbackMousebutton = NULL;
+    g_Context->PrevUserCallbackScroll = NULL;
+    g_Context->PrevUserCallbackKey = NULL;
+    g_Context->PrevUserCallbackChar = NULL;
     if (install_callbacks)
     {
-        g_PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
-        g_PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
-        g_PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ImplGlfw_KeyCallback);
-        g_PrevUserCallbackChar = glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
+        g_Context->PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
+        g_Context->PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
+        g_Context->PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ImplGlfw_KeyCallback);
+        g_Context->PrevUserCallbackChar = glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
     }
 
-    g_ClientApi = client_api;
-    return true;
+    g_Context->ClientApi = client_api;
+    
+	return g_Context;
 }
 
-bool ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks)
+ImGlfwContext* ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks)
 {
     return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi_OpenGL);
 }
 
-bool ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks)
+ImGlfwContext* ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks)
 {
     return ImGui_ImplGlfw_Init(window, install_callbacks, GlfwClientApi_Vulkan);
 }
 
-void ImGui_ImplGlfw_Shutdown()
+void ImGui_ImplGlfw_Shutdown(ImGlfwContext* context)
 {
-    for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++)
-    {
-        glfwDestroyCursor(g_MouseCursors[cursor_n]);
-        g_MouseCursors[cursor_n] = NULL;
-    }
-    g_ClientApi = GlfwClientApi_Unknown;
+	if (context)
+	{
+		for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++)
+		{
+			glfwDestroyCursor(context->MouseCursors[cursor_n]);
+			context->MouseCursors[cursor_n] = NULL;
+		}
+		context->ClientApi = GlfwClientApi_Unknown;
+	}
 }
 
 static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
 {
+	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
+
     // Update buttons
     ImGuiIO& io = ImGui::GetIO();
     for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
     {
         // If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
-        io.MouseDown[i] = g_MouseJustPressed[i] || glfwGetMouseButton(g_Window, i) != 0;
-        g_MouseJustPressed[i] = false;
+        io.MouseDown[i] = g_Context->MouseJustPressed[i] || glfwGetMouseButton(g_Context->Window, i) != 0;
+        g_Context->MouseJustPressed[i] = false;
     }
 
     // Update mouse position
@@ -227,18 +259,18 @@ static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
 #ifdef __EMSCRIPTEN__
     const bool focused = true; // Emscripten
 #else
-    const bool focused = glfwGetWindowAttrib(g_Window, GLFW_FOCUSED) != 0;
+    const bool focused = glfwGetWindowAttrib(g_Context->Window, GLFW_FOCUSED) != 0;
 #endif
     if (focused)
     {
         if (io.WantSetMousePos)
         {
-            glfwSetCursorPos(g_Window, (double)mouse_pos_backup.x, (double)mouse_pos_backup.y);
+            glfwSetCursorPos(g_Context->Window, (double)mouse_pos_backup.x, (double)mouse_pos_backup.y);
         }
         else
         {
             double mouse_x, mouse_y;
-            glfwGetCursorPos(g_Window, &mouse_x, &mouse_y);
+            glfwGetCursorPos(g_Context->Window, &mouse_x, &mouse_y);
             io.MousePos = ImVec2((float)mouse_x, (float)mouse_y);
         }
     }
@@ -246,22 +278,24 @@ static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
 
 static void ImGui_ImplGlfw_UpdateMouseCursor()
 {
+	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
+
     ImGuiIO& io = ImGui::GetIO();
-    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) || glfwGetInputMode(g_Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) || glfwGetInputMode(g_Context->Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
         return;
 
     ImGuiMouseCursor imgui_cursor = ImGui::GetMouseCursor();
     if (imgui_cursor == ImGuiMouseCursor_None || io.MouseDrawCursor)
     {
         // Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
-        glfwSetInputMode(g_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetInputMode(g_Context->Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     }
     else
     {
         // Show OS mouse cursor
         // FIXME-PLATFORM: Unfocused windows seems to fail changing the mouse cursor with GLFW 3.2, but 3.3 works here.
-        glfwSetCursor(g_Window, g_MouseCursors[imgui_cursor] ? g_MouseCursors[imgui_cursor] : g_MouseCursors[ImGuiMouseCursor_Arrow]);
-        glfwSetInputMode(g_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        glfwSetCursor(g_Context->Window, g_Context->MouseCursors[imgui_cursor] ? g_Context->MouseCursors[imgui_cursor] : g_Context->MouseCursors[ImGuiMouseCursor_Arrow]);
+        glfwSetInputMode(g_Context->Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
 
@@ -310,19 +344,39 @@ void ImGui_ImplGlfw_NewFrame()
     // Setup display size (every frame to accommodate for window resizing)
     int w, h;
     int display_w, display_h;
-    glfwGetWindowSize(g_Window, &w, &h);
-    glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+    glfwGetWindowSize(g_Context->Window, &w, &h);
+    glfwGetFramebufferSize(g_Context->Window, &display_w, &display_h);
     io.DisplaySize = ImVec2((float)w, (float)h);
     io.DisplayFramebufferScale = ImVec2(w > 0 ? ((float)display_w / w) : 0, h > 0 ? ((float)display_h / h) : 0);
 
     // Setup time step
     double current_time = glfwGetTime();
-    io.DeltaTime = g_Time > 0.0 ? (float)(current_time - g_Time) : (float)(1.0f/60.0f);
-    g_Time = current_time;
+    io.DeltaTime = g_Context->Time > 0.0 ? (float)(current_time - g_Context->Time) : (float)(1.0f/60.0f);
+    g_Context->Time = current_time;
 
     ImGui_ImplGlfw_UpdateMousePosAndButtons();
     ImGui_ImplGlfw_UpdateMouseCursor();
 
     // Gamepad navigation mapping
     ImGui_ImplGlfw_UpdateGamepads();
+}
+
+void ImGui_ImplGlfw_SetContext(ImGlfwContext* context)
+{
+	g_Context = context;
+}
+
+void ImGui_ImplGlfw_DestroyContext(ImGlfwContext* context)
+{
+	if (context == NULL)
+		context = g_Context;
+
+	if (context)
+	{
+		if (g_Context == context)
+			g_Context = NULL;
+
+		ImGui_ImplGlfw_Shutdown(context);
+		IM_DELETE(context);
+	}
 }

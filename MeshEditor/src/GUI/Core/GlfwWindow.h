@@ -3,12 +3,9 @@
 #include "GUI/Interfaces/Window.h"
 
 #include <string>
-
+#include <GLFW/glfw3.h>
 #include <IMGUI/imgui.h>
 #include <IMGUI/imgui_impl_glfw.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
 
 namespace GUI
 {
@@ -18,9 +15,14 @@ namespace GUI
 		{
 		public:
 			GLFWwindow* window;
+			ImGuiContext* imguiContext;
+			ImGlfwContext* glfwContext;
 
-			GlfwWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title);
+			GlfwWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title, GlfwWindow* sharedWindow=nullptr);
 			virtual ~GlfwWindow();
+
+			// If you need to set custom GLFW callbacks on the window, do it before calling Init()
+			virtual void Init();
 
 			virtual void Resize(unsigned int width, unsigned int height);
 			virtual void Move(int x, int y);
@@ -28,6 +30,8 @@ namespace GUI
 			virtual void Display();
 			
 		protected:
+			bool sharedGLContext;
+
 			void SetWindow();
 
 			void PreDisplay();

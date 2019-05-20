@@ -50,6 +50,14 @@ std::string Window::GetTitle()
 	return title;
 }
 
+void Window::GetBackgroundColor(float &r, float &g, float &b, float &a)
+{
+	r = this->r;
+	g = this->g;
+	b = this->b;
+	a = this->a;
+}
+
 void Window::Resize(unsigned int width, unsigned int height)
 {
 	this->width = width;
@@ -65,6 +73,14 @@ void Window::Move(int x, int y)
 void Window::SetTitle(std::string title)
 {
 	this->title = title;
+}
+
+void Window::SetBackgroundColor(float r, float g, float b, float a)
+{
+	this->r = r;
+	this->g = g;
+	this->b = b;
+	this->a = a;
 }
 
 void Window::AddDialog(GUI::Interfaces::Dialog* dialog)

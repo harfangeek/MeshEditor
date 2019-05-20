@@ -45,9 +45,6 @@ void GlfwWindowManager::Init()
 	
 	// Init IMGUI
 	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();	
-	//ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGui::StyleColorsDark();
 
 	initialized = true;
 }
@@ -55,8 +52,6 @@ void GlfwWindowManager::Init()
 void GlfwWindowManager::Terminate()
 {
 	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 
 	for (auto pair : windows)
 	{
@@ -65,6 +60,8 @@ void GlfwWindowManager::Terminate()
 			GlfwWindow* window = dynamic_cast<GlfwWindow*>(pair.second);
 			if (window)
 			{
+				ImGui_ImplGlfw_Shutdown(window->glfwContext);
+				ImGui::DestroyContext(window->imguiContext);
 				glfwDestroyWindow(window->window);
 				delete window;
 			}
@@ -91,10 +88,10 @@ void  GlfwWindowManager::Start()
 	}
 }
 
-Window* GlfwWindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, string title)
+Window* GlfwWindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, string title, Window* sharedWindow)
 {
 	// Create window with graphics context
-	GlfwWindow* window = new GlfwWindow(id, width, height, posX, posY, title);
+	GlfwWindow* window = new GlfwWindow(id, width, height, posX, posY, title, dynamic_cast<GlfwWindow*>(sharedWindow));
 
 	if (window && window->window)
 	{
@@ -105,11 +102,13 @@ Window* GlfwWindowManager::NewWindow(unsigned int id, unsigned int width, unsign
 		glfwSetScrollCallback(window->window, GlfwWindowManager::MouseScrollCallback);
 		glfwSetWindowSizeCallback(window->window, GlfwWindowManager::WindowResizedCallback);
 	}
+
+	window->Init();
 	
 	return window;
 }
 
-Window* GlfwWindowManager::FindGLFWWindow(GLFWwindow* window)
+GlfwWindow* GlfwWindowManager::FindGLFWWindow(GLFWwindow* window)
 {
 	Window* ret = nullptr;
 
@@ -117,11 +116,16 @@ Window* GlfwWindowManager::FindGLFWWindow(GLFWwindow* window)
 		if (static_cast<GlfwWindow*>(it.second)->window == window)
 			ret = it.second;
 
-	return ret;
+	return dynamic_cast<GlfwWindow*>(ret);
 }
 
 void GlfwWindowManager::MouseButtonCallback(GLFWwindow* glfwWindow, int button, int action, int mods)
 {
+	auto manager = GetInstance();
+	auto window = manager->FindGLFWWindow(glfwWindow);
+	auto prevContext = ImGui::GetCurrentContext();
+	ImGui::SetCurrentContext(window->imguiContext);
+
 	if (!ImGui::GetIO().WantCaptureMouse)
 	{
 		double x, y;
@@ -131,6 +135,8 @@ void GlfwWindowManager::MouseButtonCallback(GLFWwindow* glfwWindow, int button, 
 		if (window)
 			window->NotifyMouseButtonEvent(x, y, button, action, mods);
 	}
+
+	ImGui::SetCurrentContext(prevContext);
 }
 
 void GlfwWindowManager::MouseMoveCallback(GLFWwindow* glfwWindow, double x, double y)

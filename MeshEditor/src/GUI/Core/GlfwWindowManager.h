@@ -18,7 +18,7 @@ namespace GUI
 
 			static void Init();
 			
-			virtual GUI::Interfaces::Window* NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title);
+			virtual GUI::Interfaces::Window* NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title, GUI::Interfaces::Window* sharedWindow=nullptr);
 
 			virtual void Start();			
 			virtual void Terminate();
@@ -26,7 +26,7 @@ namespace GUI
 		protected:
 			GlfwWindowManager();
 
-			GUI::Interfaces::Window* FindGLFWWindow(GLFWwindow* window);
+			GUI::Core::GlfwWindow* FindGLFWWindow(GLFWwindow* window);
 
 			static void ErrorCallback(int error, const char* description);
 			static void MouseButtonCallback(GLFWwindow* glfwWindow, int button, int action, int mods);

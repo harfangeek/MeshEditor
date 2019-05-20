@@ -14,7 +14,7 @@ void MeshEditorPanel::Display()
 	auto rotation = controller->GetRotation();
 	auto scale = controller->GetScale();
 	auto scaleKeepRatio = controller->GetScaleKeepRatio();
-	
+
 	ImGui::Text("Translation");
 	if(ImGui::DragFloat("X##1", &translation.x, 0.1f) |
 		ImGui::DragFloat("Y##1", &translation.y, 0.1f) |
