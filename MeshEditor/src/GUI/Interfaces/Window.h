@@ -20,6 +20,7 @@ namespace GUI
 			virtual void Resize(unsigned int width, unsigned int height);
 			virtual void Move(int x, int y);
 			virtual void SetTitle(std::string title);
+			virtual void SetBackgroundColor(float r, float g, float b, float a);
 			virtual void Display();
 			virtual void AddDialog(GUI::Interfaces::Dialog* dialog);
 
@@ -39,6 +40,7 @@ namespace GUI
 			int GetX();
 			int GetY();
 			std::string GetTitle();
+			void GetBackgroundColor(float &r, float &g, float &b, float &a);
 
 		protected:
 			int id;
@@ -46,6 +48,7 @@ namespace GUI
 			int height;
 			int x;
 			int y;
+			float r, g, b, a;
 			double mousex;
 			double mousey;
 			float lastRender;
