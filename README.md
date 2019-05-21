@@ -20,6 +20,7 @@ This project is for me a laboratory to experiment following topics:
 - Software architecture
 - Modern C++ features
 - Makefiles
+- Git branching models
 
 If you are interested in any of these topics you may find something interesting in this project. All critics and suggestions are of course welcome.
 
@@ -63,7 +64,9 @@ The project has been created with Visual Studio Community 2017.
 
 ### Makefile (Linux and Windows)
 
-Go to the project root and execute `make`. Tested using Mingw-w64 from a standard Windows 7 command prompt and using gcc/g++ and clang/clang++ on Debian 9 64 bits.
+Go to the project root and execute `make`. The Makefile has been tested on:
+- Windows 7 64bits using Mingw-w64. The Makefile can be executed from a standard Windows CMD and from Git Bash.
+- Debian 9 64bits using gcc/g++ and clang/clang++
 
 Some options are tweakable. Two examples:
 - 32 bits binary with debug info with clang/clang++: `make CC=clang CCPP=clang++ MODE=debug ARCH=x86`
@@ -120,6 +123,12 @@ This project being mostly educational, here are some references for the differen
   - Dynamic rule generation using eval:
     -  https://www.gnu.org/software/make/manual/html_node/Eval-Function.html
     -  http://make.mad-scientist.net/the-eval-function/
+
+### Git Flow
+  - A successful Git branching model: https://nvie.com/posts/a-successful-git-branching-model/
+  - Using git-flow to automate your git branching workflow: https://jeffkreeftmeijer.com/git-flow/
+  - Feature branches and pull requests: https://github.com/AgileVentures/shf-project/wiki/Developing-a-Feature-(or-bug,-chore)
+  - Resolving pull request merge conflicts: https://github.com/AgileVentures/shf-project/wiki/Resolving-Pull-Request-merge-conflicts
 
 ## ToDo List
 
