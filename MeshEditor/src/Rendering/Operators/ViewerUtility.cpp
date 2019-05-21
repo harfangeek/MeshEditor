@@ -1,6 +1,9 @@
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include "Rendering/Operators/ViewerUtility.h"
+#include "Rendering/Model/Mesh.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Core/MeshRenderer.h"
+#include "GUI/Interfaces/Window.h"
+
 #include "GLM/gtc/matrix_transform.hpp"
 #include "GLM/gtx/rotate_vector.hpp"
 

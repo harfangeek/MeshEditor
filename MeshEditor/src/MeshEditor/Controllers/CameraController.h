@@ -2,7 +2,14 @@
 
 #include "GUI/Interfaces/MouseListener.h"
 #include "GUI/Interfaces/WindowListener.h"
-#include "Rendering/Core/MeshRenderer.h"
+
+namespace Rendering
+{
+	namespace Core
+	{
+		class MeshRenderer;
+	}
+}
 
 namespace MeshEditor
 {

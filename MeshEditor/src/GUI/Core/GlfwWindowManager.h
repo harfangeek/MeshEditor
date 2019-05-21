@@ -1,15 +1,21 @@
 #pragma once
 
 #include "GUI/Interfaces/WindowManager.h"
-#include "GUI/Interfaces/Window.h"
-#include "GUI/Core/GlfwWindow.h"
-#include <map>
 #include <string>
+
+struct GLFWwindow;
 
 namespace GUI
 {
+	namespace Interfaces
+	{
+		class Window;
+	}
+
 	namespace Core
 	{
+		class GlfwWindow;
+
 		class GlfwWindowManager : public GUI::Interfaces::WindowManager
 		{
 		public:

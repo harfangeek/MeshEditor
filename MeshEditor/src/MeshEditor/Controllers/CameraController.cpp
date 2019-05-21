@@ -1,5 +1,6 @@
 #include "MeshEditor/Controllers/CameraController.h"
 #include "GUI/Interfaces/Window.h"
+#include "Rendering/Core/MeshRenderer.h"
 
 #include <GLFW/glfw3.h>
 

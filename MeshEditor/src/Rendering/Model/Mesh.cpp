@@ -1,5 +1,7 @@
 #include "Rendering/Model/Mesh.h"
-#include <string>
+#include "Rendering/Model/Face.h"
+#include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/HalfEdge.h"
 
 using namespace Rendering::Model;
 using namespace std;

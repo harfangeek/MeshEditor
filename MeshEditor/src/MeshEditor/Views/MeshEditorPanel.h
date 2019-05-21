@@ -1,10 +1,14 @@
 #pragma once
 
 #include "GUI/Interfaces/Panel.h"
-#include "MeshEditor/Controllers/MeshEditorController.h"
 
 namespace MeshEditor
 {
+	namespace Controllers
+	{
+		class MeshEditorController;
+	}
+
 	namespace Views
 	{
 		class MeshEditorPanel : public GUI::Interfaces::Panel

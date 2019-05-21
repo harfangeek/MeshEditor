@@ -1,4 +1,5 @@
 #include "GUI/Interfaces/WindowManager.h"
+#include "GUI/Interfaces/Window.h"
 
 using namespace GUI::Interfaces;
 

@@ -1,7 +1,7 @@
 BIN_NAME	:= mesh-editor
 BIN 		:= $(BIN_DIR)/$(BIN_NAME)
 
-OPT			+= -std=c++17 -pedantic -DGLFW_INCLUDE_GLCOREARB
+OPT			+= -std=c++17 -pedantic -DGLFW_INCLUDE_GLCOREARB -DGLM_ENABLE_EXPERIMENTAL -DGLM_FORCE_SILENT_WARNINGS
 
 SRC_DIR 	:= src
 SHADERS_DIR	:= $(SRC_DIR)/Rendering/Shaders

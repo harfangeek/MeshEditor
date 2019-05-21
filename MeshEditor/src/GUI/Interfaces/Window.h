@@ -1,8 +1,6 @@
 #pragma once
 
-#include "GUI/Interfaces/Dialog.h"
-#include "GUI/Interfaces/MouseListener.h"
-#include "GUI/Interfaces/WindowListener.h"
+
 
 #include <string>
 #include <vector>
@@ -11,6 +9,10 @@ namespace GUI
 {
 	namespace Interfaces
 	{
+		class Dialog;
+		class MouseListener;
+		class WindowListener;
+
 		class Window
 		{
 		public:

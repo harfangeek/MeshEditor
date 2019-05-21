@@ -1,12 +1,7 @@
 #include "MeshEditor/Controllers/MeshEditorController.h"
-#include "Rendering/Operators/ViewerUtility.h"
-#include <vector>
+#include "Rendering/Core/MeshRenderer.h"
 
-using namespace Rendering::Core;
-using namespace Rendering::Operators;
 using namespace MeshEditor::Controllers;
-using namespace GUI::Interfaces;
-using namespace std;
 
 MeshEditorController::MeshEditorController(Rendering::Core::MeshRenderer* meshRenderer) : meshRenderer(meshRenderer), scaleKeepRatio(true)
 {

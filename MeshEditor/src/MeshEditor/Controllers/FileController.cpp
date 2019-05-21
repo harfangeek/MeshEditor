@@ -2,7 +2,7 @@
 #include "Rendering/Model/Mesh.h"
 #include "Rendering/Operators/Objreader.h"
 #include "Rendering/Operators/MeshTransformation.h"
-#include <vector>
+#include "Rendering/Core/MeshRenderer.h"
 
 using namespace MeshEditor::Controllers;
 using namespace Rendering::Core;

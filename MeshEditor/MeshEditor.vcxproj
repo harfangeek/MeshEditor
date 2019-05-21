@@ -159,7 +159,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;BUILD_WIN</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;GLM_ENABLE_EXPERIMENTAL;GLM_FORCE_SILENT_WARNINGS;BUILD_WIN</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -186,7 +186,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;BUILD_WIN</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;GLM_ENABLE_EXPERIMENTAL;GLM_FORCE_SILENT_WARNINGS;BUILD_WIN</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -211,7 +211,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;BUILD_WIN</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;GLM_ENABLE_EXPERIMENTAL;GLM_FORCE_SILENT_WARNINGS;BUILD_WIN</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -234,7 +234,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;BUILD_WIN</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);GLFW_INCLUDE_GLCOREARB;GLM_ENABLE_EXPERIMENTAL;GLM_FORCE_SILENT_WARNINGS;BUILD_WIN</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GUI/Interfaces/Panel.h"
-#include <vector>
 #include <string>
 
 namespace GUI
 {
 	namespace Interfaces
 	{
+		class Panel;
+
 		class Dialog
 		{
 		public:

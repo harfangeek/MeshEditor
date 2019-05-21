@@ -2,14 +2,17 @@
 
 #include <vector>
 #include <string>
-#include "Rendering/Model/Face.h"
-#include "Rendering/Model/Vertex.h"
-#include "Rendering/Model/HalfEdge.h"
+
+#include "GLM/glm.hpp"
 
 namespace Rendering
 {
 	namespace Model
 	{
+		class Vertex;
+		class Face;
+		class HalfEdge;
+
 		class Mesh
 		{
 		public:
@@ -28,7 +31,6 @@ namespace Rendering
 			std::vector<std::string> Check(); // Check if the mesh contains errors (e.g. non closed face)
 			void Normalize(); // Center the model on the (0,0,0) position and scale the model so it fits in a 1*1*1 cube
 			void ComputeNormals(); // Compute faces and vertices normals
-
 		};
 	}
 }

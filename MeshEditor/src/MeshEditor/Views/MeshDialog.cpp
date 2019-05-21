@@ -1,4 +1,5 @@
 #include "MeshEditor/Views/MeshDialog.h"
+#include "Rendering/Core/MeshRenderer.h"
 
 using namespace MeshEditor::Views;
 

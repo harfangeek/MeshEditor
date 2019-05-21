@@ -1,4 +1,5 @@
 #include "GUI/Interfaces/Dialog.h"
+#include "GUI/Interfaces/Panel.h"
 
 using namespace GUI::Interfaces;
 

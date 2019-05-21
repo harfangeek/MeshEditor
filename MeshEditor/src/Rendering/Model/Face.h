@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#define GLM_FORCE_SILENT_WARNINGS 1
 #include "GLM/glm.hpp"
 
 namespace Rendering

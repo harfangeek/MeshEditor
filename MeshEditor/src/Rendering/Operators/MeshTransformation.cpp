@@ -2,14 +2,15 @@
 #include "Rendering/Model/Vertex.h"
 #include "Rendering/Model/HalfEdge.h"
 #include "Rendering/Model/Face.h"
+#include "Rendering/Model/Mesh.h"
+
 #include <vector>
 
-using namespace Rendering;
 using namespace Rendering::Operators;
 using namespace Rendering::Model;
 using namespace std;
 
-void MeshTransformation::Triangulate(Model::Mesh* mesh)
+void MeshTransformation::Triangulate(Rendering::Model::Mesh* mesh)
 {
 	Face* face = NULL;
 	Face* newFace = NULL;
@@ -77,7 +78,7 @@ void MeshTransformation::Triangulate(Model::Mesh* mesh)
 	}
 }
 
-void MeshTransformation::Inflate(Model::Mesh* mesh, float value)
+void MeshTransformation::Inflate(Rendering::Model::Mesh* mesh, float value)
 {
 	for (auto vertex : mesh->vertices)
 		vertex->position += value * vertex->normal;

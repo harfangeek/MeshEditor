@@ -2,8 +2,6 @@
 #include "Rendering/Model/Vertex.h"
 #include "Rendering/Model/HalfEdge.h"
 
-#include <iostream>
-
 using namespace Rendering::Model;
 using namespace glm;
 
@@ -16,7 +14,6 @@ Face::~Face()
 {
 
 }
-
 
 void Face::ComputeNormal()
 {

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Rendering/Model/Mesh.h"
-
-#define GLM_FORCE_SILENT_WARNINGS 1
 #include "GLM/glm.hpp"
 #include "GL/gl3w.h"
 
@@ -11,6 +8,11 @@
 
 namespace Rendering
 {
+	namespace Model
+	{
+		class Mesh;
+	}
+
 	namespace Operators
 	{
 		class ObjReader
