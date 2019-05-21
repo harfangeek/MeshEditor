@@ -14,7 +14,7 @@ before_install:
 
 install:
   - sudo apt-get install -y -qq g++-8
-  - sudo apt-get install -y --no-install-recommends libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
+  - sudo apt-get install -y --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 script: 
