@@ -1,16 +1,16 @@
 #include "Rendering/Operators/MeshConverter.h"
+#include "Rendering/Model/Mesh.h"
 #include "Rendering/Model/Vertex.h"
 #include "Rendering/Model/HalfEdge.h"
 #include "Rendering/Model/Face.h"
-#include <map>
-#include <memory>
 
-using namespace Rendering;
+#include <map>
+
 using namespace Rendering::Operators;
 using namespace Rendering::Model;
 using namespace std;
 
-void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh& mesh, const vector<glm::vec3> &vertices, const vector<vector<unsigned int>> &faces)
+void MeshConverter::ArrayToHalfEdgeStructure(Rendering::Model::Mesh& mesh, const vector<glm::vec3> &vertices, const vector<vector<unsigned int>> &faces)
 {
 	// Create vertices
 	size_t size_vertices = vertices.size();
@@ -134,7 +134,7 @@ void MeshConverter::ArrayToHalfEdgeStructure(Model::Mesh& mesh, const vector<glm
 	mesh.Normalize();
 }
 
-void MeshConverter::HalfEdgeStructureToArray(const Model::Mesh& mesh, vector<GLfloat>& vertices, vector<GLuint>& faces, std::vector<GLfloat>& normals)
+void MeshConverter::HalfEdgeStructureToArray(const Rendering::Model::Mesh& mesh, vector<GLfloat>& vertices, vector<GLuint>& faces, std::vector<GLfloat>& normals)
 {
 	// Add vertices
 	int i = 0;

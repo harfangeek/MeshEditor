@@ -2,6 +2,8 @@
 #include "Rendering/Model/Vertex.h"
 #include "Rendering/Model/Face.h"
 
+#include "GLM/glm.hpp"
+
 using namespace Rendering::Model;
 using namespace glm;
 

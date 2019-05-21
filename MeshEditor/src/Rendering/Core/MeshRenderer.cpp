@@ -1,9 +1,10 @@
-#define GLM_ENABLE_EXPERIMENTAL
-
 #include "Rendering/Core/MeshRenderer.h"
 #include "Rendering/Operators/MeshConverter.h"
 #include "Rendering/Operators/ShaderLoader.h"
 #include "Rendering/Model/Vertex.h"
+#include "Rendering/Model/Face.h"
+#include "Rendering/Model/HalfEdge.h"
+#include "Rendering/Model/Mesh.h"
 
 #include "GLM/gtc/matrix_transform.hpp"
 #include "GLM/gtx/rotate_vector.hpp"

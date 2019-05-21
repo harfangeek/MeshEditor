@@ -1,10 +1,10 @@
 #include "Rendering/Operators/ObjReader.h"
 #include "Rendering/Operators/MeshConverter.h"
 #include "Rendering/Operators/Utility.h"
+#include "Rendering/Model/Mesh.h"
 
 #include <sstream>
 
-using namespace Rendering;
 using namespace Rendering::Operators;
 using namespace std;
 

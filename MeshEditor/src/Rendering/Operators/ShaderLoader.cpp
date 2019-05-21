@@ -1,10 +1,8 @@
 #include "Rendering/Operators/ShaderLoader.h"
 #include "Rendering/Operators/Utility.h"
 #include <iostream>
-#include <fstream>
 #include <vector>
 
-using namespace Rendering;
 using namespace Rendering::Operators;
 using namespace std;
 
@@ -33,8 +31,8 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, char* source)
 GLuint ShaderLoader::CreateProgram(const std::string &vertexShaderFileName, const std::string &fragmentShaderFileName)
 {
 	char *vertexShader, *fragmentShader;
-	auto vertexShaderSize = Utility::GetFileContents(vertexShaderFileName, vertexShader);
-	auto fragmentShaderSize = Utility::GetFileContents(fragmentShaderFileName, fragmentShader);
+	Utility::GetFileContents(vertexShaderFileName, vertexShader);
+	Utility::GetFileContents(fragmentShaderFileName, fragmentShader);
 
 	GLuint vertexShaderId = CreateShader(GL_VERTEX_SHADER, vertexShader);
 	GLuint fragmentShaderId = CreateShader(GL_FRAGMENT_SHADER, fragmentShader);

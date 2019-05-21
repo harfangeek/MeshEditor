@@ -1,7 +1,14 @@
 #pragma once
 
 #include "GUI/Interfaces/Dialog.h"
-#include "Rendering/Core/MeshRenderer.h"
+
+namespace Rendering
+{
+	namespace Core
+	{
+		class MeshRenderer;
+	}
+}
 
 namespace MeshEditor
 {

@@ -1,4 +1,5 @@
 #include "GUI/Core/ImGuiDialog.h"
+#include "GUI/Interfaces/Panel.h"
 
 #include <IMGUI/imgui.h>
 

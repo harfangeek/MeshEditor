@@ -1,10 +1,11 @@
 #include "GUI/Core/GlfwWindow.h"
 
 #include <GL/gl3w.h>
+#include <GLFW/glfw3.h>
 
+#include <IMGUI/imgui.h>
 #include <IMGUI/imgui_impl_glfw.h>
 #include <IMGUI/imgui_impl_opengl3.h>
-
 
 using namespace GUI::Core;
 using namespace std;

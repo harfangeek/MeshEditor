@@ -1,9 +1,12 @@
 #pragma once
 
-#include "Rendering/Model/Mesh.h"
-
 namespace Rendering
 {
+	namespace Model
+	{
+		class Mesh;
+	}
+
 	namespace Operators
 	{
 		class MeshTransformation

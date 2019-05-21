@@ -1,4 +1,6 @@
 #include "MeshEditor/Views/MeshEditorPanel.h"
+#include "MeshEditor/Controllers/MeshEditorController.h"
+
 #include <IMGUI/imgui.h>
 
 using namespace MeshEditor::Views;

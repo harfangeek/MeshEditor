@@ -1,14 +1,19 @@
 #pragma once
 
 #include "GUI/Interfaces/Window.h"
-
 #include <string>
-#include <GLFW/glfw3.h>
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_glfw.h>
+
+struct GLFWwindow;
+struct ImGuiContext;
+struct ImGlfwContext;
 
 namespace GUI
 {
+	namespace Interfaces 
+	{
+		class Window;
+	}
+
 	namespace Core
 	{
 		class GlfwWindow : public GUI::Interfaces::Window

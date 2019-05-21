@@ -1,7 +1,5 @@
 #pragma once
 
-#include "GUI/Interfaces/Window.h"
-
 #include <string>
 #include <map>
 
@@ -9,6 +7,8 @@ namespace GUI
 {
 	namespace Interfaces
 	{
+		class Window;
+
 		class WindowManager
 		{
 		public:

@@ -1,9 +1,14 @@
 #pragma once
 
-#include "Rendering/Core/MeshRenderer.h"
-
-#include "GLM/glm.hpp"
 #include <string>
+
+namespace Rendering
+{
+	namespace Core
+	{
+		class MeshRenderer;
+	}
+}
 
 namespace MeshEditor
 {

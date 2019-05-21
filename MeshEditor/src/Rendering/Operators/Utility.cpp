@@ -1,6 +1,6 @@
-#include <fstream>
-
 #include "Rendering/Operators/Utility.h"
+
+#include <fstream>
 #include <sys/stat.h>
 
 using namespace Rendering::Operators;

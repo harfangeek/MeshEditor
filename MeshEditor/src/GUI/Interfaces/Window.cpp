@@ -1,7 +1,9 @@
 #include "GUI/Interfaces/Window.h"
+#include "GUI/Interfaces/Dialog.h"
+#include "GUI/Interfaces/MouseListener.h"
+#include "GUI/Interfaces/WindowListener.h"
 
 #include <algorithm>
-
 
 using namespace GUI::Interfaces;
 

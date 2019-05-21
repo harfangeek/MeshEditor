@@ -1,15 +1,19 @@
 #pragma once
 
-#include "Rendering/Model/Mesh.h"
 #include <vector>
 #include "GL/gl3w.h"
-#define GLM_FORCE_SILENT_WARNINGS 1
 #include "GLM/glm.hpp"
 
 #define NB_BUFFER 7
 
 namespace Rendering
 {
+	namespace Model
+	{
+		class Mesh;
+		class Vertex;
+	}
+	
 	namespace Core
 	{
 		enum RenderMode {

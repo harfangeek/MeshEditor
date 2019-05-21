@@ -1,11 +1,22 @@
 #pragma once
 
-#include "Rendering/Core/MeshRenderer.h"
-#include "GUI/Interfaces/Window.h"
 #include <vector>
+
+namespace GUI
+{
+	namespace Interfaces
+	{
+		class Window;
+	}
+}
 
 namespace Rendering
 {
+	namespace Core
+	{
+		class MeshRenderer;
+	}
+
 	namespace Operators
 	{
 		class ViewerUtility
