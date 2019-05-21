@@ -21,8 +21,12 @@ LIBS_win		:= -lgl3w -lglfw -limgui -lgdi32
 LIBS			:= $(LIBS_$(PLATFORM))
 
 ifeq ($(PLATFORM), win)
-	BIN := $(subst /,\,$(BIN)).exe
 	OPT += -DBUILD_WIN
+	BIN := $(BIN).exe
+endif
+
+ifeq ($(TARGET_SHELL),cmd)
+	BIN := $(subst /,\,$(BIN))
 
 	INC_PATH := $(subst /,\,$(INC_PATH))
 	LIBS_PATH := $(subst /,\,$(LIBS_PATH))
@@ -64,7 +68,7 @@ $(1) : $(2)
 	$(CCPP) $(INC_PATH) $(OPT) -c -o $$@ $$<
 endef
 
-ifeq ($(PLATFORM), win)
+ifeq ($(TARGET_SHELL),cmd)
 $(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)\\%.o, $(SRC)), $(SRC_DIR)/$(SRC))))
 else
 $(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)/%.o, $(SRC)), $(SRC_DIR)/$(SRC))))
@@ -72,10 +76,5 @@ endif
 
 clean:
 	$(RM) $(BIN_DIR)
-
-test:
-	@echo ---------------------------------
-	@echo $(BIN)
-	@echo ---------------------------------
 	
 -include $(DEPS)

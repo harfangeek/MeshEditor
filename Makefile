@@ -20,7 +20,17 @@ GLM_DIR			:= $(LIBS_DIR)/glm
 
 ifeq ($(OS),Windows_NT)
 	PLATFORM := win
+	ifneq (,$(findstring /usr/bin/sh.exe, $(SHELL)))
+		TARGET_SHELL := bash
+	else
+		TARGET_SHELL := cmd
+	endif
+else
+    PLATFORM := nux
+	TARGET_SHELL := bash
+endif
 
+ifeq ($(TARGET_SHELL),cmd)
 	PROJECT_ROOT	:= $(subst /,\,$(PROJECT_ROOT))
 	BIN_DIR			:= $(subst /,\,$(BIN_DIR))
 	LIBS_DIR		:= $(subst /,\,$(LIBS_DIR))
@@ -34,8 +44,6 @@ ifeq ($(OS),Windows_NT)
 	COPY_FILE	:= -xcopy /y /c /i
 	COPY_FOLDER	:= -xcopy /y /c /i
 else
-    PLATFORM := nux
-
 	MKDIR	:= mkdir -p
 	RM		:= rm -Rf
 	COPY_FILE	:= cp -f
@@ -69,6 +77,3 @@ clean:
 	$(MAKE) clean -C $(GLFW_DIR)
 	$(MAKE) clean -C $(IMGUI_DIR)
 	$(MAKE) clean -C MeshEditor
-	
-test:
-	$(MAKE) test -C $(IMGUI_DIR)
