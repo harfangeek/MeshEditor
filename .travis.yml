@@ -7,6 +7,10 @@ os:
 
 compiler:
   - gcc
+  
+ before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y --no-install-recommends libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
 
 script: 
   - make
