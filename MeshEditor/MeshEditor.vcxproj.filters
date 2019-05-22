@@ -11,9 +11,6 @@
     <Filter Include="Src\GUI\Core">
       <UniqueIdentifier>{3410de09-9f9c-4482-80f6-c9a2fa3ce830}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\GUI\Interface">
-      <UniqueIdentifier>{c2729315-cd4b-4142-bf6b-8a9653a42c65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Rendering">
       <UniqueIdentifier>{642d5332-83a4-45b8-817f-7c6a80cd8f88}</UniqueIdentifier>
     </Filter>
@@ -40,6 +37,9 @@
     </Filter>
     <Filter Include="Src\MeshEditor\Controllers">
       <UniqueIdentifier>{de71ae4f-2f38-4986-ac30-c31a75b4ac95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\GUI\Interfaces">
+      <UniqueIdentifier>{c2729315-cd4b-4142-bf6b-8a9653a42c65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -71,10 +71,10 @@
       <Filter>Src\Rendering\Operators</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\Window.h">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\WindowManager.h">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Operators\Utility.h">
       <Filter>Src\Rendering\Operators</Filter>
@@ -89,16 +89,16 @@
       <Filter>Src\GUI\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\Dialog.h">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\Panel.h">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\MeshEditor\Views\MeshDialog.h">
       <Filter>Src\MeshEditor\Views</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\MouseListener.h">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Operators\ShaderLoader.h">
       <Filter>Src\Rendering\Operators</Filter>
@@ -119,7 +119,7 @@
       <Filter>Src\MeshEditor\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Interfaces\WindowListener.h">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,10 +151,10 @@
       <Filter>Src\Rendering\Operators</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Interfaces\Window.cpp">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\MeshEditor\Core\main.cpp">
       <Filter>Src\MeshEditor\Core</Filter>
@@ -172,10 +172,10 @@
       <Filter>Src\GUI\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Interfaces\Dialog.cpp">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\Interfaces\Panel.cpp">
-      <Filter>Src\GUI\Interface</Filter>
+      <Filter>Src\GUI\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\MeshEditor\Views\MeshDialog.cpp">
       <Filter>Src\MeshEditor\Views</Filter>
