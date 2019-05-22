@@ -1,4 +1,4 @@
-#include "GUI/Interfaces/panel.h"
+#include "GUI/Interfaces/Panel.h"
 
 using namespace GUI::Interfaces;
 

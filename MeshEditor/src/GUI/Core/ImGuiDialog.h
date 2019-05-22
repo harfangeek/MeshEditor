@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GUI/interfaces/Dialog.h"
+#include "GUI/Interfaces/Dialog.h"
 
 #include <string>
 

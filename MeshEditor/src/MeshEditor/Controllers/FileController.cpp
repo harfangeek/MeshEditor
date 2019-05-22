@@ -1,6 +1,6 @@
 #include "MeshEditor/Controllers/FileController.h"
 #include "Rendering/Model/Mesh.h"
-#include "Rendering/Operators/Objreader.h"
+#include "Rendering/Operators/ObjReader.h"
 #include "Rendering/Operators/MeshTransformation.h"
 #include "Rendering/Core/MeshRenderer.h"
 
