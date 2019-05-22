@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=feature%2Ftravis)](https://travis-ci.org/harfangeek/MeshEditor)
+
 # MeshEditor
 
 - [Presentation](#presentation)
@@ -69,8 +71,8 @@ Go to the project root and execute `make`. The Makefile has been tested on:
 - Debian 9 64bits using gcc/g++ and clang/clang++
 
 Some options are tweakable. Two examples:
-- 32 bits binary with debug info with clang/clang++: `make CC=clang CCPP=clang++ MODE=debug ARCH=x86`
-- 64 bits binary with optimization with gcc/g++: `make CC=gcc CCPP=g++ MODE=release ARCH=x64`
+- 32 bits binary with debug info with clang/clang++: `make CC=clang CXX=clang++ MODE=debug ARCH=x86`
+- 64 bits binary with optimization with gcc/g++: `make CC=gcc CXX=g++ MODE=release ARCH=x64`
 
 The second one is the default when simply invoking `make`
 
