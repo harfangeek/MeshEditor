@@ -20,5 +20,5 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 script: 
-  - make
+  - make CC=$CC CXX=$CXX
   
