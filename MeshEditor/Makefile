@@ -60,12 +60,12 @@ $(FOLDERS):
 	$(MKDIR) $@
 
 $(BIN): $(OBJECTS)
-	$(CCPP) $(OPT) $(LIBS_PATH) -o $@ $^ $(LIBS)
+	$(CXX) $(OPT) $(LIBS_PATH) -o $@ $^ $(LIBS)
 	
 define myrule
 $(1) : $(2)
 	@echo making $$@ from $$<
-	$(CCPP) $(INC_PATH) $(OPT) -c -o $$@ $$<
+	$(CXX) $(INC_PATH) $(OPT) -c -o $$@ $$<
 endef
 
 ifeq ($(TARGET_SHELL),cmd)
