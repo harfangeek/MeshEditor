@@ -23,7 +23,7 @@ $(BIN): $(OBJECTS)
 	ar rcs $@ $^
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) $(INC_PATH) $(OPT) -c -o $@ $<
+	$(CXX) $(INC_PATH) $(OPT) -c -o $@ $<
 
 clean:
 	$(RM) $(BIN_DIR)

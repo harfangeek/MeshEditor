@@ -58,6 +58,10 @@ The OpenGL library should be provided by your graphic card driver.
 ## Building
 
 The project can be built using the provided Visual Studio project on Windows, or using the provided Makefile on both Linux and Windows (see below). The executable is generated in the project root folder. Shaders files needed by the executable at runtime are automatically copied in the project root folder from the sources folder. This project needs a compiler supporting C++17 features.
+The project has been test with:
+- MSVC >= v141
+- GCC >= 6.3
+- Clang >= 6.0
 
 ### Visual Studio (Windows)
 
