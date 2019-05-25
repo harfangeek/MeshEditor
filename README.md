@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=feature%2Ftravis)](https://travis-ci.org/harfangeek/MeshEditor)
+
 # MeshEditor
 
 - [Presentation](#presentation)
@@ -56,6 +58,10 @@ The OpenGL library should be provided by your graphic card driver.
 ## Building
 
 The project can be built using the provided Visual Studio project on Windows, or using the provided Makefile on both Linux and Windows (see below). The executable is generated in the project root folder. Shaders files needed by the executable at runtime are automatically copied in the project root folder from the sources folder. This project needs a compiler supporting C++17 features.
+The project has been test with:
+- MSVC >= v141
+- GCC >= 6.3
+- Clang >= 6.0
 
 ### Visual Studio (Windows)
 
@@ -69,12 +75,24 @@ Go to the project root and execute `make`. The Makefile has been tested on:
 - Debian 9 64bits using gcc/g++ and clang/clang++
 
 Some options are tweakable. Two examples:
-- 32 bits binary with debug info with clang/clang++: `make CC=clang CCPP=clang++ MODE=debug ARCH=x86`
-- 64 bits binary with optimization with gcc/g++: `make CC=gcc CCPP=g++ MODE=release ARCH=x64`
+- 32 bits binary with debug info with clang/clang++: `make CC=clang CXX=clang++ MODE=debug ARCH=x86`
+- 64 bits binary with optimization with gcc/g++: `make CC=gcc CXX=g++ MODE=release ARCH=x64`
 
 The second one is the default when simply invoking `make`
 
 The project Makefile automatically list all .cpp files so it is not needed to edit it when adding new files.
+
+## Testing
+
+The master and develop branches are automatically built on push using [Travis-CI](https://travis-ci.org/harfangeek/MeshEditor). The following configurations are tested:
+- Linux with gcc
+- Linux with clang
+- Windows with mingw64-gcc
+- Windows with MSVC
+
+For all configurations only the Release/x64 target is tested.
+
+Build status : [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=feature%2Ftravis)](https://travis-ci.org/harfangeek/MeshEditor)
 
 ## References
 
@@ -129,6 +147,10 @@ This project being mostly educational, here are some references for the differen
   - Using git-flow to automate your git branching workflow: https://jeffkreeftmeijer.com/git-flow/
   - Feature branches and pull requests: https://github.com/AgileVentures/shf-project/wiki/Developing-a-Feature-(or-bug,-chore)
   - Resolving pull request merge conflicts: https://github.com/AgileVentures/shf-project/wiki/Resolving-Pull-Request-merge-conflicts
+
+### Continus Integration
+  - Travis official tutorial : https://docs.travis-ci.com/user/for-beginners/
+  - Travis examples and tutorials for C++ : https://github.com/richelbilderbeek/travis_cpp_tutorial
 
 ## ToDo List
 

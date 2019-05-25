@@ -1,5 +1,5 @@
 CC 			= gcc
-CCPP		= g++
+CXX			= g++
 
 ARCH 		 = x64
 OPT_ARCH_x86 	 = -m32
