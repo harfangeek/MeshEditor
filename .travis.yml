@@ -15,6 +15,10 @@ matrix:
         - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     - os: linux
       compiler: clang
+      before_install:
+        - sudo apt-get update -qq
+      install:
+        - sudo apt-get install -y --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
 
 script: 
   - make CC=$CC CXX=$CXX
