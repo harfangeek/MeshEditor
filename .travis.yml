@@ -24,4 +24,6 @@ matrix:
       script: 
         - make CC=$CC CXX=$CXX
     - os: windows
-      script: echo %PATH%
+      script: 
+        - echo $PATH
+        - make CC=$CC CXX=$CXX
