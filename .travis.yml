@@ -26,4 +26,4 @@ matrix:
     - os: windows
       script: 
         - echo $PATH
-        - make CC=$CC CXX=$CXX
+        - mingw32-make CC=$CC CXX=$CXX
