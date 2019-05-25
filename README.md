@@ -82,6 +82,18 @@ The second one is the default when simply invoking `make`
 
 The project Makefile automatically list all .cpp files so it is not needed to edit it when adding new files.
 
+## Testing
+
+The master and develop branches are automatically built on push using [Travis-CI](https://travis-ci.org/harfangeek/MeshEditor). The following configurations are tested:
+- Linux with gcc
+- Linux with clang
+- Windows with mingw64-gcc
+- Windows with MSVC
+
+For all configurations only the Release/x64 target is tested.
+
+Build status : [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=feature%2Ftravis)](https://travis-ci.org/harfangeek/MeshEditor)
+
 ## References
 
 This project being mostly educational, here are some references for the different topics I'm experimenting in this project.
@@ -135,6 +147,10 @@ This project being mostly educational, here are some references for the differen
   - Using git-flow to automate your git branching workflow: https://jeffkreeftmeijer.com/git-flow/
   - Feature branches and pull requests: https://github.com/AgileVentures/shf-project/wiki/Developing-a-Feature-(or-bug,-chore)
   - Resolving pull request merge conflicts: https://github.com/AgileVentures/shf-project/wiki/Resolving-Pull-Request-merge-conflicts
+
+### Continus Integration
+  - Travis official tutorial : https://docs.travis-ci.com/user/for-beginners/
+  - Travis examples and tutorials for C++ : https://github.com/richelbilderbeek/travis_cpp_tutorial
 
 ## ToDo List
 
