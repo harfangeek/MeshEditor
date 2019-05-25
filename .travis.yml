@@ -24,6 +24,11 @@ matrix:
       script: 
         - make CC=$CC CXX=$CXX
     - os: windows
-      script: 
-        - echo $PATH
+      compiler: gcc
+      script:
         - mingw32-make CC=$CC CXX=$CXX
+    - os: windows
+      compiler: msvc
+      script:
+        echo $PATH
+        msbuild
