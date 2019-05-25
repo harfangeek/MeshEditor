@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=feature%2Ftravis)](https://travis-ci.org/harfangeek/MeshEditor)
+[![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=develop)](https://travis-ci.org/harfangeek/MeshEditor)
 
 # MeshEditor
 
@@ -92,7 +92,7 @@ The master and develop branches are automatically built on push using [Travis-CI
 
 For all configurations only the Release/x64 target is tested.
 
-Build status : [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=feature%2Ftravis)](https://travis-ci.org/harfangeek/MeshEditor)
+Build status : [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=develop)](https://travis-ci.org/harfangeek/MeshEditor)
 
 ## References
 
