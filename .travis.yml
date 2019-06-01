@@ -53,8 +53,7 @@ matrix:
     addons:
       sonarcloud:
       organization: "harfangeek-github"
-      token:
-        secure: $SONARCLOUD_TOKEN
+      token: $SONARCLOUD_TOKEN
     before_install:
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-get update -qq
