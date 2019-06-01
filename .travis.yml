@@ -65,5 +65,5 @@ matrix:
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     script:
     - build-wrapper-linux-x86-64
-    - sonar-scanner
+    - sonar-scanner -X
 
