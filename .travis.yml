@@ -6,6 +6,10 @@ branches:
   - develop
   - feature/travis
   
+cache:
+  directories:
+    - /home/travis/.sonar/cache
+
 matrix:
   fast_finish: true
   allow_failures:
@@ -63,6 +67,6 @@ matrix:
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     script:
-#    - build-wrapper-linux-x86-64 --out-dir bw-output make
+    - build-wrapper-linux-x86-64 --out-dir bw-output make
     - sonar-scanner -X
 
