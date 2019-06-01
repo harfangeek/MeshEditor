@@ -54,7 +54,7 @@ matrix:
       sonarcloud:
       organization: "harfangeek-github"
       token:
-        secure: n4snCN6lcqOGQ127y2M0ICxfLhbE8GSsvzOLyd3G+2euymEsJGVHZ4g8ZBPWwsUn+b0S5bl6khxo6RJyG7h/oix0ZUbglqe38VpU4WrHCgaccH2XPRm4a0C/POaWwOvZAD3DijxEC/sMgl17CqLtEqIWrqfB0wTuICT/6QUacGHv/9nh6EieDEXhmmMRYDspCSo+v+8c51oqc3yq0c6cPNfyIQIk+i3aB6xJgUpLi7x/v8vAVDCz+7iTvRrWXmgUfJv8N4MuQ6RNtp0s1nqlWuFSf7lAA2DxbCMr8Vnv5i8/yoxNp6SAWQSGKsdxGDA8Fe5O8zyAob0SjTzDK4s5oWNWFtXtfVYitDXHJ63uxdzeEHFUjlgyYDutVQ4m6bPqDs7+dsw8q4JKUYvJS4z0Uy2HKaTq7L5iwboJkwDSNw+zJnHUAryH0NwCcicVquVxkHU9o6Q4YYg+wQz/plAK03I+LXSSgAjaWkx0mph+4TITWYaBiR+UrGH3uvYjI/4r2RyI+StW3BIWfFCfvLlx/vu+0OgZ62lbPtuPZ68WCtVU0MzIiUSYKzUeAJ7vpWHubnxnDrcXuHHWSte40P2upfAN5h9WcJhzsTPwTTyJMAkn4TZ7FFfYNeo2TuskZgryZ4Ti9wgZ5JRViMcl55Mzm/16kZnffNKPBOSWDOzle+U=
+        secure: "n4snCN6lcqOGQ127y2M0ICxfLhbE8GSsvzOLyd3G+2euymEsJGVHZ4g8ZBPWwsUn+b0S5bl6khxo6RJyG7h/oix0ZUbglqe38VpU4WrHCgaccH2XPRm4a0C/POaWwOvZAD3DijxEC/sMgl17CqLtEqIWrqfB0wTuICT/6QUacGHv/9nh6EieDEXhmmMRYDspCSo+v+8c51oqc3yq0c6cPNfyIQIk+i3aB6xJgUpLi7x/v8vAVDCz+7iTvRrWXmgUfJv8N4MuQ6RNtp0s1nqlWuFSf7lAA2DxbCMr8Vnv5i8/yoxNp6SAWQSGKsdxGDA8Fe5O8zyAob0SjTzDK4s5oWNWFtXtfVYitDXHJ63uxdzeEHFUjlgyYDutVQ4m6bPqDs7+dsw8q4JKUYvJS4z0Uy2HKaTq7L5iwboJkwDSNw+zJnHUAryH0NwCcicVquVxkHU9o6Q4YYg+wQz/plAK03I+LXSSgAjaWkx0mph+4TITWYaBiR+UrGH3uvYjI/4r2RyI+StW3BIWfFCfvLlx/vu+0OgZ62lbPtuPZ68WCtVU0MzIiUSYKzUeAJ7vpWHubnxnDrcXuHHWSte40P2upfAN5h9WcJhzsTPwTTyJMAkn4TZ7FFfYNeo2TuskZgryZ4Ti9wgZ5JRViMcl55Mzm/16kZnffNKPBOSWDOzle+U="
     before_install:
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-get update -qq
@@ -64,6 +64,6 @@ matrix:
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     script:
-    - build-wrapper-linux-x86-64
+#    - build-wrapper-linux-x86-64 --out-dir bw-output make
     - sonar-scanner -X
 
