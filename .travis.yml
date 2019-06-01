@@ -7,6 +7,9 @@ branches:
   - feature/travis
   
 matrix:
+  fast_finish: true
+  allow_failures:
+    - stage: Code analysis and deployment
   include:
   - stage: Build and test
     name: Linux - GCC
@@ -21,7 +24,7 @@ matrix:
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     script:
-    - make -j 8 CC=$CC CXX=$CXX
+    - make CC=$CC CXX=$CXX
   - name: Linux - Clang
     os: linux
     compiler: clang
@@ -31,12 +34,12 @@ matrix:
     - sudo apt-get install -y --no-install-recommends make libx11-dev libxcursor-dev
       libxrandr-dev libxinerama-dev
     script:
-    - make -j 8 CC=$CC CXX=$CXX
+    - make CC=$CC CXX=$CXX
   - name: Windows - GCC
     os: windows
     compiler: gcc
     script:
-    - mingw32-make -j 8 CC=$CC CXX=$CXX
+    - mingw32-make CC=$CC CXX=$CXX
   - name: Windows - MSVC
     os: windows
     env: MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
@@ -61,6 +64,6 @@ matrix:
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     script:
-    - build-wrapper-linux-x86-64 --out-dir bw-output make
+    - build-wrapper-linux-x86-64
     - sonar-scanner
 
