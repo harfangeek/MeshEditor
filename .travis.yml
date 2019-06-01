@@ -5,10 +5,6 @@ branches:
   - master
   - develop
   - feature/travis
-  
-cache:
-  directories:
-    - /home/travis/.sonar/cache
 
 matrix:
   fast_finish: true
@@ -54,6 +50,9 @@ matrix:
     name: SonarQube code analysis
     os: linux
     compiler: gcc
+    cache:
+      directories:
+      - /home/travis/.sonar/cache
     addons:
       sonarcloud:
         organization: "harfangeek-github"
