@@ -52,8 +52,8 @@ matrix:
     compiler: gcc
     addons:
       sonarcloud:
-      organization: "harfangeek-github"
-      token: $SONARCLOUD_TOKEN
+        organization: "harfangeek-github"
+        token: $SONARCLOUD_TOKEN
     before_install:
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-get update -qq
