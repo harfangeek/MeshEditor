@@ -5,10 +5,14 @@ branches:
   - master
   - develop
   - feature/travis
-  
+
 matrix:
+  fast_finish: true
+  allow_failures:
+    - stage: Code analysis and deployment
   include:
-  - name: "Linux - GCC"
+  - stage: Build and test
+    name: Linux - GCC
     os: linux
     compiler: gcc
     before_install:
@@ -16,28 +20,56 @@ matrix:
     - sudo apt-get update -qq
     install:
     - sudo apt-get install -y -qq g++-8
-    - sudo apt-get install -y --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
+    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
-    script: 
-    - make CC=$CC CXX=$CXX
-  - name: "Linux - Clang"
+    script:
+    - make -j 2 CC=$CC CXX=$CXX
+  - name: Linux - Clang
     os: linux
     compiler: clang
     before_install:
     - sudo apt-get update -qq
     install:
-    - sudo apt-get install -y --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
-    script: 
-    - make CC=$CC CXX=$CXX
-  - name: "Windows - GCC"
+    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev
+      libxrandr-dev libxinerama-dev
+    script:
+    - make -j 2 CC=$CC CXX=$CXX
+  - name: Windows - GCC
     os: windows
     compiler: gcc
     script:
-    - mingw32-make CC=$CC CXX=$CXX
-  - name: "Windows - MSVC"
+    - mingw32-make -j 2 CC=$CC CXX=$CXX
+  - name: Windows - MSVC
     os: windows
+    filter_secrets: false
     env: MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
     script:
     - export PATH=$MSBUILD_PATH:$PATH
-    - MSBuild.exe MeshEditor.sln -t:"Projects\MeshEditor" -p:configuration=release -p:platform=x64
+    - MSBuild.exe MeshEditor.sln -m:2 -t:"Projects\MeshEditor" -p:configuration=release -p:platform=x64
+  - stage: Code analysis and deployment
+    name: SonarQube code analysis
+    os: linux
+    compiler: gcc
+    cache:
+      directories:
+      - /home/travis/.sonar/cache
+    addons:
+      sonarcloud:
+        organization: "harfangeek-github"
+        token: $SONARCLOUD_TOKEN
+    git:
+      depth: false
+    before_install:
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    - sudo apt-get update -qq
+    install:
+    - sudo apt-get install -y -qq g++-8
+    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
+    script:
+    - build-wrapper-linux-x86-64 --out-dir bw-output make -j 2
+    - sonar-scanner
+
+
