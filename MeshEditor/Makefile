@@ -3,14 +3,14 @@ BIN 		:= $(BIN_DIR)/$(BIN_NAME)
 
 OPT			+= -std=c++17 -pedantic -DGLFW_INCLUDE_GLCOREARB -DGLM_ENABLE_EXPERIMENTAL -DGLM_FORCE_SILENT_WARNINGS
 
-SRC_DIR 	:= src
-SHADERS_DIR	:= $(SRC_DIR)/Rendering/Shaders
+SRC_DIR 	:= modules
+SRC_DIR_ABS := $(CURDIR)/$(SRC_DIR)
+SHADERS_DIR	:= $(SRC_DIR)/Rendering/src/Shaders
 SHADERS_DST := $(PROJECT_ROOT)/Shaders
 INC_PATH	:=  -I$(GL3W_DIR)/include \
 				-I$(GLFW_DIR)/include \
 				-I$(IMGUI_DIR)/include \
 				-I$(GLM_DIR)/include \
-				-I$(SRC_DIR)
 
 LIBS_PATH	:= -L$(GL3W_DIR)/$(BIN_DIR) \
 			   -L$(GLFW_DIR)/$(BIN_DIR) \
@@ -30,17 +30,23 @@ ifeq ($(TARGET_SHELL),cmd)
 
 	INC_PATH := $(subst /,\,$(INC_PATH))
 	LIBS_PATH := $(subst /,\,$(LIBS_PATH))
-	SRC_DIR_FULL := $(subst /,\,$(abspath $(SRC_DIR)))
+	SRC_DIR_ABS := $(subst /,\,$(SRC_DIR_ABS))
 	SHADERS_DIR := $(subst /,\,$(SHADERS_DIR))
 	SHADERS_DST := $(subst /,\,$(SHADERS_DST))
 
-	SOURCES := $(subst $(SRC_DIR_FULL), , $(shell dir /b/s $(SRC_DIR)\*.cpp))
-	FOLDERS := $(subst $(SRC_DIR_FULL), , $(shell dir /b/s/a:d $(SRC_DIR)))
+	MODULES := $(shell dir /b $(SRC_DIR))
+	INC_PATH := $(INC_PATH)$(foreach MODULE,$(MODULES),-I$(SRC_DIR_ABS)\$(MODULE)\include)
+
+	SOURCES := $(subst $(SRC_DIR_ABS), , $(foreach MODULE,$(MODULES),$(shell dir /b/s "$(SRC_DIR)\$(MODULE)\src\*.cpp")))
+	FOLDERS := $(subst $(SRC_DIR_ABS), , $(foreach MODULE,$(MODULES),$(shell dir /b/s/a:d "$(SRC_DIR)\$(MODULE)\src")))
 	FOLDERS := $(FOLDERS:%=$(BIN_DIR)\\%)
 	OBJECTS := $(patsubst %.cpp,$(BIN_DIR)\\%.o,$(SOURCES))
 else
-	SOURCES := $(shell find $(SRC_DIR) -type f -name '*.cpp' -printf "%P\n")
-	FOLDERS	:= $(shell find $(SRC_DIR) -mindepth 1 -type d -printf $(BIN_DIR)"/%P\n")
+	MODULES := $(shell find $(SRC_DIR) -mindepth 1 -maxdepth 1 -type d -printf "%P\n")
+	INC_PATH := $(INC_PATH)$(foreach MODULE,$(MODULES),-I$(SRC_DIR_ABS)/$(MODULE)/include)
+
+	SOURCES := $(foreach MODULE,$(MODULES),$(shell find $(SRC_DIR)/$(MODULE)/src/ -name *.cpp -type f -printf "$(MODULE)/src/%P\n"))
+	FOLDERS := $(foreach MODULE,$(MODULES),$(shell find $(SRC_DIR)/$(MODULE)/src/ -type d -printf "$(BIN_DIR)/$(MODULE)/src/%P\n"))
 	OBJECTS := $(patsubst %.cpp,$(BIN_DIR)/%.o,$(SOURCES))
 endif
 
@@ -69,7 +75,7 @@ $(1) : $(2)
 endef
 
 ifeq ($(TARGET_SHELL),cmd)
-$(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)\\%.o, $(SRC)), $(SRC_DIR)/$(SRC))))
+$(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)\\%.o, $(SRC)), $(SRC_DIR)\$(SRC))))
 else
 $(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)/%.o, $(SRC)), $(SRC_DIR)/$(SRC))))
 endif

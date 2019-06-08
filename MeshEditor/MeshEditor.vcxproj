@@ -19,65 +19,64 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GUI\Core\GlfwWindow.h" />
-    <ClInclude Include="src\GUI\Core\GlfwWindowManager.h" />
-    <ClInclude Include="src\GUI\Core\ImGuiDialog.h" />
-    <ClInclude Include="src\GUI\Interfaces\Dialog.h" />
-    <ClInclude Include="src\GUI\Interfaces\MouseListener.h" />
-    <ClInclude Include="src\GUI\Interfaces\Panel.h" />
-    <ClInclude Include="src\GUI\Interfaces\Window.h" />
-    <ClInclude Include="src\GUI\Interfaces\WindowListener.h" />
-    <ClInclude Include="src\GUI\Interfaces\WindowManager.h" />
-    <ClInclude Include="src\MeshEditor\Controllers\CameraController.h" />
-    <ClInclude Include="src\MeshEditor\Controllers\FileController.h" />
-    <ClInclude Include="src\MeshEditor\Controllers\MeshEditorController.h" />
-    <ClInclude Include="src\MeshEditor\Views\FilePanel.h" />
-    <ClInclude Include="src\MeshEditor\Views\MeshDialog.h" />
-    <ClInclude Include="src\MeshEditor\Views\MeshEditorPanel.h" />
-    <ClInclude Include="src\Rendering\Core\MeshRenderer.h" />
-    <ClInclude Include="src\Rendering\Model\Face.h" />
-    <ClInclude Include="src\Rendering\Model\HalfEdge.h" />
-    <ClInclude Include="src\Rendering\Model\Mesh.h" />
-    <ClInclude Include="src\Rendering\Model\Vertex.h" />
-    <ClInclude Include="src\Rendering\Operators\MeshConverter.h" />
-    <ClInclude Include="src\Rendering\Operators\MeshTransformation.h" />
-    <ClInclude Include="src\Rendering\Operators\ObjReader.h" />
-    <ClInclude Include="src\Rendering\Operators\ShaderLoader.h" />
-    <ClInclude Include="src\Rendering\Operators\Utility.h" />
-    <ClInclude Include="src\Rendering\Operators\ViewerUtility.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\GUI\Core\GlfwWindow.cpp" />
-    <ClCompile Include="src\GUI\Core\GlfwWindowManager.cpp" />
-    <ClCompile Include="src\GUI\Core\ImGuiDialog.cpp" />
-    <ClCompile Include="src\GUI\Interfaces\Dialog.cpp" />
-    <ClCompile Include="src\GUI\Interfaces\Panel.cpp" />
-    <ClCompile Include="src\GUI\Interfaces\Window.cpp" />
-    <ClCompile Include="src\GUI\Interfaces\WindowManager.cpp" />
-    <ClCompile Include="src\MeshEditor\Controllers\CameraController.cpp" />
-    <ClCompile Include="src\MeshEditor\Controllers\FileController.cpp" />
-    <ClCompile Include="src\MeshEditor\Controllers\MeshEditorController.cpp" />
-    <ClCompile Include="src\MeshEditor\Core\main.cpp" />
-    <ClCompile Include="src\MeshEditor\Views\FilePanel.cpp" />
-    <ClCompile Include="src\MeshEditor\Views\MeshDialog.cpp" />
-    <ClCompile Include="src\MeshEditor\Views\MeshEditorPanel.cpp" />
-    <ClCompile Include="src\Rendering\Core\MeshRenderer.cpp" />
-    <ClCompile Include="src\Rendering\Model\Face.cpp" />
-    <ClCompile Include="src\Rendering\Model\HalfEdge.cpp" />
-    <ClCompile Include="src\Rendering\Model\Mesh.cpp" />
-    <ClCompile Include="src\Rendering\Model\Vertex.cpp" />
-    <ClCompile Include="src\Rendering\Operators\MeshConverter.cpp" />
-    <ClCompile Include="src\Rendering\Operators\MeshTransformation.cpp" />
-    <ClCompile Include="src\Rendering\Operators\ObjReader.cpp" />
-    <ClCompile Include="src\Rendering\Operators\ShaderLoader.cpp" />
-    <ClCompile Include="src\Rendering\Operators\Utility.cpp" />
-    <ClCompile Include="src\Rendering\Operators\ViewerUtility.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Makefile" />
-    <None Include="src\Rendering\Shaders\fragmentShader.glsl" />
-    <None Include="src\Rendering\Shaders\geometryShader.glsl" />
-    <None Include="src\Rendering\Shaders\vertexShader.glsl" />
+    <None Include="modules\Rendering\src\Shaders\fragmentShader.glsl" />
+    <None Include="modules\Rendering\src\Shaders\vertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="modules\GUI\include\GUI\Dialog.h" />
+    <ClInclude Include="modules\GUI\include\GUI\GlfwWindow.h" />
+    <ClInclude Include="modules\GUI\include\GUI\GlfwWindowManager.h" />
+    <ClInclude Include="modules\GUI\include\GUI\ImGuiDialog.h" />
+    <ClInclude Include="modules\GUI\include\GUI\MouseListener.h" />
+    <ClInclude Include="modules\GUI\include\GUI\Panel.h" />
+    <ClInclude Include="modules\GUI\include\GUI\Window.h" />
+    <ClInclude Include="modules\GUI\include\GUI\WindowListener.h" />
+    <ClInclude Include="modules\GUI\include\GUI\WindowManager.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\CameraController.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\FileController.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\FilePanel.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\MeshDialog.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\MeshEditorController.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\MeshEditorPanel.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\Face.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\HalfEdge.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\Mesh.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\MeshConverter.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\MeshRenderer.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\MeshTransformation.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\ObjReader.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\ShaderLoader.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\Utility.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\Vertex.h" />
+    <ClInclude Include="modules\Rendering\include\Rendering\ViewerUtility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="modules\GUI\src\Core\GlfwWindow.cpp" />
+    <ClCompile Include="modules\GUI\src\Core\GlfwWindowManager.cpp" />
+    <ClCompile Include="modules\GUI\src\Core\ImGuiDialog.cpp" />
+    <ClCompile Include="modules\GUI\src\Interfaces\Dialog.cpp" />
+    <ClCompile Include="modules\GUI\src\Interfaces\Panel.cpp" />
+    <ClCompile Include="modules\GUI\src\Interfaces\Window.cpp" />
+    <ClCompile Include="modules\GUI\src\Interfaces\WindowManager.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Controllers\CameraController.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Controllers\FileController.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Controllers\MeshEditorController.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\main.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Views\FilePanel.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Views\MeshDialog.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Views\MeshEditorPanel.cpp" />
+    <ClCompile Include="modules\Rendering\src\Core\MeshRenderer.cpp" />
+    <ClCompile Include="modules\Rendering\src\Model\Face.cpp" />
+    <ClCompile Include="modules\Rendering\src\Model\HalfEdge.cpp" />
+    <ClCompile Include="modules\Rendering\src\Model\Mesh.cpp" />
+    <ClCompile Include="modules\Rendering\src\Model\Vertex.cpp" />
+    <ClCompile Include="modules\Rendering\src\Operators\MeshConverter.cpp" />
+    <ClCompile Include="modules\Rendering\src\Operators\MeshTransformation.cpp" />
+    <ClCompile Include="modules\Rendering\src\Operators\ObjReader.cpp" />
+    <ClCompile Include="modules\Rendering\src\Operators\ShaderLoader.cpp" />
+    <ClCompile Include="modules\Rendering\src\Operators\Utility.cpp" />
+    <ClCompile Include="modules\Rendering\src\Operators\ViewerUtility.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -131,22 +130,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)Debug</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)Release</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)x64\Debug\</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)x64\Release\</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
@@ -171,7 +170,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\src\Rendering\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -196,7 +195,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\src\Rendering\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -221,7 +220,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\src\Rendering\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -246,7 +245,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\src\Rendering\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
