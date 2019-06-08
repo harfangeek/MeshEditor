@@ -17,6 +17,7 @@ GL3W_DIR		:= $(LIBS_DIR)/gl3w
 GLFW_DIR		:= $(LIBS_DIR)/glfw
 IMGUI_DIR		:= $(LIBS_DIR)/imgui
 GLM_DIR			:= $(LIBS_DIR)/glm
+MESH_DIR		:= MeshEditor
 
 ifeq ($(OS),Windows_NT)
 	PLATFORM := win
@@ -67,13 +68,13 @@ imgui:
 	$(MAKE) -C $(IMGUI_DIR)
 	
 mesh : gl3w glfw imgui nfd
-	$(MAKE) -C MeshEditor
+	$(MAKE) -C $(MESH_DIR)
 	
 clean-mesh:
-	$(MAKE) clean -C MeshEditor
+	$(MAKE) clean -C $(MESH_DIR)
 
 clean:
 	$(MAKE) clean -C $(GL3W_DIR)
 	$(MAKE) clean -C $(GLFW_DIR)
 	$(MAKE) clean -C $(IMGUI_DIR)
-	$(MAKE) clean -C MeshEditor
+	$(MAKE) clean -C $(MESH_DIR)
