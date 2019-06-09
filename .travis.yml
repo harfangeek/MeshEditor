@@ -5,6 +5,11 @@ branches:
   - master
   - develop
   - feature/travis
+  
+env:
+  global:
+   # Coverity Token
+   - secure: "f0U7N0LyPASzc5WKR5NQTHLExD/mK6MlZWORV35AG9L48HyCmblZg9Xqz9tr7mDAtwk0FKhxtnKvANaib2/UgDgrY97fE1q8IVkazFMQGddq5tJ2JVEAilQEBgVt0kQOCAOcGAD4KME+Xg2Qq3V+NTA05LVsDZ/c1Fu7tmUdVXtFmGVqqlsU5bQGYUFE94BrI5FmKeTpF2JeHmYmxpxwnJKPaV/b8ro9Kwu6Voj4eKecgPfnpvZjDWuVAtcfEqz6vllV64w13GSU8O+9Zajkd36trekIkZCeTIKOK67S1Kyxr/oSpot0QCjjfTWXPCKfTFBccodfK0VjVaVjar2y2CkUhojPd9U8b2jD9hfAzYXjg3lolnQWSJ+iXdPG93a4ga2hLK2D9oUUXljgqCqAdYfQqrbjSVQ0DsCYVvsw+mjoUovwu6YePgxhrOeKn/OxV3qH/9F5JaW1iHVtMQwxIcB9PVdhofmPwOv7oV4gvBcCL73gAD9se0viIaAU5zEW7uD2LaupAgCzp7lWTUa9zYyteMZy4j2JLJ3TpipUiXAt5vnp1ld2uuw4PQSzwBuV6fzCxqV0gJ7nER7FiPO2tJl6qLm+vRExAVoaupCRHC59PAPVP/AYrv2NV2nGd1d4Bwq+0EcL4/qzm066wbiypwZqp8MnjmOSDC7iWVv2/jE="
 
 matrix:
   fast_finish: true
@@ -71,5 +76,24 @@ matrix:
     script:
     - build-wrapper-linux-x86-64 --out-dir bw-output make -j 2
     - sonar-scanner
-
-
+  - name: Coverity analysis
+    os: linux
+    compiler: gcc
+    before_install:
+    - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    - sudo apt-get update -qq
+    install:
+    - sudo apt-get install -y -qq g++-8
+    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
+    addons:
+      coverity_scan:
+        project:
+          name: "harfangeek/MeshEditor"
+          description: "A simple mesh editor"
+        notification_email: harfangeek@gmail.com
+        #build_command_prepend: "<Your build preprocessing command here>"
+        build_command: "make -j 2"
+        branch_pattern: feature/travis
