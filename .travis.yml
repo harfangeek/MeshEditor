@@ -4,6 +4,7 @@ branches:
   only:
   - master
   - develop
+  - coverity
   - feature/travis
 
 matrix:
@@ -49,6 +50,7 @@ matrix:
     - MSBuild.exe MeshEditor.sln -m:2 -t:"Projects\MeshEditor" -p:configuration=release -p:platform=x64
   - stage: Code analysis and deployment
     name: SonarQube code analysis
+    if: branch != coverity
     os: linux
     compiler: gcc
     cache:
@@ -71,5 +73,27 @@ matrix:
     script:
     - build-wrapper-linux-x86-64 --out-dir bw-output make -j 2
     - sonar-scanner
-
-
+  - name: Coverity code analysis
+    if: branch = coverity
+    os: linux
+    compiler: gcc
+    before_install:
+    - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    - sudo apt-get update -qq
+    install:
+    - sudo apt-get install -y -qq g++-6
+    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 90
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+    script:
+    - echo "--- done ---"
+    addons:
+      coverity_scan:
+        project:
+          name: "harfangeek/MeshEditor"
+          description: "A simple mesh editor"
+        notification_email: harfangeek@gmail.com
+        build_command_prepend: "make libs"
+        build_command: "make mesh"
+        branch_pattern: coverity
