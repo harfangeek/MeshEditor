@@ -5,11 +5,6 @@ branches:
   - master
   - develop
   - feature/travis
-  
-env:
-  global:
-   # Coverity Token
-   - secure: "f0U7N0LyPASzc5WKR5NQTHLExD/mK6MlZWORV35AG9L48HyCmblZg9Xqz9tr7mDAtwk0FKhxtnKvANaib2/UgDgrY97fE1q8IVkazFMQGddq5tJ2JVEAilQEBgVt0kQOCAOcGAD4KME+Xg2Qq3V+NTA05LVsDZ/c1Fu7tmUdVXtFmGVqqlsU5bQGYUFE94BrI5FmKeTpF2JeHmYmxpxwnJKPaV/b8ro9Kwu6Voj4eKecgPfnpvZjDWuVAtcfEqz6vllV64w13GSU8O+9Zajkd36trekIkZCeTIKOK67S1Kyxr/oSpot0QCjjfTWXPCKfTFBccodfK0VjVaVjar2y2CkUhojPd9U8b2jD9hfAzYXjg3lolnQWSJ+iXdPG93a4ga2hLK2D9oUUXljgqCqAdYfQqrbjSVQ0DsCYVvsw+mjoUovwu6YePgxhrOeKn/OxV3qH/9F5JaW1iHVtMQwxIcB9PVdhofmPwOv7oV4gvBcCL73gAD9se0viIaAU5zEW7uD2LaupAgCzp7lWTUa9zYyteMZy4j2JLJ3TpipUiXAt5vnp1ld2uuw4PQSzwBuV6fzCxqV0gJ7nER7FiPO2tJl6qLm+vRExAVoaupCRHC59PAPVP/AYrv2NV2nGd1d4Bwq+0EcL4/qzm066wbiypwZqp8MnjmOSDC7iWVv2/jE="
 
 matrix:
   fast_finish: true
