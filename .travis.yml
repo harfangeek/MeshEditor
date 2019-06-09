@@ -84,12 +84,13 @@ matrix:
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
     script:
+    - echo "--- done ---"
     addons:
       coverity_scan:
         project:
           name: "harfangeek/MeshEditor"
           description: "A simple mesh editor"
         notification_email: harfangeek@gmail.com
-        build_command_prepend: ""
-        build_command: "make"
+        build_command_prepend: "make libs"
+        build_command: "make mesh"
         branch_pattern: .*
