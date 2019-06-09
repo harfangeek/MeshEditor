@@ -83,6 +83,7 @@ matrix:
     - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
     - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
+    script:
     addons:
       coverity_scan:
         project:
@@ -90,5 +91,5 @@ matrix:
           description: "A simple mesh editor"
         notification_email: harfangeek@gmail.com
         build_command_prepend: ""
-        build_command: "make -j 2"
+        build_command: "make"
         branch_pattern: .*
