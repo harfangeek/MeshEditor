@@ -94,6 +94,6 @@ matrix:
           name: "harfangeek/MeshEditor"
           description: "A simple mesh editor"
         notification_email: harfangeek@gmail.com
-        #build_command_prepend: "<Your build preprocessing command here>"
+        build_command_prepend: ""
         build_command: "make -j 2"
         branch_pattern: feature/travis
