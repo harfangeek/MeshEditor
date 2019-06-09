@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=develop)](https://travis-ci.org/harfangeek/MeshEditor)
+| | Build & Test | SonarQube | Coverity |
+| --- | --- | --- | --- |
+| **master** | [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=master)](https://travis-ci.org/harfangeek/MeshEditor) | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=harfangeek_MeshEditor&metric=alert_status)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=master)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=master&project=harfangeek_MeshEditor&metric=coverage)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=master) | N/A |
+| **develop** | [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=develop)](https://travis-ci.org/harfangeek/MeshEditor) | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=harfangeek_MeshEditor&metric=alert_status)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=develop)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=harfangeek_MeshEditor&metric=coverage)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=develop) | [![Coverage](https://scan.coverity.com/projects/18494/badge.svg?flat=1)](https://scan.coverity.com/projects/harfangeek-mesheditor) |
 
 # MeshEditor
 
@@ -7,6 +10,8 @@
 - [Project Dependencies](#project-dependencies)
 - [System Dependencies](#system-dependencies)
 - [Building](#building)
+- [Unit tests](#unit-tests)
+- [Continus Integration](#continus-integration)
 - [References](#references)
 - [ToDo List](#todo-list)
 - [Ideas to experiment](#ideas-to-experiment)
@@ -21,8 +26,9 @@ This project is for me a laboratory to experiment following topics:
 - 3D computation and related algorithms and data structures
 - Software architecture
 - Modern C++ features
-- Makefiles
-- Git branching models
+- Makefiles and multi-OS support
+- Git workflows
+- Continus Integration
 
 If you are interested in any of these topics you may find something interesting in this project. All critics and suggestions are of course welcome.
 
@@ -39,7 +45,7 @@ The project has been built and tested on Windows 7 64bits (both 32 and 64bits bu
 
 For convenience, all dependencies are shipped with the project. They also are automatically built before building the project so you should not worry about them.
 
-## System Dependencies 
+## System Dependencies
 
 ### Windows
 
@@ -82,9 +88,12 @@ The second one is the default when simply invoking `make`
 
 The project Makefile automatically list all .cpp files so it is not needed to edit it when adding new files.
 
-## Testing
+## Unit tests
 
-The master and develop branches are automatically built on push using [Travis-CI](https://travis-ci.org/harfangeek/MeshEditor). The following configurations are tested:
+## Continus Integration
+
+### Workflow
+The master and develop branches are automatically built and tested on push using [Travis-CI](https://travis-ci.org/harfangeek/MeshEditor). The following configurations are tested:
 - Linux with gcc
 - Linux with clang
 - Windows with mingw64-gcc
@@ -92,7 +101,18 @@ The master and develop branches are automatically built on push using [Travis-CI
 
 For all configurations only the Release/x64 target is tested.
 
-Build status : [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=develop)](https://travis-ci.org/harfangeek/MeshEditor)
+If all builds pass, the code is scanned using SonarQube analyzer and the result is pushed to [SonarCloud](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor) along with the coverage results from unit tests.
+
+The code is also scanned by [Coverity](https://scan.coverity.com/projects/harfangeek-mesheditor), a static code analyzer. This analysis is not needed at every push, and is limited per month. 
+The Coverity scan is configured to be launched when pushing to the `coverity` branch only. It is a dummy branch where I merge the develop branch when the code has significantly changed to trigger a new analysis.
+
+### Build status
+
+| | Build & Test | SonarQube | Coverity |
+| --- | --- | --- | --- |
+| **master** | [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=master)](https://travis-ci.org/harfangeek/MeshEditor) | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=harfangeek_MeshEditor&metric=alert_status)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=master)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=master&project=harfangeek_MeshEditor&metric=coverage)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=master) | N/A |
+| **develop** | [![Build Status](https://travis-ci.org/harfangeek/MeshEditor.svg?branch=develop)](https://travis-ci.org/harfangeek/MeshEditor) | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=harfangeek_MeshEditor&metric=alert_status)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=develop)<br>[![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=harfangeek_MeshEditor&metric=coverage)](https://sonarcloud.io/dashboard?id=harfangeek_MeshEditor&branch=develop) | [![Coverage](https://scan.coverity.com/projects/18494/badge.svg?flat=1)](https://scan.coverity.com/projects/harfangeek-mesheditor) |
+
 
 ## References
 
@@ -142,11 +162,13 @@ This project being mostly educational, here are some references for the differen
     -  https://www.gnu.org/software/make/manual/html_node/Eval-Function.html
     -  http://make.mad-scientist.net/the-eval-function/
 
-### Git Flow
+### Git Workflows
   - A successful Git branching model: https://nvie.com/posts/a-successful-git-branching-model/
   - Using git-flow to automate your git branching workflow: https://jeffkreeftmeijer.com/git-flow/
   - Feature branches and pull requests: https://github.com/AgileVentures/shf-project/wiki/Developing-a-Feature-(or-bug,-chore)
   - Resolving pull request merge conflicts: https://github.com/AgileVentures/shf-project/wiki/Resolving-Pull-Request-merge-conflicts
+  - Merge vs Rebase : https://fr.atlassian.com/git/tutorials/merging-vs-rebasing
+  - Reset, Checkout, Revert : https://fr.atlassian.com/git/tutorials/resetting-checking-out-and-reverting
 
 ### Continus Integration
   - Travis official tutorial : https://docs.travis-ci.com/user/for-beginners/
