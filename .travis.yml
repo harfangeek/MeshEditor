@@ -73,7 +73,8 @@ matrix:
     script:
     - build-wrapper-linux-x86-64 --out-dir bw-output make -j 2
     - sonar-scanner
-  - name: Coverity code analysis
+  - stage: Code analysis and deployment
+    name: Coverity code analysis
     if: branch = coverity
     os: linux
     compiler: gcc
