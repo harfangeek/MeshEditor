@@ -4,6 +4,7 @@ branches:
   only:
   - master
   - develop
+  - coverity
   - feature/travis
 
 matrix:
@@ -49,6 +50,7 @@ matrix:
     - MSBuild.exe MeshEditor.sln -m:2 -t:"Projects\MeshEditor" -p:configuration=release -p:platform=x64
   - stage: Code analysis and deployment
     name: SonarQube code analysis
+    if: branch != coverity
     os: linux
     compiler: gcc
     cache:
@@ -71,7 +73,8 @@ matrix:
     script:
     - build-wrapper-linux-x86-64 --out-dir bw-output make -j 2
     - sonar-scanner
-  - name: Coverity analysis
+  - name: Coverity code analysis
+    if: branch = coverity
     os: linux
     compiler: gcc
     before_install:
@@ -93,4 +96,4 @@ matrix:
         notification_email: harfangeek@gmail.com
         build_command_prepend: "make libs"
         build_command: "make mesh"
-        branch_pattern: .*
+        branch_pattern: coverity
