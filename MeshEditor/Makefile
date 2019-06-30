@@ -1,12 +1,13 @@
 BIN_NAME	:= mesh-editor
-BIN 		:= $(BIN_DIR)/$(BIN_NAME)
 
 OPT			+= -std=c++17 -pedantic -DGLFW_INCLUDE_GLCOREARB -DGLM_ENABLE_EXPERIMENTAL -DGLM_FORCE_SILENT_WARNINGS
 
 SRC_DIR 	:= modules
 SRC_DIR_ABS := $(CURDIR)/$(SRC_DIR)
+RESOURCES_DIR := resources
 SHADERS_DIR	:= $(SRC_DIR)/Rendering/src/Shaders
-SHADERS_DST := $(PROJECT_ROOT)/Shaders
+SHADERS_DST := $(RESOURCES_DIR)/shaders
+
 INC_PATH	:=  -I$(GL3W_DIR)/include \
 				-I$(GLFW_DIR)/include \
 				-I$(IMGUI_DIR)/include \
@@ -22,8 +23,10 @@ LIBS			:= $(LIBS_$(PLATFORM))
 
 ifeq ($(PLATFORM), win)
 	OPT += -DBUILD_WIN
-	BIN := $(BIN).exe
+	BIN_NAME := $(BIN_NAME).exe
 endif
+
+BIN 			:= $(BIN_DIR)/$(BIN_NAME)
 
 ifeq ($(TARGET_SHELL),cmd)
 	BIN := $(subst /,\,$(BIN))
@@ -56,7 +59,7 @@ DEPS := $(OBJECTS:.o=.d)
 
 all: directories $(BIN)
 	$(COPY_FOLDER) $(SHADERS_DIR) $(SHADERS_DST)
-	$(COPY_FILE) $(BIN) $(PROJECT_ROOT)
+	$(COPY_FILE) $(BIN) .
 
 directories: $(FOLDERS)
 	@echo Directories done
@@ -81,6 +84,8 @@ $(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)/%.
 endif
 
 clean:
-	$(RM) $(BIN_DIR)
+	$(RM) $(BIN_NAME)
+	$(RMDIR) $(BIN_DIR)
+	$(RMDIR) $(SHADERS_DST)
 	
 -include $(DEPS)

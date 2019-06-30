@@ -10,9 +10,9 @@ OPT_MODE_debug 	 = -g
 OPT_MODE_release = -O2
 OPT 		 := -Wall -MMD -MP $(OPT_ARCH_$(ARCH)) $(OPT_MODE_$(MODE))
 
-PROJECT_ROOT	:= $(CURDIR)
+SOLUTION_DIR	:= $(CURDIR)
 BIN_DIR 		:= bin/$(ARCH)/$(MODE)
-LIBS_DIR		:= $(PROJECT_ROOT)/Dependencies
+LIBS_DIR		:= $(SOLUTION_DIR)/Dependencies
 GL3W_DIR		:= $(LIBS_DIR)/gl3w
 GLFW_DIR		:= $(LIBS_DIR)/glfw
 IMGUI_DIR		:= $(LIBS_DIR)/imgui
@@ -32,7 +32,7 @@ else
 endif
 
 ifeq ($(TARGET_SHELL),cmd)
-	PROJECT_ROOT	:= $(subst /,\,$(PROJECT_ROOT))
+	SOLUTION_DIR	:= $(subst /,\,$(SOLUTION_DIR))
 	BIN_DIR			:= $(subst /,\,$(BIN_DIR))
 	LIBS_DIR		:= $(subst /,\,$(LIBS_DIR))
 	GL3W_DIR		:= $(subst /,\,$(GL3W_DIR))
@@ -40,13 +40,15 @@ ifeq ($(TARGET_SHELL),cmd)
 	IMGUI_DIR		:= $(subst /,\,$(IMGUI_DIR))
 	GLM_DIR			:= $(subst /,\,$(GLM_DIR))
 
-	MKDIR	:= -md
-	RM		:= -rd /s /q
+	MKDIR		:= -md
+	RM			:= -del
+	RMDIR		:= -rd /s /q
 	COPY_FILE	:= -xcopy /y /c /i
 	COPY_FOLDER	:= -xcopy /y /c /i
 else
-	MKDIR	:= mkdir -p
-	RM		:= rm -Rf
+	MKDIR		:= mkdir -p
+	RM			:= -rm
+	RMDIR		:= -rm -R
 	COPY_FILE	:= cp -f
 	COPY_FOLDER	:= cp -RTf
 endif

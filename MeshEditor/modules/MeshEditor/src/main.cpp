@@ -83,7 +83,7 @@ int main(int, char**)
 	//window2->AddWindowListener(cameraController2);
 
 	// Load mesh
-	fileController->SetPath("Models/hand.obj");
+	fileController->SetPath("resources/models/hand.obj");
 	fileController->Load();
 
 

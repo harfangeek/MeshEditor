@@ -170,7 +170,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -195,7 +195,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -220,7 +220,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -245,7 +245,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)Shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>

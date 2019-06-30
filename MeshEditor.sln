@@ -1,8 +1,14 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshEditor", "MeshEditor\MeshEditor.vcxproj", "{4DBEF1B9-6169-424F-8FA1-A9539BEA7CC0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D983BC5B-11B5-43E9-897B-DA497F620711} = {D983BC5B-11B5-43E9-897B-DA497F620711}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{D6F2DBAA-2ED2-4476-A42F-727A150A710E}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl3w", "Dependencies\gl3w\gl3w.vcxproj", "{BBE4D40E-4E43-4FBB-B676-A08AAA650C38}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "Dependencies\glfw\glfw.vcxproj", "{9B5202E8-FA81-4990-8AD6-3EC07702E135}"
@@ -17,13 +23,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "dependencies\imgui
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{0B94FD50-9CE6-4992-9F16-3CC0320ADE6A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{D6F2DBAA-2ED2-4476-A42F-727A150A710E}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshEditor", "MeshEditor\MeshEditor.vcxproj", "{4DBEF1B9-6169-424F-8FA1-A9539BEA7CC0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{D983BC5B-11B5-43E9-897B-DA497F620711} = {D983BC5B-11B5-43E9-897B-DA497F620711}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{88C1F28D-8D21-4B3D-8663-B2BEEF7272EA}"
 	ProjectSection(SolutionItems) = preProject

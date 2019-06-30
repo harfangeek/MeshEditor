@@ -69,6 +69,8 @@ The project has been test with:
 - GCC >= 6.3
 - Clang >= 6.0
 
+The project binary is generated in the MeshEditor project folder and must be executed from there. To export the program, copy the executable and the "resources" folder.
+
 ### Visual Studio (Windows)
 
 Open the project, chose your configuration (debug/release, x86/x64), build the solution. Project dependencies are configured to be automatically built before building the program.
@@ -84,7 +86,7 @@ Some options are tweakable. Two examples:
 - 32 bits binary with debug info with clang/clang++: `make CC=clang CXX=clang++ MODE=debug ARCH=x86`
 - 64 bits binary with optimization with gcc/g++: `make CC=gcc CXX=g++ MODE=release ARCH=x64`
 
-The second one is the default when simply invoking `make`
+The second one is the default when simply invoking `make`. Add the "-jX" option to speed up the build, with X beeing the number of parallel jobs.
 
 The project Makefile automatically list all .cpp files so it is not needed to edit it when adding new files.
 

@@ -79,7 +79,7 @@ void MeshRenderer::Init()
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 	
 	// Create shaders
-	program = ShaderLoader::CreateProgram("Shaders/vertexShader.glsl", "Shaders/fragmentShader.glsl");
+	program = ShaderLoader::CreateProgram("resources/shaders/vertexShader.glsl", "resources/shaders/fragmentShader.glsl");
 		
 	// Create shader buffers and variables
 	glGenVertexArrays(1, &vao);

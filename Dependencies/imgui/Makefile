@@ -26,7 +26,7 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(INC_PATH) $(OPT) -c -o $@ $<
 
 clean:
-	$(RM) $(BIN_DIR)
+	$(RMDIR) $(BIN_DIR)
 	
 test:
 	@echo -------------------------------

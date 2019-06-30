@@ -21,7 +21,7 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(INC_PATH) $(OPT) -c -o $@ $<
 
 clean:
-	$(RM) $(BIN_DIR)
+	$(RMDIR) $(BIN_DIR)
 
 test:
 	@echo $(SOURCES)
