@@ -4,7 +4,8 @@
 #include "GL/gl3w.h"
 #include "GLM/glm.hpp"
 
-#define NB_BUFFER 7
+#define NB_VAO 4
+#define NB_VBO 7
 
 namespace Rendering
 {
@@ -19,14 +20,21 @@ namespace Rendering
 		VERTICES_NORMALS = 1 << 5
 	};
 
-	enum BufferId {
-		BUF_VERTICES = 0,
-		BUF_FACES = 1,
-		BUF_NORMALS = 2,
-		BUF_FACES_NORMALS = 3,
-		BUF_VERTICES_NORMALS = 4,
-		BUF_VERTICES_SELECTION = 5,
-		BUF_EDGES_SELECTION = 6
+	enum VAO {
+		VAO_MESH = 0,
+		VAO_VERTICES,
+		VAO_FACES_NORMALS,
+		VAO_VERTICES_NORMALS
+	};
+
+	enum VBO {
+		VBO_VERTICES = 0,
+		VBO_FACES = 1,
+		VBO_NORMALS = 2,
+		VBO_FACES_NORMALS = 3,
+		VBO_VERTICES_NORMALS = 4,
+		VBO_VERTICES_SELECTION = 5,
+		VBO_EDGES_SELECTION = 6
 	};
 
 	enum LightType {
@@ -56,11 +64,12 @@ namespace Rendering
 		std::vector<GLint> verticesSelection;
 		std::vector<GLint> edgesSelection;
 
-		GLuint vao;
-		GLuint buffers[NB_BUFFER]; // Buffers for each previous arrays
+		// VBOs and VAOs
+		GLuint vaoIds[NB_VAO];
+		GLuint vboIds[NB_VBO];
+
 		bool verticesNormalsUpdated;
-		bool facesNormalsUpdated;
-						
+		bool facesNormalsUpdated;						
 
 		GLuint program; // Shader program
 
@@ -97,16 +106,12 @@ namespace Rendering
 
 		void Clean();
 
-		// Display functions
-		void DisplayMesh();
-		void DisplayWireframe();
-		void DisplayVertices();
-		void DisplayFacesNormals();
-		void DisplayVerticesNormals();
+		void InitVAOMesh();
+		void InitVAOVertices();
+		void InitVAOFacesNormals();
+		void InitVAOVerticesNormals();
 
-		void DrawMesh(unsigned int drawMode, GLuint program, glm::vec4 color, LightType lightType);
-		void DrawVertices(BufferId buffer, GLuint program, glm::vec4 color, LightType lightType);
-		void DrawNormals(BufferId buffer, unsigned int size, GLuint program, glm::vec4 color, LightType lightType);
+		void Draw(GLuint polygonMode, GLuint drawMode, bool elements, VAO vaoId, size_t size, const glm::vec4& color, const LightType lightType);
 
 		void UpdateFacesNormals();
 		void UpdateVerticesNormals();
