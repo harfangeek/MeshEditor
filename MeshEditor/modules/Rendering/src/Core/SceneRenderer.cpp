@@ -59,7 +59,7 @@ void SceneRenderer::SetCamera(Camera* camera)
 
 void SceneRenderer::SetLight(Light* light)
 {
-	this->camera = camera;
+	this->light = light;
 }
 
 const std::vector<MeshRenderer*>& SceneRenderer::GetMeshRenderers()
