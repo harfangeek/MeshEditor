@@ -9,7 +9,8 @@ namespace GUI
 
 namespace Rendering
 {
-	class MeshRenderer;
+	class SceneRenderer;
+	class Camera;
 
 	class ViewerUtility
 	{
@@ -21,6 +22,6 @@ namespace Rendering
 		// @param x : position in x axis
 		// @param y : position in y axis
 		// @param selectedVertices : vector filled with indices of all found vertices
-		static void GetSelectedVertices(MeshRenderer* renderer, GUI::Window* window, int x, int y, std::vector<unsigned int> &selectedVertices, float precision=0.0004f);
+		static void GetSelectedVertices(SceneRenderer* sceneRenderer, Camera* camera, GUI::Window* window, int x, int y, std::vector<unsigned int> &selectedVertices, float precision=0.0004f);
 	};
 }

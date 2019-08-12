@@ -10,7 +10,10 @@
 #include "GUI/ImGuiDialog.h"
 #include "GUI/GlfwWindowManager.h"
 
+#include "Rendering/SceneRenderer.h"
 #include "Rendering/MeshRenderer.h"
+#include "Rendering/Light.h"
+#include "Rendering/Camera.h"
 
 using namespace MeshEditor;
 using namespace Rendering;
@@ -26,17 +29,26 @@ int main(int, char**)
 	
 	Window* window = manager->NewWindow(42, WINDOW_WIDTH, WINDOW_HEIGHT, 400, 400, "Test Window");
 	window->SetBackgroundColor(0.45f, 0.55f, 0.60f, 1.00f);
-	
+
+	// Create the scene
+	Camera camera(WINDOW_WIDTH, WINDOW_HEIGHT);
+	Light light;
+	light.SetType(LightType::POINT_LIGHT);
+	light.SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	SceneRenderer* sceneRenderer = new SceneRenderer(&camera, &light);
+		
 	// Create Mesh renderer
-	MeshRenderer* meshRenderer = new MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-	meshRenderer->Init();
-	meshRenderer->SetLightType(LightType::POINT_LIGHT);
-	meshRenderer->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshRenderer->SetRenderMode((RenderMode)(RenderMode::MESH | RenderMode::WIREFRAME | RenderMode::VERTICES | RenderMode::FACES_NORMALS | RenderMode::VERTICES_NORMALS));
+	MeshRenderer* meshRenderer = new MeshRenderer();	
+	meshRenderer->SetRenderMode((RenderMode)(RenderMode::MESH /*| RenderMode::VERTICES | RenderMode::FACES_NORMALS | RenderMode::VERTICES_NORMALS*/));
+	
+	MeshRenderer* meshRenderer2 = new MeshRenderer();	
+	meshRenderer2->SetRenderMode((RenderMode)(RenderMode::WIREFRAME /*| RenderMode::VERTICES | RenderMode::FACES_NORMALS | RenderMode::VERTICES_NORMALS*/));
+	
+	sceneRenderer->AddMeshRenderer(meshRenderer);
+	sceneRenderer->AddMeshRenderer(meshRenderer2);
 
 	// Mesh dialog
-	MeshDialog* meshDialog = new MeshDialog(142);
-	meshDialog->SetMeshRenderer(meshRenderer);
+	MeshDialog* meshDialog = new MeshDialog(142, sceneRenderer, &camera);
 
 	//MeshDialog* meshDialog2 = new MeshDialog(1422);
 	//meshDialog2->SetMeshRenderer(meshRenderer);
@@ -46,6 +58,11 @@ int main(int, char**)
 	MeshEditorController* meshEditorController = new MeshEditorController(meshRenderer);
 	MeshEditorPanel* meshEditorPanel = new MeshEditorPanel(meshEditorController);
 	meshEditorDialog->SetPanel(meshEditorPanel);
+
+	ImGuiDialog* meshEditorDialog2 = new ImGuiDialog(123, "Mesh editor2", 50, 220, 200, 400);
+	MeshEditorController* meshEditorController2 = new MeshEditorController(meshRenderer2);
+	MeshEditorPanel* meshEditorPanel2 = new MeshEditorPanel(meshEditorController2);
+	meshEditorDialog2->SetPanel(meshEditorPanel2);
 
 	/*ImGuiDialog* meshEditorDialog2 = new ImGuiDialog(122, "Mesh editor2##2", 50, 220, 200, 400);
 	MeshEditorController* meshEditorController2 = new MeshEditorController(meshRenderer);
@@ -60,12 +77,14 @@ int main(int, char**)
 	// File dialog
 	//ImGuiDialog* fileDialog = new ImGuiDialog(1, "File dialog", 50, 50, 200, 150);
 	FileController* fileController = new FileController(meshRenderer);
+	FileController* fileController2 = new FileController(meshRenderer2);
 	//FilePanel* filePanel = new FilePanel(fileController);
 	//fileDialog->SetPanel(filePanel);
 
 	// Add all dialogs
 	window->AddDialog(meshDialog);
 	window->AddDialog(meshEditorDialog);
+	window->AddDialog(meshEditorDialog2);
 	/*window->AddDialog(fileDialog);
 
 	window->AddDialog(meshEditorDialog2);*/
@@ -74,7 +93,7 @@ int main(int, char**)
 	//window2->AddDialog(meshEditorDialog3);
 	
 	// Camera controller
-	CameraController* cameraController = new CameraController(meshRenderer);
+	CameraController* cameraController = new CameraController(&camera);
 	window->AddMouseListener(cameraController);
 	window->AddWindowListener(cameraController);
 
@@ -85,6 +104,9 @@ int main(int, char**)
 	// Load mesh
 	fileController->SetPath("resources/models/hand.obj");
 	fileController->Load();
+
+	fileController2->SetPath("resources/models/hand.obj");
+	fileController2->Load();
 
 
 

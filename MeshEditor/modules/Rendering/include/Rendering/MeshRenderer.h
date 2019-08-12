@@ -20,6 +20,11 @@ namespace Rendering
 		VERTICES_NORMALS = 1 << 5
 	};
 
+	enum MaterialType {
+		MATERIAL_LIGHT = 0,
+		MATERIAL_NO_LIGHT
+	};
+
 	enum VAO {
 		VAO_MESH = 0,
 		VAO_VERTICES,
@@ -35,14 +40,6 @@ namespace Rendering
 		VBO_VERTICES_NORMALS = 4,
 		VBO_VERTICES_SELECTION = 5,
 		VBO_EDGES_SELECTION = 6
-	};
-
-	enum LightType {
-		AMBIANT = 0,
-		POINT_LIGHT = 1,
-		DIRECTIONNAL = 2,
-		SPOT_LIGHT = 3,
-		SILOUHETTE = 4
 	};
 
 	class MeshRenderer
@@ -69,40 +66,15 @@ namespace Rendering
 		GLuint vboIds[NB_VBO];
 
 		bool verticesNormalsUpdated;
-		bool facesNormalsUpdated;						
+		bool facesNormalsUpdated;
 
-		GLuint program; // Shader program
-
-		// Shaders variables
-		GLuint projectionMatrixLoc;
-		GLuint viewMatrixLoc;
+		// Shaders variables		
 		GLuint modelMatrixLoc;
 		GLuint meshColorLoc;
-			
-		glm::vec3 cameraEye; // Position of the camera
-		glm::vec3 cameraUp; // Camera orientation
-		glm::vec3 cameraForward; // Camera direction
+		GLuint materialTypeLoc;
 
-		// Viewer parameters
-		int viewportWidth;
-		int viewportHeight;
-		float fovy;
-		float zNear;
-		float zFar;
-		RenderMode renderMode;
-
-		// Light parameters
-		LightType lightType;
-		glm::vec4 lightColor;
-		glm::vec3 lightPosition;
-		glm::vec3 lightDirection;
-		float lightAngle;
-			
-		GLuint lightTypeLoc;
-		GLuint lightColorLoc;
-		GLuint lightPositionLoc;
-		GLuint lightDirectionLoc;
-		GLuint lightAngleLoc;
+		// Rendering parameters		
+		RenderMode renderMode;		
 
 		void Clean();
 
@@ -111,7 +83,7 @@ namespace Rendering
 		void InitVAOFacesNormals();
 		void InitVAOVerticesNormals();
 
-		void Draw(GLuint polygonMode, GLuint drawMode, bool elements, VAO vaoId, size_t size, const glm::vec4& color, const LightType lightType);
+		void Draw(GLuint polygonMode, GLuint drawMode, bool elements, VAO vaoId, size_t size, const glm::vec4& color, const MaterialType materialType);
 
 		void UpdateFacesNormals();
 		void UpdateVerticesNormals();
@@ -119,10 +91,10 @@ namespace Rendering
 		void GenerateVerticesNormals();
 
 	public:
-		MeshRenderer(int viewportWidth, int viewportHeight, Mesh* mesh = NULL);
+		MeshRenderer(Mesh* mesh = NULL);
 		~MeshRenderer();
 
-		void Init(); // Initialize opengl context			
+		void Init(GLuint program);	
 
 		void SetMesh(Mesh* mesh);
 		Mesh* GetMesh();
@@ -151,32 +123,11 @@ namespace Rendering
 
 		void SetRenderMode(RenderMode renderMode);
 
-		void SetLightType(LightType lightType);
-		void SetLightColor(glm::vec4 color);
-		void SetLightPosition(glm::vec3 position);
-		void SetLightDirection(glm::vec3 direction);
-		void SetLightAngle(float angle);
+		
 
 		void SetVertexSelected(int index, bool selected);
 		void ClearVertexSelection();
 		void SetEdgeSelected(int index, bool selected);
 		void ClearEdgeSelection();
-			
-		int GetViewportWidth();
-		int GetViewportHeight();
-		float GetFovy();
-		float GetZNear();
-		float GetZFar();
-		glm::vec3 GetCameraEye();
-		glm::vec3 GetCameraUp();
-		glm::vec3 GetCameraForward();
-
-		glm::vec3 cameraRotation;
-		glm::vec3 cameraPosition;
-
-		void SetViewPort(int viewportWidth, int viewportHeight);
-		void Rotate(float x, float y); // Rotate the camera around the x axis by x degrees and around the y axis by y degrees
-		void Translate(float x, float y);
-		void Zoom(float value);
 	};
 }

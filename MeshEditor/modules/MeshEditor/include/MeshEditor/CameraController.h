@@ -5,7 +5,7 @@
 
 namespace Rendering
 {
-	class MeshRenderer;
+	class Camera;
 }
 
 namespace MeshEditor
@@ -14,7 +14,7 @@ namespace MeshEditor
 							 public GUI::WindowListener
 	{
 	public:
-		CameraController(Rendering::MeshRenderer* meshRenderer);
+		CameraController(Rendering::Camera* camera);
 		virtual ~CameraController();
 
 		virtual void OnMouseButtonEvent(GUI::Window* window, double x, double y, int button, int action, int mods);
@@ -25,6 +25,6 @@ namespace MeshEditor
 	private:
 		bool translate;
 		bool rotate;
-		Rendering::MeshRenderer* meshRenderer;
+		Rendering::Camera* camera;
 	};
 }

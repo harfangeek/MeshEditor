@@ -4,7 +4,8 @@
 
 namespace Rendering
 {
-	class MeshRenderer;
+	class SceneRenderer;
+	class Camera;
 }
 
 namespace MeshEditor
@@ -13,13 +14,15 @@ namespace MeshEditor
 	class MeshDialog : public GUI::Dialog
 	{
 	public:
-		MeshDialog(unsigned int id, Rendering::MeshRenderer* meshRenderer=nullptr);
+		MeshDialog(unsigned int id, Rendering::SceneRenderer* sceneRenderer=nullptr, Rendering::Camera* camera=nullptr);
 		virtual ~MeshDialog();
 		virtual void Display();
 
-		void SetMeshRenderer(Rendering::MeshRenderer* meshRenderer);
+		void SetSceneRenderer(Rendering::SceneRenderer* sceneRenderer);
+		void SetCamera(Rendering::Camera* camera);
 
 	private:
-		Rendering::MeshRenderer* meshRenderer;
+		Rendering::SceneRenderer* sceneRenderer;
+		Rendering::Camera* camera;
 	};
 }

@@ -1,7 +1,9 @@
 #include "Rendering/ViewerUtility.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/Vertex.h"
+#include "Rendering/SceneRenderer.h"
 #include "Rendering/MeshRenderer.h"
+#include "Rendering/Camera.h"
 #include "GUI/Window.h"
 
 #include "GLM/gtc/matrix_transform.hpp"
@@ -47,19 +49,19 @@ void ViewerUtility::GetSelectedVertices(Rendering::Core::MeshRenderer* renderer,
 	}
 }*/
 
-void ViewerUtility::GetSelectedVertices(MeshRenderer* renderer, GUI::Window* window, int x, int y, std::vector<unsigned int> &selectedVertices, float precision)
+void ViewerUtility::GetSelectedVertices(SceneRenderer* sceneRenderer, Camera* camera, GUI::Window* window, int x, int y, std::vector<unsigned int> &selectedVertices, float precision)
 {
 	// Get all viewer data
-	float fovy = renderer->GetFovy();
-	auto viewportWidth = static_cast<float>(renderer->GetViewportWidth());
-	auto viewportHeight = static_cast<float>(renderer->GetViewportHeight());
+	float fovy = camera->GetFovy();
+	auto viewportWidth = static_cast<float>(camera->GetViewportWidth());
+	auto viewportHeight = static_cast<float>(camera->GetViewportHeight());
 	auto windowWidth = static_cast<float>(window->GetWidth());
 	auto windowHeight = static_cast<float>(window->GetHeight());
-	float zNear = renderer->GetZNear();
-	float zFar = renderer->GetZFar();
-	glm::vec3 cameraEye = renderer->GetCameraEye();
-	glm::vec3 cameraUp = renderer->GetCameraUp();
-	glm::vec3 cameraForward = renderer->GetCameraForward();
+	float zNear = camera->GetZNear();
+	float zFar = camera->GetZFar();
+	glm::vec3 cameraEye = camera->GetCameraEye();
+	glm::vec3 cameraUp = camera->GetCameraUp();
+	glm::vec3 cameraForward = camera->GetCameraForward();
 
 	// Compute projection and view matrices
 	glm::mat4 projection_matrix = glm::perspective(fovy, viewportWidth / viewportHeight, zNear, zFar);
@@ -80,15 +82,19 @@ void ViewerUtility::GetSelectedVertices(MeshRenderer* renderer, GUI::Window* win
 	glm::vec3 selectionRay = glm::normalize(glm::vec3(worldRay.x, worldRay.y, worldRay.z));
 
 	// Loop over all vertices
-	Mesh* mesh = renderer->GetMesh();
-	float delta = 0.0f;
-	glm::vec3 vertexRay;
-	for (unsigned int i = 0; i < mesh->vertices.size(); i++)
+	Mesh* mesh;
+	for (auto meshRenderer : sceneRenderer->GetMeshRenderers())
 	{
-		// Compute the vertex position from the camera and "compare" it to the selection ray using dot product
-		vertexRay = glm::normalize(mesh->vertices[i]->position - cameraEye);
-		delta = glm::abs(glm::dot(vertexRay, selectionRay));
-		if (delta >= 1.0 - precision)
-			selectedVertices.push_back(i);
+		mesh = meshRenderer->GetMesh();
+		float delta = 0.0f;
+		glm::vec3 vertexRay;
+		for (unsigned int i = 0; i < mesh->vertices.size(); i++)
+		{
+			// Compute the vertex position from the camera and "compare" it to the selection ray using dot product
+			vertexRay = glm::normalize(mesh->vertices[i]->position - cameraEye);
+			delta = glm::abs(glm::dot(vertexRay, selectionRay));
+			if (delta >= 1.0 - precision)
+				selectedVertices.push_back(i);
+		}
 	}
 }

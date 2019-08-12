@@ -1,12 +1,12 @@
 #include "MeshEditor/CameraController.h"
 #include "GUI/Window.h"
-#include "Rendering/MeshRenderer.h"
+#include "Rendering/Camera.h"
 
 #include <GLFW/glfw3.h>
 
 using namespace MeshEditor;
 
-CameraController::CameraController(Rendering::MeshRenderer* meshRenderer) : translate(false), rotate(false), meshRenderer(meshRenderer)
+CameraController::CameraController(Rendering::Camera* camera) : translate(false), rotate(false), camera(camera)
 {
 
 }
@@ -30,17 +30,17 @@ void CameraController::OnMouseMoveEvent(GUI::Window* window, double x, double y,
 	float rdy = static_cast<float>(dy) / static_cast<float>(window->GetHeight());
 
 	if (rotate)
-		meshRenderer->Rotate(rdx, rdy);
+		camera->Rotate(rdx, rdy);
 	else if (translate)
-		meshRenderer->Translate(-rdx * 5.0f, rdy * 5.0f);
+		camera->Translate(-rdx * 5.0f, rdy * 5.0f);
 }
 
 void CameraController::OnMouseScrollEvent(GUI::Window* window, double dx, double dy)
 {
-	meshRenderer->Zoom(static_cast<float>(dy) * 0.1f);
+	camera->Zoom(static_cast<float>(dy) * 0.1f);
 }
 
 void CameraController::OnWindowResizedEvent(GUI::Window* window, int width, int height)
 {
-	meshRenderer->SetViewPort(width, height);
+	camera->SetViewPort(width, height);
 }

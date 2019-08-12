@@ -3,6 +3,8 @@
 
 #include <IMGUI/imgui.h>
 
+#include <string>
+
 using namespace MeshEditor;
 
 MeshEditorPanel::MeshEditorPanel(MeshEditor::MeshEditorController* controller) : GUI::Panel(42)
@@ -16,6 +18,7 @@ void MeshEditorPanel::Display()
 	auto rotation = controller->GetRotation();
 	auto scale = controller->GetScale();
 	auto scaleKeepRatio = controller->GetScaleKeepRatio();
+	std::string strid = std::to_string(id);
 
 	ImGui::Text("Translation");
 	if(ImGui::DragFloat("X##1", &translation.x, 0.1f) |

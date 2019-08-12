@@ -1,6 +1,7 @@
 #version 330 core
 
 uniform vec4 mesh_color;
+uniform uint material_type;
 uniform uint light_type;
 uniform vec4 light_color;
 uniform vec3 light_position;	// For point/directionnal/spot light
@@ -15,7 +16,11 @@ out vec4 out_color;
 
 void main (void) 
 {    
-	if(light_type == uint(1)) // Point light
+	if(light_type == uint(0) || material_type == uint(1)) // Ambiant light or material without light interaction
+	{
+		out_color = mesh_color;	
+	}
+	else if(light_type == uint(1)) // Point light
 	{
 		vec3 eye_pos = vec3(0,0,0);
 		vec3 frag_pos = position.xyz;
@@ -64,10 +69,6 @@ void main (void)
 			out_color = mesh_color;
 		else
 			out_color = vec4(0.0, 0.0, 0.0, 0.0);
-	}
-	else // Uniform
-	{
-		out_color = mesh_color;	
 	}
 
 	if(selected != 0)
