@@ -25,5 +25,6 @@ void main() {
 	//}
 	//else
 	//	gl_PointSize = 5.0f;
+	gl_PointSize = 5.0f;
 		
 }
