@@ -6,7 +6,7 @@ uniform uint light_type;
 uniform vec4 light_color;
 uniform vec3 light_position;	// For point/directionnal/spot light
 uniform vec3 light_direction;	// For directionnal/spot light
-uniform uint light_angle;		// For spot light
+uniform float light_angle;		// For spot light
 
 in vec4 normal;
 in vec4 position;

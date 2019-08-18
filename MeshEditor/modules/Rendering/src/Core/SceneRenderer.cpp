@@ -106,11 +106,13 @@ void SceneRenderer::SendCameraData(Camera* pCamera)
 
 void SceneRenderer::SendLightData()
 {
+	auto type = light->GetType();
 	glm::vec4 lightColor = light->GetColor();
 	glm::vec3 lightPosition = light->GetPosition();
 	glm::vec3 lightDirection = light->GetDirection();
 	float lightAngle = light->GetAngle();
 
+	glUniform1ui(lightTypeLoc, GLint(type));
 	glUniform4f(lightColorLoc, lightColor.r, lightColor.g, lightColor.b, lightColor.a);
 	glUniform3f(lightPositionLoc, lightPosition.x, lightPosition.y, lightPosition.z);
 	glUniform3f(lightDirectionLoc, lightDirection.x, lightDirection.y, lightDirection.z);
