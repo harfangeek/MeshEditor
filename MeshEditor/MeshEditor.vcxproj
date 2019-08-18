@@ -136,22 +136,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(SolutionDir)Dependencies\pfd\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)Debug</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(SolutionDir)Dependencies\pfd\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)Release</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(SolutionDir)Dependencies\pfd\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)x64\Debug\</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\gl3w\include\;$(SolutionDir)Dependencies\glfw\include\;$(SolutionDir)Dependencies\imgui\include\;$(SolutionDir)Dependencies\dirent\include\;$(SolutionDir)Dependencies\glm\include\;$(SolutionDir)Dependencies\pfd\include\;$(ProjectDir)modules\GUI\include;$(ProjectDir)modules\MeshEditor\include;$(ProjectDir)modules\Rendering\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)x64\Release\</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>

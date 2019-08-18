@@ -36,120 +36,36 @@ int main(int, char**)
 	light.SetType(LightType::POINT_LIGHT);
 	light.SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	SceneRenderer* sceneRenderer = new SceneRenderer(&camera, &light);
-		
+	
 	// Create Mesh renderer
 	MeshRenderer* meshRenderer = new MeshRenderer();	
 	meshRenderer->SetRenderMode((RenderMode)(RenderMode::MESH /*| RenderMode::VERTICES | RenderMode::FACES_NORMALS | RenderMode::VERTICES_NORMALS*/));
-	
-	MeshRenderer* meshRenderer2 = new MeshRenderer();	
-	meshRenderer2->SetRenderMode((RenderMode)(RenderMode::WIREFRAME /*| RenderMode::VERTICES | RenderMode::FACES_NORMALS | RenderMode::VERTICES_NORMALS*/));
-	
 	sceneRenderer->AddMeshRenderer(meshRenderer);
-	sceneRenderer->AddMeshRenderer(meshRenderer2);
 
 	// Mesh dialog
 	MeshDialog* meshDialog = new MeshDialog(142, sceneRenderer, &camera);
 
-	//MeshDialog* meshDialog2 = new MeshDialog(1422);
-	//meshDialog2->SetMeshRenderer(meshRenderer);
-
 	// Mesh editor dialog
-	ImGuiDialog* meshEditorDialog = new ImGuiDialog(12, "Mesh editor1", 50, 220, 200, 400);
+	ImGuiDialog* meshEditorDialog = new ImGuiDialog(12, "Mesh editor", 50, 220, 200, 400);
 	MeshEditorController* meshEditorController = new MeshEditorController(meshRenderer);
 	MeshEditorPanel* meshEditorPanel = new MeshEditorPanel(meshEditorController);
 	meshEditorDialog->SetPanel(meshEditorPanel);
 
-	ImGuiDialog* meshEditorDialog2 = new ImGuiDialog(123, "Mesh editor2", 50, 220, 200, 400);
-	MeshEditorController* meshEditorController2 = new MeshEditorController(meshRenderer2);
-	MeshEditorPanel* meshEditorPanel2 = new MeshEditorPanel(meshEditorController2);
-	meshEditorDialog2->SetPanel(meshEditorPanel2);
-
-	/*ImGuiDialog* meshEditorDialog2 = new ImGuiDialog(122, "Mesh editor2##2", 50, 220, 200, 400);
-	MeshEditorController* meshEditorController2 = new MeshEditorController(meshRenderer);
-	MeshEditorPanel* meshEditorPanel2 = new MeshEditorPanel(meshEditorController2);
-	meshEditorDialog2->SetPanel(meshEditorPanel2);*/
-
-	/*ImGuiDialog* meshEditorDialog3 = new ImGuiDialog(1222, "Mesh editor3##3", 50, 220, 200, 400);
-	MeshEditorController* meshEditorController3 = new MeshEditorController(meshRenderer);
-	MeshEditorPanel* meshEditorPanel3 = new MeshEditorPanel(meshEditorController3);
-	meshEditorDialog3->SetPanel(meshEditorPanel3);*/
-
 	// File dialog
-	//ImGuiDialog* fileDialog = new ImGuiDialog(1, "File dialog", 50, 50, 200, 150);
+	ImGuiDialog* fileDialog = new ImGuiDialog(1, "File dialog", 50, 50, 200, 150);
 	FileController* fileController = new FileController(meshRenderer);
-	FileController* fileController2 = new FileController(meshRenderer2);
-	//FilePanel* filePanel = new FilePanel(fileController);
-	//fileDialog->SetPanel(filePanel);
+	FilePanel* filePanel = new FilePanel(fileController);
+	fileDialog->SetPanel(filePanel);
 
 	// Add all dialogs
 	window->AddDialog(meshDialog);
 	window->AddDialog(meshEditorDialog);
-	window->AddDialog(meshEditorDialog2);
-	/*window->AddDialog(fileDialog);
+	window->AddDialog(fileDialog);
 
-	window->AddDialog(meshEditorDialog2);*/
-
-	//window2->AddDialog(meshDialog2);
-	//window2->AddDialog(meshEditorDialog3);
-	
 	// Camera controller
 	CameraController* cameraController = new CameraController(&camera);
 	window->AddMouseListener(cameraController);
 	window->AddWindowListener(cameraController);
-
-	//CameraController* cameraController2 = new CameraController(meshRenderer);
-	//window2->AddMouseListener(cameraController2);
-	//window2->AddWindowListener(cameraController2);
-
-	// Load mesh
-	fileController->SetPath("resources/models/hand.obj");
-	fileController->Load();
-
-	fileController2->SetPath("resources/models/hand.obj");
-	fileController2->Load();
-
-
-
-	/*Window* window2 = manager->NewWindow(422, WINDOW_WIDTH, WINDOW_HEIGHT, 400, 400, "Test Window2", window);
-	window2->SetBackgroundColor(0.60f, 0.55f, 0.45f, 1.00f);
-	MeshRenderer* meshRenderer2 = new MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-	meshRenderer2->Init();
-	meshRenderer2->SetLightType(LightType::POINT_LIGHT);
-	meshRenderer2->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshRenderer2->SetRenderMode(RenderMode::WIREFRAME);
-	MeshDialog* meshDialog2 = new MeshDialog(1422);
-	meshDialog2->SetMeshRenderer(meshRenderer);
-	FileController* fileController2 = new FileController(meshRenderer2);
-	window2->AddDialog(meshDialog2);
-	CameraController* cameraController2 = new CameraController(meshRenderer2);
-	window2->AddMouseListener(cameraController2);
-	window2->AddWindowListener(cameraController2);
-	fileController2->SetPath("Models\\dolphin.obj");
-	fileController2->Load();*/
-
-	//-----------------------
-	/*Window* window2 = manager->NewWindow(422, WINDOW_WIDTH, WINDOW_HEIGHT, 400, 400, "Test Window2", window);
-	window2->SetBackgroundColor(0.60f, 0.55f, 0.45f, 1.00f);
-	MeshDialog* meshDialog2 = new MeshDialog(1422);
-	meshDialog2->SetMeshRenderer(meshRenderer);
-	window2->AddDialog(meshDialog2);
-
-	window2->AddDialog(meshEditorDialog3);*/
-
-	//CameraController* cameraController2 = new CameraController(meshRenderer);
-	//window2->AddMouseListener(cameraController2);
-	//window2->AddWindowListener(cameraController2);
-	//--------------------------
-
-	/*MeshRenderer* meshRenderer2 = new MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-	meshRenderer2->Init();
-	meshRenderer2->SetLightType(LightType::POINT_LIGHT);
-	meshRenderer2->SetLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshRenderer2->SetRenderMode(RenderMode::WIREFRAME);*/
-
-	//meshRenderer->Init();
-	/*MeshRenderer* meshRenderer2 = new MeshRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-	meshRenderer2->Init();*/
 
 	// Start application
 	manager->Start();

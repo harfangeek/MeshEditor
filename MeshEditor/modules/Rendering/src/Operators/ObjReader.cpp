@@ -12,6 +12,8 @@ bool ObjReader::ReadObj(const std::string &path, std::vector<glm::vec3> &vertice
 {
 	char* contents = NULL;
 	auto size = Utility::GetFileContents(path, contents);
+	if (size == 0)
+		return false;
 
 	constexpr unsigned int sizeBuff = 40, sizeVec = 4;
 	short type;
@@ -86,7 +88,8 @@ bool ObjReader::ReadObj(const std::string &path, std::vector<glm::vec3> &vertice
 		i++;
 	}
 
-	delete contents;
+	if(contents)
+		delete contents;
 
 	return true;
 }
@@ -132,9 +135,13 @@ Mesh* ObjReader::LoadMesh(const std::string &path)
 {
 	vector<glm::vec3> vertices;
 	vector<vector<unsigned int>> faces;
-	ObjReader::ReadObj(path, vertices, faces);
-	auto newMesh = new Mesh();
-	MeshConverter::ArrayToHalfEdgeStructure(*newMesh, vertices, faces);
+	Mesh* newMesh = nullptr;
+
+	if (ObjReader::ReadObj(path, vertices, faces) && vertices.size() > 0 && faces.size() > 0)
+	{
+		newMesh = new Mesh();
+		MeshConverter::ArrayToHalfEdgeStructure(*newMesh, vertices, faces);
+	}
 
 	return newMesh;
 }

@@ -2,33 +2,37 @@
 #include "MeshEditor/FileController.h"
 
 #include <IMGUI/imgui.h>
+#include "PFD/portable-file-dialogs.h"
 
 using namespace MeshEditor;
 
 FilePanel::FilePanel(FileController* controller) : GUI::Panel(42)
 {
 	this->controller = controller;
-	
-#ifdef _MSC_VER
-	strncpy_s(path, 2048, controller->GetPath().c_str(), 2047);
-#else
-	strncpy(path, controller->GetPath().c_str(), 2047);
-#endif
 }
 
 void FilePanel::Display()
 {
-	ImGui::InputText("Path", path, 2048);
-	if (ImGui::Button("Load"))
+	ImGui::InputText("##Path", controller->GetPath(), controller->pathSize);
+
+	ImGui::SameLine();
+	if (ImGui::Button("Browse"))
 	{
-		controller->SetPath(path);
-		controller->Load();
+		auto f = pfd::open_file("Choose files to read", "./",
+			{ "Obj files (.obj)", "*.obj",
+			  "All Files", "*" },
+			false);
+
+		auto files = f.result();
+		if (files.size() > 0)
+			controller->SetPath(files[0]);
 	}
+
+	if (ImGui::Button("Load"))
+		controller->Load();
+
 	ImGui::SameLine();
 	if (ImGui::Button("Save"))
-	{
-		controller->SetPath(path);
 		controller->Save();
-	}
 }
 

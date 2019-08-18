@@ -12,13 +12,14 @@ INC_PATH	:=  -I$(GL3W_DIR)/include \
 				-I$(GLFW_DIR)/include \
 				-I$(IMGUI_DIR)/include \
 				-I$(GLM_DIR)/include \
+				-I$(PFD_DIR)/include \
 
 LIBS_PATH	:= -L$(GL3W_DIR)/$(BIN_DIR) \
 			   -L$(GLFW_DIR)/$(BIN_DIR) \
-			   -L$(IMGUI_DIR)/$(BIN_DIR) 
+			   -L$(IMGUI_DIR)/$(BIN_DIR)
 
 LIBS_nux		:= -lgl3w -lglfw -limgui -ldl -lX11 -lXrandr -lXinerama -lXcursor -lpthread -lstdc++fs
-LIBS_win		:= -lgl3w -lglfw -limgui -lgdi32
+LIBS_win		:= -lgl3w -lglfw -limgui -lgdi32 -lcomdlg32 -lole32
 LIBS			:= $(LIBS_$(PLATFORM))
 
 ifeq ($(PLATFORM), win)

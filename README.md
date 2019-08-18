@@ -42,6 +42,7 @@ The project has been built and tested on Windows 7 64bits (both 32 and 64bits bu
 - **Glfw** 3.2.1, a windowing library : https://www.glfw.org/
 - **Dear Imgui** 1.68, an immediate mode GUI library : https://github.com/ocornut/imgui/releases/tag/v1.67
 - **Glm** 0.9.9.3, a math library for 3D computation : https://glm.g-truc.net/0.9.9/index.html
+- **Portable File Dialogs**, a portable library providing open/save dialogs without compile time dependencies : https://github.com/samhocevar/portable-file-dialogs
 
 For convenience, all dependencies are shipped with the project. They also are automatically built before building the project so you should not worry about them.
 

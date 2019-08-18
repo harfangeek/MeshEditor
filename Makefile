@@ -17,6 +17,7 @@ GL3W_DIR		:= $(LIBS_DIR)/gl3w
 GLFW_DIR		:= $(LIBS_DIR)/glfw
 IMGUI_DIR		:= $(LIBS_DIR)/imgui
 GLM_DIR			:= $(LIBS_DIR)/glm
+PFD_DIR			:= $(LIBS_DIR)/pfd
 MESH_DIR		:= MeshEditor
 
 ifeq ($(OS),Windows_NT)
@@ -39,6 +40,7 @@ ifeq ($(TARGET_SHELL),cmd)
 	GLFW_DIR		:= $(subst /,\,$(GLFW_DIR))
 	IMGUI_DIR		:= $(subst /,\,$(IMGUI_DIR))
 	GLM_DIR			:= $(subst /,\,$(GLM_DIR))
+	PFD_DIR			:= $(subst /,\,$(PFD_DIR))
 
 	MKDIR		:= -md
 	RM			:= -del

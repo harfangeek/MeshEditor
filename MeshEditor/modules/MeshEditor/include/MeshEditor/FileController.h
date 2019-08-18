@@ -15,14 +15,16 @@ namespace MeshEditor
 		FileController(Rendering::MeshRenderer* meshRenderer);
 		~FileController();
 			 
-		void SetPath(std::string path);
-		std::string GetPath();
+		void SetPath(std::string newPath);
+		char* GetPath();
+		static const int pathSize = 2048;
 
 		std::string Load();
 		std::string Save();
 						
 	private:
 		Rendering::MeshRenderer* meshRenderer;
-		std::string path;
+		
+		char path[pathSize];
 	};
 }
