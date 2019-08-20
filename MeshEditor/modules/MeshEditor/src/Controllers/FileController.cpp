@@ -4,10 +4,13 @@
 #include "Rendering/MeshTransformation.h"
 #include "Rendering/MeshRenderer.h"
 
+#include <cstring>
+
 using namespace MeshEditor;
 
 FileController::FileController(Rendering::MeshRenderer* meshRenderer) : meshRenderer(meshRenderer)
 {
+	memset(path, 0, pathSize);
 }
 
 FileController::~FileController()
@@ -20,7 +23,7 @@ void FileController::SetPath(std::string newPath)
 #ifdef _MSC_VER
 	strncpy_s(path, 2048, newPath.c_str(), 2047);
 #else
-	strncpy(path, newPath.c_str(), 2047);
+	std::strncpy(path, newPath.c_str(), 2047);
 #endif
 }
 
