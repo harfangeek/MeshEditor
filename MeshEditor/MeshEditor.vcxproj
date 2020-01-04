@@ -39,6 +39,8 @@
     <ClInclude Include="modules\MeshEditor\include\MeshEditor\MeshDialog.h" />
     <ClInclude Include="modules\MeshEditor\include\MeshEditor\MeshEditorController.h" />
     <ClInclude Include="modules\MeshEditor\include\MeshEditor\MeshEditorPanel.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\ViewerController.h" />
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\ViewerPanel.h" />
     <ClInclude Include="modules\Rendering\include\Rendering\Camera.h" />
     <ClInclude Include="modules\Rendering\include\Rendering\Face.h" />
     <ClInclude Include="modules\Rendering\include\Rendering\HalfEdge.h" />
@@ -65,10 +67,12 @@
     <ClCompile Include="modules\MeshEditor\src\Controllers\CameraController.cpp" />
     <ClCompile Include="modules\MeshEditor\src\Controllers\FileController.cpp" />
     <ClCompile Include="modules\MeshEditor\src\Controllers\MeshEditorController.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Controllers\ViewerController.cpp" />
     <ClCompile Include="modules\MeshEditor\src\main.cpp" />
     <ClCompile Include="modules\MeshEditor\src\Views\FilePanel.cpp" />
     <ClCompile Include="modules\MeshEditor\src\Views\MeshDialog.cpp" />
     <ClCompile Include="modules\MeshEditor\src\Views\MeshEditorPanel.cpp" />
+    <ClCompile Include="modules\MeshEditor\src\Views\ViewerPanel.cpp" />
     <ClCompile Include="modules\Rendering\src\Core\MeshRenderer.cpp" />
     <ClCompile Include="modules\Rendering\src\Core\SceneRenderer.cpp" />
     <ClCompile Include="modules\Rendering\src\Model\Camera.cpp" />
@@ -88,32 +92,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4DBEF1B9-6169-424F-8FA1-A9539BEA7CC0}</ProjectGuid>
     <RootNamespace>MeshEditor</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -155,6 +159,9 @@
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)x64\Release\</LibraryPath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
+  <PropertyGroup>
+    <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -176,7 +183,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -201,7 +208,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -226,7 +233,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -251,7 +258,7 @@
       </Command>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(ProjectDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(ProjectDir)resources\shaders</Command>
+      <Command>xcopy /y /c /i $(SolutionDir)x64\$(Configuration)\$(ProjectName).exe $(SolutionDir) &amp;&amp; xcopy /y /c /i $(ProjectDir)\modules\Rendering\src\Shaders $(SolutionDir)resources\shaders</Command>
       <Outputs>nonexistingfile</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>

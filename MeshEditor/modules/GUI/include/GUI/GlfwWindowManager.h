@@ -18,7 +18,7 @@ namespace GUI
 
 		static void Init();
 			
-		virtual Window* NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title, Window* sharedWindow=nullptr);
+		virtual Window* NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title/*, Window* sharedWindow=nullptr*/);
 
 		virtual void Start();			
 		virtual void Terminate();

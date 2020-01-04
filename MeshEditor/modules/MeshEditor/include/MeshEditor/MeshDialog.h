@@ -14,7 +14,7 @@ namespace MeshEditor
 	class MeshDialog : public GUI::Dialog
 	{
 	public:
-		MeshDialog(unsigned int id, Rendering::SceneRenderer* sceneRenderer=nullptr, Rendering::Camera* camera=nullptr);
+		MeshDialog(unsigned int id, Rendering::SceneRenderer* sceneRenderer=nullptr, Rendering::Camera* camera=nullptr, unsigned int context = 0);
 		virtual ~MeshDialog();
 		virtual void Display();
 
@@ -24,5 +24,6 @@ namespace MeshEditor
 	private:
 		Rendering::SceneRenderer* sceneRenderer;
 		Rendering::Camera* camera;
+		unsigned int context;
 	};
 }

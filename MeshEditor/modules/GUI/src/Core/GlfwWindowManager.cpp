@@ -87,10 +87,14 @@ void  GlfwWindowManager::Start()
 	}
 }
 
-Window* GlfwWindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, string title, Window* sharedWindow)
+Window* GlfwWindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, string title/*, Window* sharedWindow*/)
 {
 	// Create window with graphics context
-	GlfwWindow* window = new GlfwWindow(id, width, height, posX, posY, title, dynamic_cast<GlfwWindow*>(sharedWindow));
+	GlfwWindow* sharedWindow = nullptr;
+	if (windows.begin() != windows.end())
+		sharedWindow = dynamic_cast<GlfwWindow*>(windows.begin()->second);
+
+	GlfwWindow* window = new GlfwWindow(id, width, height, posX, posY, title, sharedWindow);
 
 	if (window && window->window)
 	{
@@ -128,8 +132,6 @@ void GlfwWindowManager::MouseButtonCallback(GLFWwindow* glfwWindow, int button, 
 	if (!ImGui::GetIO().WantCaptureMouse)
 	{
 		double x, y;
-		auto manager = GetInstance();
-		auto window = manager->FindGLFWWindow(glfwWindow);
 		glfwGetCursorPos(glfwWindow, &x, &y);
 		if (window)
 			window->NotifyMouseButtonEvent(x, y, button, action, mods);

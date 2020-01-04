@@ -34,14 +34,14 @@ If you are interested in any of these topics you may find something interesting 
 
 The goal of this project is to implement myself things I am interested in, in order to understand beneath concepts. I implemented myself all 3D data structures and algorithms. I am only relying on OpenGL for rendering and GLM for basic maths objects (vectors and matrices).
 
-The project has been built and tested on Windows 7 64bits (both 32 and 64bits build with MSVC++ and Mingw-w64) and on Debian 9 64bits (both 32 and 64 bits build with gcc/g++ and clang/clang++)
+The project is built and tested on Windows 10 64bits (with MSVC++ and Mingw-w64) and on Debian 10 64bits and 32bits (with gcc and clang). On Linux, the program is working both with GTK et Qt based desktops.
 
 ## Project Dependencies
 
 - **Gl3w**, an OpenGL loader : https://github.com/skaslev/gl3w
-- **Glfw** 3.2.1, a windowing library : https://www.glfw.org/
-- **Dear Imgui** 1.68, an immediate mode GUI library : https://github.com/ocornut/imgui/releases/tag/v1.67
-- **Glm** 0.9.9.3, a math library for 3D computation : https://glm.g-truc.net/0.9.9/index.html
+- **Glfw** 3.3, a windowing library : https://www.glfw.org/
+- **Dear Imgui** 1.74, an immediate mode GUI library : https://github.com/ocornut/imgui/releases/tag/v1.74
+- **Glm** 0.9.9.6, a math library for 3D computation : https://glm.g-truc.net/0.9.9/index.html
 - **Portable File Dialogs**, a portable library providing open/save dialogs without compile time dependencies : https://github.com/samhocevar/portable-file-dialogs
 
 For convenience, all dependencies are shipped with the project. They also are automatically built before building the project so you should not worry about them.
@@ -56,7 +56,7 @@ The OpenGL library should be provided by your system or your graphic card driver
 
 Some packages need to be installed, instructions for Debian 9 64 bits:
 
-Minimum install: `apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev` 
+Minimum install: `apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev` 
 
 You can instead install full X.org meta package: `apt install xorg-dev`
 
@@ -65,29 +65,29 @@ The OpenGL library should be provided by your graphic card driver.
 ## Building
 
 The project can be built using the provided Visual Studio project on Windows, or using the provided Makefile on both Linux and Windows (see below). The executable is generated in the project root folder. Shaders files needed by the executable at runtime are automatically copied in the project root folder from the sources folder. This project needs a compiler supporting C++17 features.
-The project has been test with:
-- MSVC >= v141
-- GCC >= 6.3
-- Clang >= 6.0
+The project has been tested with:
+- MSVC >= v142
+- GCC >= 8.3
+- Clang >= 7.0
 
-The project binary is generated in the MeshEditor project folder and must be executed from there. To export the program, copy the executable and the "resources" folder.
+The project binary is generated in the root folder and must be executed from there. To export the program, copy the executable and the "resources" folder.
 
 ### Visual Studio (Windows)
 
 Open the project, chose your configuration (debug/release, x86/x64), build the solution. Project dependencies are configured to be automatically built before building the program.
-The project has been created with Visual Studio Community 2017.
+The project has been created with Visual Studio Community 2019.
 
 ### Makefile (Linux and Windows)
 
 Go to the project root and execute `make`. The Makefile has been tested on:
-- Windows 7 64bits using Mingw-w64. The Makefile can be executed from a standard Windows CMD and from Git Bash.
-- Debian 9 64bits using gcc/g++ and clang/clang++
+- Windows 10 64bits using Mingw-w64. The Makefile can be executed from a standard Windows CMD and from Git Bash.
+- Debian 10 64bits and 32bits using gcc/g++ and clang/clang++
 
 Some options are tweakable. Two examples:
 - 32 bits binary with debug info with clang/clang++: `make CC=clang CXX=clang++ MODE=debug ARCH=x86`
 - 64 bits binary with optimization with gcc/g++: `make CC=gcc CXX=g++ MODE=release ARCH=x64`
 
-The second one is the default when simply invoking `make`. Add the "-jX" option to speed up the build, with X beeing the number of parallel jobs.
+The architecture is automatically chosen if not given. By default gcc/g++ is in release mode. Add the "-jX" option to speed up the build, with X beeing the number of parallel jobs.
 
 The project Makefile automatically list all .cpp files so it is not needed to edit it when adding new files.
 
@@ -187,8 +187,6 @@ This project being mostly educational, here are some references for the differen
   - 3D Manipulator
 
 - Rendering
-  - Better usage of VAOs
-  - Multiple objects rendering
   - Lights
  
 - Algorithm

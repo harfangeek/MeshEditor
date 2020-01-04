@@ -11,7 +11,7 @@ void WindowManager::Terminate()
 {
 }
 
-Window* WindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title, Window* sharedWindow)
+Window* WindowManager::NewWindow(unsigned int id, unsigned int width, unsigned int height, int posX, int posY, std::string title/*, Window* sharedWindow*/)
 {
 	Window* window = NULL;
 

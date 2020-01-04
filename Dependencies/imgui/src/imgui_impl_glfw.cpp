@@ -15,6 +15,10 @@
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
+//  2019-10-18: Misc: Previously installed user callbacks are now restored on shutdown.
+//  2019-07-21: Inputs: Added mapping for ImGuiKey_KeyPadEnter.
+//  2019-05-11: Inputs: Don't filter value from character callback before calling AddInputCharacter().
+//  2019-03-12: Misc: Preserve DisplayFramebufferScale when main window is minimized.
 //  2018-11-30: Misc: Setting up io.BackendPlatformName so it can be displayed in the About Window.
 //  2018-11-07: Inputs: When installing our GLFW callbacks, we save user's previously installed ones - if any - and chain call them.
 //  2018-08-01: Inputs: Workaround for Emscripten which doesn't seem to handle focus related calls.
@@ -41,11 +45,11 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>   // for glfwGetWin32Window
 #endif
-#define GLFW_HAS_WINDOW_TOPMOST     (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ GLFW_FLOATING
-#define GLFW_HAS_WINDOW_HOVERED     (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ GLFW_HOVERED
-#define GLFW_HAS_WINDOW_ALPHA       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ glfwSetWindowOpacity
-#define GLFW_HAS_PER_MONITOR_DPI    (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ glfwGetMonitorContentScale
-#define GLFW_HAS_VULKAN             (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ glfwCreateWindowSurface
+#define GLFW_HAS_WINDOW_TOPMOST       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ GLFW_FLOATING
+#define GLFW_HAS_WINDOW_HOVERED       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ GLFW_HOVERED
+#define GLFW_HAS_WINDOW_ALPHA         (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ glfwSetWindowOpacity
+#define GLFW_HAS_PER_MONITOR_DPI      (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ glfwGetMonitorContentScale
+#define GLFW_HAS_VULKAN               (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ glfwCreateWindowSurface
 
 // Data
 enum GlfwClientApi
@@ -64,6 +68,7 @@ struct ImGlfwContext
 	GLFWcursor*          MouseCursors[ImGuiMouseCursor_COUNT];
 
 	// Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
+	bool InstalledCallbacks;
 	GLFWmousebuttonfun   PrevUserCallbackMousebutton;
 	GLFWscrollfun        PrevUserCallbackScroll;
 	GLFWkeyfun           PrevUserCallbackKey;
@@ -75,7 +80,8 @@ struct ImGlfwContext
 		ClientApi = GlfwClientApi_Unknown;
 		Time = 0.0;
 		memset(MouseCursors, 0, ImGuiMouseCursor_COUNT * sizeof(GLFWcursor*));
-
+		
+		InstalledCallbacks = false;
 		PrevUserCallbackMousebutton = NULL;
 		PrevUserCallbackScroll = NULL;
 		PrevUserCallbackKey = NULL;
@@ -84,7 +90,6 @@ struct ImGlfwContext
 };
 
 ImGlfwContext* g_Context = NULL;
-
 
 static const char* ImGui_ImplGlfw_GetClipboardText(void* user_data)
 {
@@ -143,13 +148,12 @@ void ImGui_ImplGlfw_CharCallback(GLFWwindow* window, unsigned int c)
         g_Context->PrevUserCallbackChar(window, c);
 
     ImGuiIO& io = ImGui::GetIO();
-    if (c > 0 && c < 0x10000)
-        io.AddInputCharacter((unsigned short)c);
+    io.AddInputCharacter(c);
 }
 
-ImGlfwContext* ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, GlfwClientApi client_api)
+static ImGlfwContext* ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, GlfwClientApi client_api)
 {
-	g_Context = IM_NEW(ImGlfwContext);
+    g_Context = IM_NEW(ImGlfwContext);
 
     g_Context->Window = window;
     g_Context->Time = 0.0;
@@ -176,6 +180,7 @@ ImGlfwContext* ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, G
     io.KeyMap[ImGuiKey_Space] = GLFW_KEY_SPACE;
     io.KeyMap[ImGuiKey_Enter] = GLFW_KEY_ENTER;
     io.KeyMap[ImGuiKey_Escape] = GLFW_KEY_ESCAPE;
+    io.KeyMap[ImGuiKey_KeyPadEnter] = GLFW_KEY_KP_ENTER;
     io.KeyMap[ImGuiKey_A] = GLFW_KEY_A;
     io.KeyMap[ImGuiKey_C] = GLFW_KEY_C;
     io.KeyMap[ImGuiKey_V] = GLFW_KEY_V;
@@ -206,6 +211,7 @@ ImGlfwContext* ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, G
     g_Context->PrevUserCallbackChar = NULL;
     if (install_callbacks)
     {
+        g_Context->InstalledCallbacks = true;
         g_Context->PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
         g_Context->PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
         g_Context->PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ImplGlfw_KeyCallback);
@@ -213,8 +219,8 @@ ImGlfwContext* ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, G
     }
 
     g_Context->ClientApi = client_api;
-    
-	return g_Context;
+	
+    return g_Context;
 }
 
 ImGlfwContext* ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks)
@@ -229,8 +235,17 @@ ImGlfwContext* ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_cal
 
 void ImGui_ImplGlfw_Shutdown(ImGlfwContext* context)
 {
-	if (context)
+	if(context)
 	{
+		if (context->InstalledCallbacks)
+		{
+			glfwSetMouseButtonCallback(context->Window, context->PrevUserCallbackMousebutton);
+			glfwSetScrollCallback(context->Window, context->PrevUserCallbackScroll);
+			glfwSetKeyCallback(context->Window, context->PrevUserCallbackKey);
+			glfwSetCharCallback(context->Window, context->PrevUserCallbackChar);
+			context->InstalledCallbacks = false;
+		}
+
 		for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++)
 		{
 			glfwDestroyCursor(context->MouseCursors[cursor_n]);
@@ -243,7 +258,7 @@ void ImGui_ImplGlfw_Shutdown(ImGlfwContext* context)
 static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
 {
 	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
-
+	
     // Update buttons
     ImGuiIO& io = ImGui::GetIO();
     for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
@@ -279,7 +294,7 @@ static void ImGui_ImplGlfw_UpdateMousePosAndButtons()
 static void ImGui_ImplGlfw_UpdateMouseCursor()
 {
 	IM_ASSERT(g_Context != NULL && "No current context. Did you call ImGui_ImplGlfw_InitForOpenGL() or ImGui_ImplGlfw_InitForVulkan()?");
-
+	
     ImGuiIO& io = ImGui::GetIO();
     if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) || glfwGetInputMode(g_Context->Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
         return;
@@ -347,7 +362,8 @@ void ImGui_ImplGlfw_NewFrame()
     glfwGetWindowSize(g_Context->Window, &w, &h);
     glfwGetFramebufferSize(g_Context->Window, &display_w, &display_h);
     io.DisplaySize = ImVec2((float)w, (float)h);
-    io.DisplayFramebufferScale = ImVec2(w > 0 ? ((float)display_w / w) : 0, h > 0 ? ((float)display_h / h) : 0);
+    if (w > 0 && h > 0)
+        io.DisplayFramebufferScale = ImVec2((float)display_w / w, (float)display_h / h);
 
     // Setup time step
     double current_time = glfwGetTime();
@@ -357,7 +373,7 @@ void ImGui_ImplGlfw_NewFrame()
     ImGui_ImplGlfw_UpdateMousePosAndButtons();
     ImGui_ImplGlfw_UpdateMouseCursor();
 
-    // Gamepad navigation mapping
+    // Update game controllers (if enabled and available)
     ImGui_ImplGlfw_UpdateGamepads();
 }
 

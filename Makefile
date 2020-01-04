@@ -1,14 +1,34 @@
-CC 			= gcc
-CXX			= g++
+CC 			:= gcc
+CXX			:= g++
 
-ARCH 		 = x64
-OPT_ARCH_x86 	 = -m32
-OPT_ARCH_x64 	 = -m64
+ARCH 		 := x64
+OPT_ARCH_x86 	 := -m32
+OPT_ARCH_x64 	 := -m64
 
-MODE 			 = release
-OPT_MODE_debug 	 = -g
-OPT_MODE_release = -O2
-OPT 		 := -Wall -MMD -MP $(OPT_ARCH_$(ARCH)) $(OPT_MODE_$(MODE))
+ifeq ($(OS),Windows_NT)
+	ifeq ($(PROCESSOR_ARCHITECTURE), x86)
+		ARCH := x86
+	endif
+	
+	PLATFORM := win
+	ifneq (,$(findstring /usr/bin/sh.exe, $(SHELL)))
+		TARGET_SHELL := bash
+	else
+		TARGET_SHELL := cmd
+	endif	
+else
+	ifneq (,$(filter $(shell uname -m), i386 i686))
+		ARCH := x86
+	endif
+
+    PLATFORM := nux
+	TARGET_SHELL := bash
+endif
+
+MODE 			 := release
+OPT_MODE_debug 	 := -g
+OPT_MODE_release := -O2
+OPT 			 := -Wall -MMD -MP $(OPT_ARCH_$(ARCH)) $(OPT_MODE_$(MODE))
 
 SOLUTION_DIR	:= $(CURDIR)
 BIN_DIR 		:= bin/$(ARCH)/$(MODE)
@@ -19,18 +39,6 @@ IMGUI_DIR		:= $(LIBS_DIR)/imgui
 GLM_DIR			:= $(LIBS_DIR)/glm
 PFD_DIR			:= $(LIBS_DIR)/pfd
 MESH_DIR		:= MeshEditor
-
-ifeq ($(OS),Windows_NT)
-	PLATFORM := win
-	ifneq (,$(findstring /usr/bin/sh.exe, $(SHELL)))
-		TARGET_SHELL := bash
-	else
-		TARGET_SHELL := cmd
-	endif
-else
-    PLATFORM := nux
-	TARGET_SHELL := bash
-endif
 
 ifeq ($(TARGET_SHELL),cmd)
 	SOLUTION_DIR	:= $(subst /,\,$(SOLUTION_DIR))

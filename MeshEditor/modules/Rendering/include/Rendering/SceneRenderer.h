@@ -13,11 +13,31 @@ namespace Rendering
 	{
 	public:
 		SceneRenderer(Camera* camera, Light* light);
-		~SceneRenderer();
+		~SceneRenderer();		
 
-		void Display(Camera* pCamera=nullptr);
+		/* Add the given MeshRenderer to the scene and initialize it for the given context. 
+		*  Must be called with the right GL context made current.
+		* 
+		*  This class supports shared GL context (multiple GL context sharing the same objects).
+		*  It is useful when you want to draw the same objects into multiple windows but you're forced 
+		*  to have a separate GL context for each window.
+		*
+		*  The context parameter in an abstract identifier to identify the current OpenGL context.
+		*  The user has to maintain a relationship with this identifier and the right GL context.
+		*
+		*  If you need to initalize the MeshRenderer for additionnal shared GL context, you
+		*  can juste wait for the first call to MeshRenderer::Display(), or do it manually calling
+		*  MeshRenderer::InitForContext(context)
+		*/
+		void AddMeshRenderer(MeshRenderer* renderer, unsigned int context=0);
 
-		void AddMeshRenderer(MeshRenderer* renderer);
+		/* Initialize all scene objects for an additionnal shared GL context.
+		*  Must be called with the right GL context made curent.
+		*/
+		void InitForContext(unsigned int context);
+
+		void Display(unsigned int context = 0, Camera* pCamera = nullptr);
+		
 		void SetCamera(Camera* camera);
 		void SetLight(Light* light);
 
@@ -27,8 +47,8 @@ namespace Rendering
 
 	private:
 		std::vector<MeshRenderer*> meshRenderers;
-		Light* light;
 		Camera* camera;
+		Light* light;
 
 		GLuint program; // Shader program
 

@@ -10,15 +10,16 @@
 using namespace GUI;
 using namespace std;
 
-GlfwWindow::GlfwWindow(unsigned int id, unsigned int width, unsigned int height, int x, int y, string title, GlfwWindow* sharedWindow) : Window(id, width, height, x, y, title), sharedGLContext(false)
+GlfwWindow::GlfwWindow(unsigned int id, unsigned int width, unsigned int height, int x, int y, string title, GlfwWindow* sharedWindow) : Window(id, width, height, x, y, title), glfwContext(nullptr)
 {
 	imguiContext = nullptr;
-
 	GLFWwindow *sharedContext = nullptr;
+	sharedGLContext = false;
 	ImFontAtlas* fontAtlas = nullptr;
 	if (sharedWindow)
 	{
 		sharedContext = sharedWindow->window;
+		sharedGLContext = true;
 		if (sharedWindow->imguiContext)
 		{
 			sharedGLContext = true;
@@ -39,11 +40,7 @@ void GlfwWindow::Init()
 {
 	if (window == nullptr)
 		return;
-
-	const char* glsl_version = "#version 330";
-	glfwContext = ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init(glsl_version);
-
+	
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); // Enable vsync
 
@@ -52,7 +49,12 @@ void GlfwWindow::Init()
 		bool err = gl3wInit() != 0;
 		if (err)
 			fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+
+		const char* glsl_version = "#version 330";
+		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
+		
+	glfwContext = ImGui_ImplGlfw_InitForOpenGL(window, true);
 }
 
 GlfwWindow::~GlfwWindow()

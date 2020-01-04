@@ -1,55 +1,68 @@
 #pragma once
 
 #include <vector>
+#include <map>
+#include <array>
 #include "GL/gl3w.h"
 #include "GLM/glm.hpp"
-
-#define NB_VAO 4
-#define NB_VBO 7
 
 namespace Rendering
 {
 	class Mesh;
 	class Vertex;
 	
-	enum RenderMode {
-		MESH = 1,
-		WIREFRAME = 1 << 2,
-		VERTICES = 1 << 3,
-		FACES_NORMALS = 1 << 4,
-		VERTICES_NORMALS = 1 << 5
+	enum class RenderMode : unsigned char {
+		None = 0,
+		Mesh = 1,
+		Wireframe = 1 << 2,
+		Vertices = 1 << 3,
+		FacesNormals = 1 << 4,
+		VerticesNormals = 1 << 5
 	};
 
-	enum MaterialType {
-		MATERIAL_LIGHT = 0,
-		MATERIAL_NO_LIGHT
-	};
+	inline RenderMode operator|(RenderMode l, RenderMode r) { return static_cast<RenderMode>(static_cast<unsigned char>(l) | static_cast<unsigned char>(r)); }
+	inline RenderMode& operator|=(RenderMode& l, RenderMode r) { return l = l | r; }
+	inline bool operator&(RenderMode l, RenderMode r) { return static_cast<unsigned char>(l) & static_cast<unsigned char>(r); }
 
-	enum VAO {
-		VAO_MESH = 0,
-		VAO_VERTICES,
-		VAO_FACES_NORMALS,
-		VAO_VERTICES_NORMALS
-	};
-
-	enum VBO {
-		VBO_VERTICES = 0,
-		VBO_FACES = 1,
-		VBO_NORMALS = 2,
-		VBO_FACES_NORMALS = 3,
-		VBO_VERTICES_NORMALS = 4,
-		VBO_VERTICES_SELECTION = 5,
-		VBO_EDGES_SELECTION = 6
+	enum class MaterialType {
+		Light = 0,
+		NoLight
 	};
 
 	class MeshRenderer
 	{
 	private:
+
+		static constexpr unsigned int NB_VAO = 4;
+		static constexpr unsigned int NB_VBO = 7;
+
+		enum class VAO {
+			Mesh = 0,
+			Vertices,
+			FacesNormals,
+			VerticesNormals
+		};
+
+		enum class VBO {
+			Vertices = 0,
+			Faces,
+			Normals,
+			FacesNormals,
+			VerticesNormals,
+			VerticesSelection,
+			EdgesSelection
+		};
+
 		Mesh* mesh; // Mesh in half-edge structure
+
+		// Rendering parameters		
+		RenderMode renderMode;
 
 		glm::vec3 translation;
 		glm::vec3 rotation;
 		glm::vec3 scale;
+
+		glm::vec4 meshColor, wireframeColor, verticesColor, facesNormalsColor, verticesNormalsColor;
 
 		// Mesh as vertices + faces + normals arrays for better performances
 		// Reloaded when the mesh is modified
@@ -62,8 +75,8 @@ namespace Rendering
 		std::vector<GLint> edgesSelection;
 
 		// VBOs and VAOs
-		GLuint vaoIds[NB_VAO];
-		GLuint vboIds[NB_VBO];
+		std::map<unsigned int, std::array<GLuint, NB_VAO>> vaoIds;
+		std::array<GLuint, NB_VBO> vboIds;
 
 		bool verticesNormalsUpdated;
 		bool facesNormalsUpdated;
@@ -73,17 +86,14 @@ namespace Rendering
 		GLuint meshColorLoc;
 		GLuint materialTypeLoc;
 
-		// Rendering parameters		
-		RenderMode renderMode;		
-
 		void Clean();
 
-		void InitVAOMesh();
-		void InitVAOVertices();
-		void InitVAOFacesNormals();
-		void InitVAOVerticesNormals();
+		void InitVAOMesh(unsigned int context);
+		void InitVAOVertices(unsigned int context);
+		void InitVAOFacesNormals(unsigned int context);
+		void InitVAOVerticesNormals(unsigned int context);
 
-		void Draw(GLuint polygonMode, GLuint drawMode, bool elements, VAO vaoId, size_t size, const glm::vec4& color, const MaterialType materialType);
+		void Draw(GLuint polygonMode, GLuint drawMode, bool elements, VAO vaoId, size_t size, const glm::vec4& color, const MaterialType materialType, unsigned int context=0);
 
 		void UpdateFacesNormals();
 		void UpdateVerticesNormals();
@@ -94,10 +104,29 @@ namespace Rendering
 		MeshRenderer(Mesh* mesh = NULL);
 		~MeshRenderer();
 
-		void Init(GLuint program);	
+		/* The following function must be called once at least one OpenGL context has been created and made current.
+		*
+		*  This class supports shared GL context (multiple GL context sharing the same objects).
+		*  It is useful when you want to draw the same objects into multiple windows but you're forced 
+		*  to have a separate GL context for each window.
+		*
+		*  If you're not using shared contexts you can skip this and just use Init() and Release() without argument.
+		*
+		*  The context parameter in an abstract identifier to identify the current OpenGL context.
+		*  The user has to maintain a relationship with this identifier and the right GL context.
+		*  The user has to call each of these functions with the right GL context made current.
+		*/
+		void Init(GLuint program, unsigned int context = 0);
+		void InitForContext(unsigned int context);
+		void Release();
+		void ReleaseFromContext(unsigned int context);
 
 		void SetMesh(Mesh* mesh);
 		Mesh* GetMesh();
+
+		// Display the model by sending the vertices, faces and normals arrays to the graphic card
+		// Initialize the renderer for the given context if not already done
+		void Display(unsigned int context = 0);
 
 		void SetTranslation(glm::vec3 translation);
 		glm::vec3 GetTranslation();
@@ -106,7 +135,18 @@ namespace Rendering
 		void SetScale(glm::vec3 scale);
 		glm::vec3 GetScale();
 
-		// Must be called whenever the mesh connectivity has changed (new or removes vertices/edge/face)
+		void SetMeshColor(glm::vec4 color);
+		glm::vec4 GetMeshColor();
+		void SetWireframeColor(glm::vec4 color);
+		glm::vec4 GetWireframeColor();
+		void SetVerticesColor(glm::vec4 color);
+		glm::vec4 GetVerticesColor();
+		void SetFacesNormalsColor(glm::vec4 color);
+		glm::vec4 GetFacesNormalsColor();
+		void SetVerticesNormalsColor(glm::vec4 color);
+		glm::vec4 GetVerticesNormalsColor();
+
+		// Must be called whenever the mesh connectivity has changed (new or removed vertices/edge/face)
 		// Update vertices, faces and normals arrays
 		void UpdateMeshConnectivity();
 
@@ -117,9 +157,6 @@ namespace Rendering
 		void UpdateMeshGeometry(std::vector<Vertex*> vertices);
 		// Update a single vertex
 		void UpdateMeshGeometry(Vertex* vertex);
-
-		// Display the model by sending the vertices, faces and normals arrays to the graphic card
-		void Display();
 
 		void SetRenderMode(RenderMode renderMode);
 

@@ -184,6 +184,12 @@
     <ClInclude Include="modules\Rendering\include\Rendering\Light.h">
       <Filter>Modules\Rendering\include\Model</Filter>
     </ClInclude>
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\ViewerPanel.h">
+      <Filter>Modules\MeshEditor\include\Views</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\MeshEditor\include\MeshEditor\ViewerController.h">
+      <Filter>Modules\MeshEditor\include\Controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="modules\GUI\src\Core\GlfwWindow.cpp">
@@ -269,6 +275,12 @@
     </ClCompile>
     <ClCompile Include="modules\Rendering\src\Model\Camera.cpp">
       <Filter>Modules\Rendering\src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\MeshEditor\src\Views\ViewerPanel.cpp">
+      <Filter>Modules\MeshEditor\src\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\MeshEditor\src\Controllers\ViewerController.cpp">
+      <Filter>Modules\MeshEditor\src\Controllers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

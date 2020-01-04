@@ -1,10 +1,10 @@
 BIN_NAME	:= mesh-editor
 
-OPT			+= -std=c++17 -pedantic -DGLFW_INCLUDE_GLCOREARB -DGLM_ENABLE_EXPERIMENTAL -DGLM_FORCE_SILENT_WARNINGS
+OPT			+= -std=c++17 -pedantic -DGLFW_INCLUDE_GLCOREARB -DGLM_ENABLE_EXPERIMENTAL -DGLM_FORCE_SILENT_WARNINGS -D_WIN32_WINNT=0x0601
 
 SRC_DIR 	:= modules
 SRC_DIR_ABS := $(CURDIR)/$(SRC_DIR)
-RESOURCES_DIR := resources
+RESOURCES_DIR := $(SOLUTION_DIR)/resources
 SHADERS_DIR	:= $(SRC_DIR)/Rendering/src/Shaders
 SHADERS_DST := $(RESOURCES_DIR)/shaders
 
@@ -19,7 +19,7 @@ LIBS_PATH	:= -L$(GL3W_DIR)/$(BIN_DIR) \
 			   -L$(IMGUI_DIR)/$(BIN_DIR)
 
 LIBS_nux		:= -lgl3w -lglfw -limgui -ldl -lX11 -lXrandr -lXinerama -lXcursor -lpthread -lstdc++fs
-LIBS_win		:= -lgl3w -lglfw -limgui -lgdi32 -lcomdlg32 -lole32
+LIBS_win		:= -lgl3w -lglfw -limgui -lgdi32 -lcomdlg32 -lole32 -luuid
 LIBS			:= $(LIBS_$(PLATFORM))
 
 ifeq ($(PLATFORM), win)
@@ -28,9 +28,12 @@ ifeq ($(PLATFORM), win)
 endif
 
 BIN 			:= $(BIN_DIR)/$(BIN_NAME)
+OUT_BIN_FOLDER	:= $(SOLUTION_DIR)
+OUT_BIN			:= $(OUT_BIN_FOLDER)/$(BIN_NAME)
 
 ifeq ($(TARGET_SHELL),cmd)
 	BIN := $(subst /,\,$(BIN))
+	OUT_BIN := $(subst /,\,$(OUT_BIN))
 
 	INC_PATH := $(subst /,\,$(INC_PATH))
 	LIBS_PATH := $(subst /,\,$(LIBS_PATH))
@@ -60,7 +63,7 @@ DEPS := $(OBJECTS:.o=.d)
 
 all: directories $(BIN)
 	$(COPY_FOLDER) $(SHADERS_DIR) $(SHADERS_DST)
-	$(COPY_FILE) $(BIN) .
+	$(COPY_FILE) $(BIN) $(OUT_BIN_FOLDER)
 
 directories: $(FOLDERS)
 	@echo Directories done
@@ -85,7 +88,7 @@ $(foreach SRC, $(SOURCES), $(eval $(call myrule, $(patsubst %.cpp, $(BIN_DIR)/%.
 endif
 
 clean:
-	$(RM) $(BIN_NAME)
+	$(RM) $(OUT_BIN)
 	$(RMDIR) $(BIN_DIR)
 	$(RMDIR) $(SHADERS_DST)
 	

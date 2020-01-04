@@ -9,11 +9,11 @@
 using namespace Rendering;
 //using namespace glm;
 
-Camera::Camera(int viewportWidth, int viewportHeight) : viewportWidth(viewportWidth),
-														viewportHeight(viewportHeight),
-														cameraEye(0, 0, 2),
+Camera::Camera(int viewportWidth, int viewportHeight) : cameraEye(0, 0, 2),
 														cameraUp(0, 1, 0),
 														cameraForward(0, 0, -1),
+														viewportWidth(viewportWidth),
+														viewportHeight(viewportHeight),
 														fovy(45.0f),
 														zNear(0.01f),
 														zFar(5000.0f)

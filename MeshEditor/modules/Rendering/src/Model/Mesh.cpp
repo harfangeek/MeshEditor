@@ -38,8 +38,7 @@ void Mesh::Clean()
 
 Mesh::Mesh(Mesh&& other) : vertices{move(other.vertices)},
 								halfEdges{move(other.halfEdges)},
-								faces{move(other.faces)},
-								color{other.color}
+								faces{move(other.faces)}
 {
 }
 
@@ -49,7 +48,6 @@ Mesh& Mesh::operator=(Mesh&& other)
 	vertices = move(other.vertices);
 	halfEdges = move(other.halfEdges);
 	faces = move(other.faces);
-	color = other.color;
 
 	return *this;
 }

@@ -46,10 +46,16 @@ void SceneRenderer::InitLight()
 	lightAngleLoc = glGetUniformLocation(program, "light_angle");
 }
 
-void SceneRenderer::AddMeshRenderer(MeshRenderer* renderer)
+void SceneRenderer::AddMeshRenderer(MeshRenderer* renderer, unsigned int context)
 {
 	meshRenderers.push_back(renderer);
-	renderer->Init(program);
+	renderer->Init(program, context);
+}
+
+void SceneRenderer::InitForContext(unsigned int context)
+{
+	for (auto renderer : meshRenderers)
+		renderer->InitForContext(context);
 }
 
 void SceneRenderer::SetCamera(Camera* camera)
@@ -77,7 +83,7 @@ Light* SceneRenderer::GetLight()
 	return light;
 }
 
-void SceneRenderer::Display(Camera* pCamera)
+void SceneRenderer::Display(unsigned int context, Camera* pCamera)
 {
 	Camera* currentCamera = pCamera;
 	if (!currentCamera)
@@ -92,7 +98,7 @@ void SceneRenderer::Display(Camera* pCamera)
 	SendLightData();
 
 	for (auto renderer : meshRenderers)
-		renderer->Display();
+		renderer->Display(context);
 }
 
 void SceneRenderer::SendCameraData(Camera* pCamera)

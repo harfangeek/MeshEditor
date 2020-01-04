@@ -39,7 +39,6 @@ std::string FileController::Load()
 	{
 		Rendering::MeshTransformation::Triangulate(mesh);
 		mesh->ComputeNormals();
-		mesh->color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
 		auto oldMesh = meshRenderer->GetMesh();
 		meshRenderer->SetMesh(mesh);

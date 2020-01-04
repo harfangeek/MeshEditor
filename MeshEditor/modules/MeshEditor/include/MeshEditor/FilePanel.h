@@ -14,6 +14,5 @@ namespace MeshEditor
 
 	private:
 		FileController* controller;
-		char path[2048];
 	};
 }

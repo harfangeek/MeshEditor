@@ -7,11 +7,11 @@ BIN 		:= $(BIN_DIR)/libglfw.a
 INC_PATH	= -I./include
 SRC_DIR 	= ./src
 
-SOURCES_nux	= x11_init.c x11_monitor.c x11_window.c xkb_unicode.c linux_joystick.c \
-			posix_time.c posix_tls.c glx_context.c egl_context.c
+SOURCES_nux	= x11_init.c x11_monitor.c x11_window.c xkb_unicode.c posix_time.c  \
+			  posix_thread.c glx_context.c egl_context.c osmesa_context.c linux_joystick.c
 
-SOURCES_win = win32_init.c win32_joystick.c win32_monitor.c win32_time.c \
-			 win32_tls.c win32_window.c wgl_context.c egl_context.c
+SOURCES_win = win32_init.c win32_joystick.c win32_monitor.c win32_time.c win32_thread.c \
+			  win32_window.c wgl_context.c egl_context.c osmesa_context.c
 
 SOURCES		= context.c init.c input.c monitor.c vulkan.c window.c
 SOURCES 	+= $(SOURCES_$(PLATFORM))

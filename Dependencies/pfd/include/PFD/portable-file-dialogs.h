@@ -12,14 +12,6 @@
 
 #pragma once
 
-#include <string>
-#include <memory>
-#include <iostream>
-#include <map>
-#include <regex>
-#include <thread>
-#include <chrono>
-
 #if _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
 #   define WIN32_LEAN_AND_MEAN 1
@@ -27,12 +19,25 @@
 #include <windows.h>
 #include <commdlg.h>
 #include <shlobj.h>
+#include <shellapi.h>
 #include <future>
 #else
+#ifndef _POSIX_C_SOURCE
+#   define _POSIX_C_SOURCE 2 // for popen()
+#endif
+#include <cstdio>   // for popen()
 #include <cstdlib>  // for std::getenv()
 #include <fcntl.h>  // for fcntl()
 #include <unistd.h> // for read()
 #endif
+
+#include <string>
+#include <memory>
+#include <iostream>
+#include <map>
+#include <regex>
+#include <thread>
+#include <chrono>
 
 namespace pfd
 {
@@ -94,6 +99,7 @@ protected:
         has_matedialog,
         has_qarma,
         has_kdialog,
+        is_vista,
 
         max_flag,
     };
@@ -161,6 +167,24 @@ static inline std::string wstr2str(std::wstring const &str)
     std::string ret(len, '\0');
     WideCharToMultiByte(CP_UTF8, 0, str.c_str(), (int)str.size(), (LPSTR)ret.data(), (int)ret.size(), nullptr, nullptr);
     return ret;
+}
+
+static inline bool is_vista()
+{
+    OSVERSIONINFOEXW osvi;
+    memset(&osvi, 0, sizeof(osvi));
+    DWORDLONG const mask = VerSetConditionMask(
+            VerSetConditionMask(
+                    VerSetConditionMask(
+                            0, VER_MAJORVERSION, VER_GREATER_EQUAL),
+                    VER_MINORVERSION, VER_GREATER_EQUAL),
+            VER_SERVICEPACKMAJOR, VER_GREATER_EQUAL);
+    osvi.dwOSVersionInfoSize = sizeof(osvi);
+    osvi.dwMajorVersion = HIBYTE(_WIN32_WINNT_VISTA);
+    osvi.dwMinorVersion = LOBYTE(_WIN32_WINNT_VISTA);
+    osvi.wServicePackMajor = 0;
+
+    return VerifyVersionInfoW(&osvi, VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR, mask) != FALSE;
 }
 #endif
 
@@ -317,7 +341,102 @@ private:
 #endif
 };
 
-class dialog : protected settings
+class platform
+{
+protected:
+#if _WIN32
+    // Helper class around LoadLibraryA() and GetProcAddress() with some safety
+    class dll
+    {
+    public:
+        dll(std::string const &name)
+          : handle(::LoadLibraryA(name.c_str()))
+        {}
+
+        ~dll()
+        {
+            if (handle)
+                ::FreeLibrary(handle);
+        }
+
+        template<typename T> class proc
+        {
+        public:
+            proc(dll const &lib, std::string const &sym)
+              : m_proc(reinterpret_cast<T *>(::GetProcAddress(lib.handle, sym.c_str())))
+            {}
+
+            operator bool() const
+            {
+                return m_proc != nullptr;
+            }
+
+            operator T *() const
+            {
+                return m_proc;
+            }
+
+        private:
+            T *m_proc;
+        };
+
+    private:
+        HMODULE handle;
+    };
+
+    // Helper class around CreateActCtx() and ActivateActCtx()
+    class new_style_context
+    {
+    public:
+        new_style_context()
+        {
+            // Only create one activation context for the whole app lifetime.
+            static HANDLE hctx = create();
+
+            if (hctx != INVALID_HANDLE_VALUE)
+                ActivateActCtx(hctx, &m_cookie);
+        }
+
+        ~new_style_context()
+        {
+            DeactivateActCtx(0, m_cookie);
+        }
+
+    private:
+        HANDLE create()
+        {
+            // This “hack” seems to be necessary for this code to work on windows XP.
+            // Without it, dialogs do not show and close immediately. GetError()
+            // returns 0 so I don’t know what causes this. I was not able to reproduce
+            // this behavior on Windows 7 and 10 but just in case, let it be here for
+            // those versions too.
+            // This hack is not required if other dialogs are used (they load comdlg32
+            // automatically), only if message boxes are used.
+            dll comdlg32("comdlg32.dll");
+
+            // Using approach as shown here: https://stackoverflow.com/a/10444161
+            UINT len = ::GetSystemDirectoryA(nullptr, 0);
+            std::string sys_dir(len, '\0');
+            ::GetSystemDirectoryA(&sys_dir[0], len);
+
+            ACTCTXA act_ctx =
+            {
+                // Do not set flag ACTCTX_FLAG_SET_PROCESS_DEFAULT, since it causes a
+                // crash with error “default context is already set”.
+                sizeof(act_ctx),
+                ACTCTX_FLAG_RESOURCE_NAME_VALID | ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID,
+                "shell32.dll", 0, 0, sys_dir.c_str(), (LPCSTR)124,
+            };
+
+            return ::CreateActCtxA(&act_ctx);
+        }
+
+        ULONG_PTR m_cookie = 0;
+    };
+#endif
+};
+
+class dialog : protected settings, protected platform
 {
     friend class pfd::notify;
     friend class pfd::message;
@@ -334,7 +453,9 @@ protected:
     {
         if (!flags(flag::is_scanned))
         {
-#if !__APPLE && !_WIN32
+#if _WIN32
+            flags(flag::is_vista) = is_vista();
+#elif !__APPLE__
             flags(flag::has_zenity) = check_program("zenity");
             flags(flag::has_matedialog) = check_program("matedialog");
             flags(flag::has_qarma) = check_program("qarma");
@@ -418,7 +539,7 @@ protected:
         return "'" + std::regex_replace(str, std::regex("'"), "'\\''") + "'";
     }
 
-    // Check whether a program is present using “which”
+    // Check whether a program is present using “which”.
     bool check_program(std::string const &program)
     {
 #if _WIN32
@@ -468,54 +589,57 @@ protected:
                         allow_multiselect, confirm_overwrite](int *exit_code) -> std::string
         {
             (void)exit_code;
-            auto wtitle = internal::str2wstr(title);
+            m_wtitle = internal::str2wstr(title);
+            m_wdefault_path = internal::str2wstr(default_path);
             auto wfilter_list = internal::str2wstr(filter_list);
-            auto wdefault_path = internal::str2wstr(default_path);
 
             // Folder selection uses a different method
             if (in_type == type::folder)
             {
+                dll ole32("ole32.dll");
+
+                auto status = dll::proc<HRESULT WINAPI (LPVOID, DWORD)>(ole32, "CoInitializeEx")
+                                  (nullptr, COINIT_APARTMENTTHREADED);
+                if (flags(flag::is_vista))
+                {
+                    // On Vista and higher we should be able to use IFileDialog for folder selection
+                    IFileDialog *ifd;
+                    HRESULT hr = dll::proc<HRESULT WINAPI (REFCLSID, LPUNKNOWN, DWORD, REFIID, LPVOID *)>(ole32, "CoCreateInstance")
+                                     (CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&ifd));
+
+                    // In case CoCreateInstance fails (which it should not), try legacy approach
+                    if (SUCCEEDED(hr))
+                        return select_folder_vista(ifd);
+                }
+
                 BROWSEINFOW bi;
                 memset(&bi, 0, sizeof(bi));
-                auto status = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
-                auto callback = [&](HWND hwnd, UINT uMsg, LPARAM lp, LPARAM pData) -> INT
+                bi.lpfn = &bffcallback;
+                bi.lParam = (LPARAM)this;
+
+                if (flags(flag::is_vista))
                 {
-                    switch (uMsg)
-                    {
-                        case BFFM_INITIALIZED:
-                            SendMessage(hwnd, BFFM_SETSELECTION, TRUE, (LPARAM)wdefault_path.c_str());
-                            break;
-                        case BFFM_SELCHANGED:
-                            // FIXME: this doesn’t seem to work wuth BIF_NEWDIALOGSTYLE
-                            SendMessage(hwnd, BFFM_SETSTATUSTEXT, 0, (LPARAM)wtitle.c_str());
-                            break;
-                    }
-                    return 0;
-                };
+                    // This hangs on Windows XP, as reported here:
+                    // https://github.com/samhocevar/portable-file-dialogs/pull/21
+                    if (status == S_OK)
+                        bi.ulFlags |= BIF_NEWDIALOGSTYLE;
+                    bi.ulFlags |= BIF_EDITBOX;
+                    bi.ulFlags |= BIF_STATUSTEXT;
+                }
 
-                bi.lpfn = [](HWND hwnd, UINT uMsg, LPARAM lp, LPARAM pData) -> INT
-                {
-                    return (*(decltype(&callback))pData)(hwnd, uMsg, lp, 0);
-                };
-                bi.lParam = (LPARAM)&callback;
-
-                if (status == S_OK)
-                    bi.ulFlags |= BIF_NEWDIALOGSTYLE;
-                bi.ulFlags |= BIF_EDITBOX;
-                bi.ulFlags |= BIF_STATUSTEXT;
                 auto *list = SHBrowseForFolderW(&bi);
                 std::string ret;
                 if (list)
                 {
                     auto buffer = new wchar_t[MAX_PATH];
                     SHGetPathFromIDListW(list, buffer);
-                    CoTaskMemFree(list);
+                    dll::proc<void WINAPI (LPVOID)>(ole32, "CoTaskMemFree")(list);
                     ret = internal::wstr2str(buffer);
                     delete[] buffer;
                 }
                 if (status == S_OK)
-                    CoUninitialize();
+                    dll::proc<void WINAPI ()>(ole32, "CoUninitialize")();
                 return ret;
             }
 
@@ -529,22 +653,37 @@ protected:
             auto woutput = std::wstring(MAX_PATH * 256, L'\0');
             ofn.lpstrFile = (LPWSTR)woutput.data();
             ofn.nMaxFile = (DWORD)woutput.size();
-            if (!wdefault_path.empty())
+            if (!m_wdefault_path.empty())
             {
-                // Initial directory
-                ofn.lpstrInitialDir = wdefault_path.c_str();
-                // Initial file selection
-                ofn.lpstrFileTitle = (LPWSTR)wdefault_path.data();
-                ofn.nMaxFileTitle = (DWORD)wdefault_path.size();
+                // If a directory was provided, use it as the initial directory. If
+                // a valid path was provided, use it as the initial file. Otherwise,
+                // let the Windows API decide.
+                auto path_attr = GetFileAttributesW(m_wdefault_path.c_str());
+                if (path_attr != INVALID_FILE_ATTRIBUTES && (path_attr & FILE_ATTRIBUTE_DIRECTORY))
+                    ofn.lpstrInitialDir = m_wdefault_path.c_str();
+                else if (m_wdefault_path.size() <= woutput.size())
+                    lstrcpyW(ofn.lpstrFile, m_wdefault_path.c_str());
+                else
+                {
+                    ofn.lpstrFileTitle = (LPWSTR)m_wdefault_path.data();
+                    ofn.nMaxFileTitle = (DWORD)m_wdefault_path.size();
+                }
             }
-            ofn.lpstrTitle = wtitle.c_str();
+            ofn.lpstrTitle = m_wtitle.c_str();
             ofn.Flags = OFN_NOCHANGEDIR | OFN_EXPLORER;
+
+            dll comdlg32("comdlg32.dll");
 
             if (in_type == type::save)
             {
                 if (confirm_overwrite)
                     ofn.Flags |= OFN_OVERWRITEPROMPT;
-                if (GetSaveFileNameW(&ofn) == 0)
+
+                // using set context to apply new visual style (required for windows XP)
+                new_style_context ctx;
+
+                dll::proc<BOOL WINAPI (LPOPENFILENAMEW)> get_save_file_name(comdlg32, "GetSaveFileNameW");
+                if (get_save_file_name(&ofn) == 0)
                     return "";
                 return internal::wstr2str(woutput.c_str());
             }
@@ -552,7 +691,12 @@ protected:
             if (allow_multiselect)
                 ofn.Flags |= OFN_ALLOWMULTISELECT;
             ofn.Flags |= OFN_PATHMUSTEXIST;
-            if (GetOpenFileNameW(&ofn) == 0)
+
+            // using set context to apply new visual style (required for windows XP)
+            new_style_context ctx;
+
+            dll::proc<BOOL WINAPI (LPOPENFILENAMEW)> get_open_file_name(comdlg32, "GetOpenFileNameW");
+            if (get_open_file_name(&ofn) == 0)
                 return "";
 
             std::string prefix;
@@ -717,6 +861,81 @@ protected:
     }
 
 #if _WIN32
+    // Use a static function to pass as BFFCALLBACK for legacy folder select
+    static int CALLBACK bffcallback(HWND hwnd, UINT uMsg, LPARAM, LPARAM pData)
+    {
+        auto inst = (file_dialog *)pData;
+        switch (uMsg)
+        {
+            case BFFM_INITIALIZED:
+                SendMessage(hwnd, BFFM_SETSELECTIONW, TRUE, (LPARAM)inst->m_wdefault_path.c_str());
+                break;
+        }
+        return 0;
+    }
+
+    std::string select_folder_vista(IFileDialog *ifd)
+    {
+        std::string result;
+
+        IShellItem *folder;
+
+        // Load library at runtime so app doesn't link it at load time (which will fail on windows XP)
+        dll shell32("shell32.dll");
+        dll::proc<HRESULT WINAPI (PCWSTR, IBindCtx*, REFIID, void**)>
+            create_item(shell32, "SHCreateItemFromParsingName");
+
+        if (!create_item)
+            return "";
+
+        auto hr = create_item(m_wdefault_path.c_str(),
+                              nullptr,
+                              IID_PPV_ARGS(&folder));
+
+        // Set default folder if found. This only sets the default folder. If
+        // Windows has any info about the most recently selected folder, it
+        // will display it instead. Generally, calling SetFolder() to set the
+        // current directory “is not a good or expected user experience and
+        // should therefore be avoided”:
+        // https://docs.microsoft.com/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifiledialog-setfolder
+        if (SUCCEEDED(hr))
+        {
+            ifd->SetDefaultFolder(folder);
+            folder->Release();
+        }
+
+        // Set the dialog title and option to select folders
+        ifd->SetOptions(FOS_PICKFOLDERS);
+        ifd->SetTitle(m_wtitle.c_str());
+
+        hr = ifd->Show(GetForegroundWindow());
+        if (SUCCEEDED(hr))
+        {
+            IShellItem* item;
+            hr = ifd->GetResult(&item);
+            if (SUCCEEDED(hr))
+            {
+                wchar_t* wselected = nullptr;
+                item->GetDisplayName(SIGDN_FILESYSPATH, &wselected);
+                item->Release();
+
+                if (wselected)
+                {
+                    result = internal::wstr2str(std::wstring(wselected));
+                    dll ole32("ole32.dll");
+                    dll::proc<void WINAPI (LPVOID)>(ole32, "CoTaskMemFree")(wselected);
+                }
+            }
+        }
+
+        ifd->Release();
+
+        return result;
+    }
+
+    std::wstring m_wtitle;
+    std::wstring m_wdefault_path;
+
     std::vector<std::string> m_vector_result;
 #endif
 };
@@ -734,24 +953,67 @@ public:
             icon = icon::info;
 
 #if _WIN32
-        int const delay = 5000;
-        auto script = "Add-Type -AssemblyName System.Windows.Forms;"
-                      "$exe = (Get-Process -id " + std::to_string(GetCurrentProcessId()) + ").Path;"
-                      "$popup = New-Object System.Windows.Forms.NotifyIcon;"
-                      "$popup.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($exe);"
-                      "$popup.Visible = $true;"
-                      "$popup.ShowBalloonTip(" + std::to_string(delay) + ", "
-                                               + powershell_quote(title) + ", "
-                                               + powershell_quote(message) + ", "
-                                           "'" + get_icon_name(icon) + "');"
-                      "Start-Sleep -Milliseconds " + std::to_string(delay) + ";"
-                      "$popup.Dispose();"; // Ensure the icon is cleaned up, but not too soon.
-        // Double fork to ensure the powershell script runs in the background
-        auto command = "powershell.exe -Command \""
-                       "    start-process powershell"
-                       "        -ArgumentList " + powershell_quote(script) +
-                       "        -WindowStyle hidden"
-                       "\"";
+        // Use a static shared pointer for notify_icon so that we can delete
+        // it whenever we need to display a new one, and we can also wait
+        // until the program has finished running.
+        struct notify_icon_data : public NOTIFYICONDATAW
+        {
+            ~notify_icon_data() { Shell_NotifyIconW(NIM_DELETE, this); }
+        };
+
+        static std::shared_ptr<notify_icon_data> nid;
+
+        // Release the previous notification icon, if any, and allocate a new
+        // one. Note that std::make_shared() does value initialization, so there
+        // is no need to memset the structure.
+        nid = nullptr;
+        nid = std::make_shared<notify_icon_data>();
+
+        // For XP support
+        nid->cbSize = NOTIFYICONDATAW_V2_SIZE;
+        nid->hWnd = nullptr;
+        nid->uID = 0;
+
+        // Flag Description:
+        // - NIF_ICON    The hIcon member is valid.
+        // - NIF_MESSAGE The uCallbackMessage member is valid.
+        // - NIF_TIP     The szTip member is valid.
+        // - NIF_STATE   The dwState and dwStateMask members are valid.
+        // - NIF_INFO    Use a balloon ToolTip instead of a standard ToolTip. The szInfo, uTimeout, szInfoTitle, and dwInfoFlags members are valid.
+        // - NIF_GUID    Reserved.
+        nid->uFlags = NIF_MESSAGE | NIF_ICON | NIF_INFO;
+
+        // Flag Description
+        // - NIIF_ERROR     An error icon.
+        // - NIIF_INFO      An information icon.
+        // - NIIF_NONE      No icon.
+        // - NIIF_WARNING   A warning icon.
+        // - NIIF_ICON_MASK Version 6.0. Reserved.
+        // - NIIF_NOSOUND   Version 6.0. Do not play the associated sound. Applies only to balloon ToolTips
+        switch (icon)
+        {
+            case icon::warning: nid->dwInfoFlags = NIIF_WARNING; break;
+            case icon::error: nid->dwInfoFlags = NIIF_ERROR; break;
+            /* case icon::info: */ default: nid->dwInfoFlags = NIIF_INFO; break;
+        }
+
+        ENUMRESNAMEPROC icon_enum_callback = [](HMODULE, LPCTSTR, LPTSTR lpName, LONG_PTR lParam) -> BOOL
+        {
+            ((NOTIFYICONDATAW *)lParam)->hIcon = ::LoadIcon(GetModuleHandle(nullptr), lpName);
+            return false;
+        };
+
+        nid->hIcon = ::LoadIcon(nullptr, IDI_APPLICATION);
+        ::EnumResourceNames(nullptr, RT_GROUP_ICON, icon_enum_callback, (LONG_PTR)nid.get());
+
+        nid->uTimeout = 5000;
+
+        // FIXME check buffer length
+        lstrcpyW(nid->szInfoTitle, internal::str2wstr(title).c_str());
+        lstrcpyW(nid->szInfo, internal::str2wstr(message).c_str());
+
+        // Display the new icon
+        Shell_NotifyIconW(NIM_ADD, nid.get());
 #else
         auto command = desktop_helper();
 
@@ -773,12 +1035,12 @@ public:
                        " --passivepopup " + shell_quote(message) +
                        " 5";
         }
-#endif
 
         if (flags(flag::is_verbose))
             std::cerr << "pfd: " << command << std::endl;
 
         m_async->start(command);
+#endif
     }
 };
 
@@ -822,6 +1084,8 @@ public:
         {
             auto wtext = internal::str2wstr(text);
             auto wtitle = internal::str2wstr(title);
+            // using set context to apply new visual style (required for all windows versions)
+            new_style_context ctx;
             *exit_code = MessageBoxW(GetForegroundWindow(), wtext.c_str(), wtitle.c_str(), style);
             return "";
         });
@@ -932,9 +1196,11 @@ public:
                     command += "warning";
                 command += "yesno";
                 if (choice == choice::yes_no_cancel)
-                {
-                    m_mappings[256] = button::no;
                     command += "cancel";
+                if (choice == choice::yes_no || choice == choice::yes_no_cancel)
+                {
+                    m_mappings[0] = button::yes;
+                    m_mappings[256] = button::no;
                 }
             }
 

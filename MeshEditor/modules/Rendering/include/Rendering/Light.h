@@ -4,12 +4,12 @@
 
 namespace Rendering
 {
-	enum LightType {
+	enum class LightType {
 		AMBIANT = 0,
-		POINT_LIGHT = 1,
-		DIRECTIONNAL = 2,
-		SPOT_LIGHT = 3,
-		SILOUHETTE = 4
+		POINT_LIGHT,
+		DIRECTIONNAL,
+		SPOT_LIGHT,
+		SILOUHETTE
 	};
 
 	class Light
