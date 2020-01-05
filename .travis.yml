@@ -32,8 +32,7 @@ matrix:
     before_install:
     - sudo apt-get update -qq
     install:
-    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxi-dev
-      libxrandr-dev libxinerama-dev
+    - sudo apt-get install -y -qq --no-install-recommends make libx11-dev libxcursor-dev libxi-dev libxrandr-dev libxinerama-dev
     script:
     - make -j 2 CC=$CC CXX=$CXX
   - name: Windows - GCC
@@ -44,7 +43,11 @@ matrix:
   - name: Windows - MSVC
     os: windows
     filter_secrets: false
-    env: MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin"
+    env: MSBUILD_PATH="/C/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/"
+    install:
+    - choco install visualstudio2019buildtools
+    - choco install visualstudio2019-workload-vctools
+    - choco install visualstudio2019-workload-nativedesktop
     script:
     - export PATH=$MSBUILD_PATH:$PATH
     - MSBuild.exe MeshEditor.sln -m:2 -t:"Projects\MeshEditor" -p:configuration=release -p:platform=x64
